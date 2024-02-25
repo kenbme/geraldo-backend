@@ -3,13 +3,13 @@ import { CepService } from './cep.service';
 import { AddressDto } from './dto/address.dto';
 
 
-@Controller('cep')
+@Controller('')
 export class CepController {
   constructor(private readonly cepService: CepService) {}
 
-  @Get(':find_address')
+  @Get('find_address')
   find_address(@Query('cep') cep: string): Promise<AddressDto>{
-    if(cep.trim().length !== 9){
+    if(cep === undefined || cep.trim().length !== 9){
       throw new BadRequestException('Cep inválido')
     }
     else{
