@@ -1,20 +1,22 @@
-import { Controller, Get, Query, BadRequestException } from '@nestjs/common';
-import { CepService } from './cep.service';
-import { AddressDto } from './dto/address.dto';
+import {
+  Controller,
+  Get,
+  Query,
+  BadRequestException
+} from '@nestjs/common'
+import {CepService} from './cep.service'
+import {AddressDto} from './dto/address.dto'
 
 @Controller('cep')
 export class CepController {
   constructor(private readonly cepService: CepService) {}
 
   @Get(':Cep')
-  find_address(@Query('cep') cep: string): Promise<AddressDto>{
-    if(cep.trim().length !== 9){
+  find_address(@Query('cep') cep: string): Promise<AddressDto> {
+    if (cep.trim().length !== 9) {
       throw new BadRequestException('Cep inválido')
-    }
-    else{
+    } else {
       return this.cepService.getAddressByCep(cep)
     }
-   
-
   }
 }

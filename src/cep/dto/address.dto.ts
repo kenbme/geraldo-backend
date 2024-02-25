@@ -9,5 +9,4 @@ export class AddressDto {
   bairro: string
   @IsString()
   rua: string
-  
 }
