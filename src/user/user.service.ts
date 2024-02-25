@@ -1,9 +1,10 @@
-import {Injectable} from '@nestjs/common'
+import {ConflictException, Injectable} from '@nestjs/common'
 import {CreateUserDto} from './dto/create-user.dto'
 import {UpdateUserDto} from './dto/update-user.dto'
 import {InjectRepository} from '@nestjs/typeorm'
 import {User} from './entities/user.entity'
 import {Repository} from 'typeorm'
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class UserService {
@@ -13,11 +14,20 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    const existingUser = await this.userRepository.findOneBy({
+      email: createUserDto.email
+    })
+    if (existingUser) {
+      throw new ConflictException('Email already exists')
+    }
     const newUser = new User()
     newUser.name = createUserDto.name
     newUser.email = createUserDto.email
     newUser.role = createUserDto.role
-    newUser.password = '123' // TODO GERAR SENHA
+    // TODO randomPassword deve ser enviada para email
+    const randomPassword = Math.random().toString().split('0.')[1]
+    console.log(randomPassword)
+    newUser.password = await bcrypt.hash(randomPassword, 10)
     return await this.userRepository.save(newUser)
   }
 
@@ -38,8 +48,12 @@ export class UserService {
     })
     existingUser.email = updateUserDto.email ?? existingUser.email
     existingUser.name = updateUserDto.name ?? existingUser.name
-    existingUser.password =
-      updateUserDto.password ?? existingUser.password
+    if (updateUserDto.password) {
+      existingUser.password = await bcrypt.hash(
+        updateUserDto.password,
+        10
+      )
+    }
     return await this.userRepository.save(existingUser)
   }
 

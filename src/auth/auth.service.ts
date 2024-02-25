@@ -4,6 +4,7 @@ import {Repository} from 'typeorm'
 import {JwtService} from '@nestjs/jwt'
 import {InjectRepository} from '@nestjs/typeorm'
 import {jwtConstants} from './constants'
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class AuthService {
@@ -20,8 +21,8 @@ export class AuthService {
     const user = await this.userRepository.findOneByOrFail({
       email: email
     })
-    if (user.password !== password) {
-      // TODO ENCRIPTAR SENHA
+    const match = await bcrypt.compare(password, user.password)
+    if (!match) {
       throw new UnauthorizedException()
     }
     const payload = {
