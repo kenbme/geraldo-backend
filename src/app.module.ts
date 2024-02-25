@@ -8,15 +8,10 @@ import {User} from './user/entities/user.entity'
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      password: '123',
-      username: 'postgres',
-      entities: [User],
-      database: 'geraldo-backend',
+      type: 'sqlite',
+      database: 'db/sql',
       synchronize: true,
-      logging: true
+      entities: [User]
     }),
     UserModule
   ],
