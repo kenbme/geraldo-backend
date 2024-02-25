@@ -1,10 +1,10 @@
 import { Controller, Get, Query, BadRequestException } from '@nestjs/common';
-import { cepService } from './cep.service';
+import { CepService } from './cep.service';
 import { AddressDto } from './dto/address.dto';
 
 @Controller('cep')
 export class CepController {
-  constructor(private readonly cepService: cepService) {}
+  constructor(private readonly cepService: CepService) {}
 
   @Get(':Cep')
   find_address(@Query('cep') cep: string): Promise<AddressDto>{

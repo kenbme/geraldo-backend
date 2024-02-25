@@ -5,7 +5,6 @@ import {UserModule} from './user/user.module'
 import {TypeOrmModule} from '@nestjs/typeorm'
 import {User} from './user/entities/user.entity'
 import {AuthModule} from './auth/auth.module'
-import { CepController } from './cep/cep.controller';
 import { CepModule } from './cep/cep.module';
 
 @Module({
@@ -20,7 +19,7 @@ import { CepModule } from './cep/cep.module';
     AuthModule,
     CepModule
   ],
-  controllers: [AppController, CepController],
+  controllers: [AppController],
   providers: [AppService]
 })
 export class AppModule {}
