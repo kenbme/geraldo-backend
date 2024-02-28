@@ -13,7 +13,8 @@ export class CepController {
 
   @Get('find_address')
   find_address(@Query('cep') cep: string): Promise<AddressDto> {
-    if (cep === undefined || cep.trim().length !== 9) {
+    cep = cep.replace(/\D/g, '')
+    if (cep === undefined || cep.trim().length !== 8) {
       throw new BadRequestException('Cep inválido')
     }
     return this.cepService.getAddressByCep(cep)
