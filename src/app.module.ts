@@ -5,6 +5,8 @@ import {UserModule} from './user/user.module'
 import {TypeOrmModule} from '@nestjs/typeorm'
 import {User} from './user/entities/user.entity'
 import {AuthModule} from './auth/auth.module'
+import {DriverModule} from './driver/driver.module'
+import {EstablishmentModule} from './establishment/establishment.module'
 
 @Module({
   imports: [
@@ -15,7 +17,9 @@ import {AuthModule} from './auth/auth.module'
       entities: [User]
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    DriverModule,
+    EstablishmentModule
   ],
   controllers: [AppController],
   providers: [AppService]
