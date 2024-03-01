@@ -14,10 +14,7 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async signIn(
-    email: string,
-    password: string
-  ): Promise<{access_token: string}> {
+  async signIn(email: string, password: string): Promise<{access_token: string}> {
     const user = await this.userRepository.findOneByOrFail({
       email: email
     })
