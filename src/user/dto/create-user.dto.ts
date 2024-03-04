@@ -10,8 +10,8 @@ export class CreateUserDto {
   name: string
   @IsEmail()
   email: string
-  @IsDate()
-  birthday: Date
+  @IsString()
+  birthday: string
   @IsEnum(UserTypeEnum)
   userType: string
 }

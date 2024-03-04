@@ -14,8 +14,6 @@ export class User {
   @Column({type: 'varchar'})
   @Exclude()
   password: string
-  @Column({type: 'tinyint'})
-  resetPassword: number
   @Column({type: 'varchar'})
   name: string
   @Column({type: 'varchar', unique: true})

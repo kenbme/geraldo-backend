@@ -6,12 +6,14 @@ import {User} from './entities/user.entity'
 import {Repository} from 'typeorm'
 import {hash} from 'bcrypt'
 import {randomUUID} from 'crypto'
+import {UserTypeService} from './user.type.service'
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
+    private readonly userTypeService: UserTypeService
   ) {}
 
   private async emailExists(email: string): Promise<boolean> {
@@ -44,8 +46,8 @@ export class UserService {
     newUser.password = await this.encryptPassword(createUserDto.password)
     newUser.name = createUserDto.name
     newUser.email = createUserDto.email
-    newUser.birthday = createUserDto.birthday
-    newUser.userType = 'DRIVER' //TODO cadastrar UserTypes (DRIVER E ESTABLISHMENT) e linkar aqui
+    newUser.birthday = new Date(createUserDto.birthday)
+    newUser.userType = await this.userTypeService.findByName(createUserDto.userType)
     return await this.userRepository.save(newUser)
   }
 

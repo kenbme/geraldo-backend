@@ -9,14 +9,15 @@ import {DriverModule} from './driver/driver.module'
 import {EstablishmentModule} from './establishment/establishment.module'
 import {Driver} from './driver/entities/driver.entity'
 import {Establishment} from './establishment/entities/establishment.entity'
+import { UserType } from './user/entities/user.type.entity'
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'db/sql',
+      database: 'db/development.sqlite3',
       synchronize: true,
-      entities: [User, Driver, Establishment]
+      entities: [User, UserType, Driver, Establishment]
     }),
     UserModule,
     AuthModule,

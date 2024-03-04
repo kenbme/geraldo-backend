@@ -1,6 +1,6 @@
 import {UUID} from 'crypto'
 import {User} from 'src/user/entities/user.entity'
-import {Column, Entity, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
+import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
 
 @Entity()
 export class Driver {
@@ -9,5 +9,6 @@ export class Driver {
   @Column({type: 'uuid'})
   uuid: UUID
   @OneToOne(() => User)
+  @JoinColumn()
   user: User
 }

@@ -8,6 +8,8 @@ export class UserType {
   id: number
   @Column({type: 'uuid', unique: true})
   uuid: UUID
+  @Column({type: 'varchar', unique: true})
+  name: string
   @Column({type: 'varchar'})
   description: string
   @OneToMany(() => User, (user) => user.userType)
