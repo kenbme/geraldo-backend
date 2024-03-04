@@ -1,7 +1,6 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete} from '@nestjs/common'
+import {Controller, Post, Body} from '@nestjs/common'
 import {EstablishmentService} from './establishment.service'
 import {CreateEstablishmentDto} from './dto/create-establishment.dto'
-import {UpdateEstablishmentDto} from './dto/update-establishment.dto'
 
 @Controller('')
 export class EstablishmentController {

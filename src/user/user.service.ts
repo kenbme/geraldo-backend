@@ -5,7 +5,7 @@ import {InjectRepository} from '@nestjs/typeorm'
 import {User} from './entities/user.entity'
 import {Repository} from 'typeorm'
 import {hash} from 'bcrypt'
-import {randomUUID} from 'node:crypto'
+import {randomUUID} from 'crypto'
 
 @Injectable()
 export class UserService {
@@ -45,7 +45,7 @@ export class UserService {
     newUser.name = createUserDto.name
     newUser.email = createUserDto.email
     newUser.birthday = createUserDto.birthday
-    newUser.userType = //TODO cadastrar UserTypes (DRIVER E ESTABLISHMENT) e linkar aqui
+    newUser.userType = 'DRIVER' //TODO cadastrar UserTypes (DRIVER E ESTABLISHMENT) e linkar aqui
     return await this.userRepository.save(newUser)
   }
 

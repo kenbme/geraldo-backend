@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {Exclude} from 'class-transformer'
 import {UUID} from 'node:crypto'
 import {UserType} from './user.type.entity'

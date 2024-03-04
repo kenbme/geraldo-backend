@@ -1,26 +1,22 @@
 import {Injectable} from '@nestjs/common'
 import {CreateDriverDto} from './dto/create-driver.dto'
-import {UpdateDriverDto} from './dto/update-driver.dto'
+import {UserService} from 'src/user/user.service'
+import {Repository} from 'typeorm'
+import {Driver} from './entities/driver.entity'
+import {randomUUID} from 'crypto'
 
 @Injectable()
 export class DriverService {
-  create(createDriverDto: CreateDriverDto) {
-    return 'This action adds a new driver'
-  }
+  constructor(
+    private readonly userService: UserService,
+    private readonly driverRepository: Repository<Driver>
+  ) {}
 
-  findAll() {
-    return `This action returns all driver`
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} driver`
-  }
-
-  update(id: number, updateDriverDto: UpdateDriverDto) {
-    return `This action updates a #${id} driver`
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} driver`
+  async create(createDriverDto: CreateDriverDto): Promise<Driver> {
+    const user = await this.userService.create(createDriverDto)
+    const driver = new Driver()
+    driver.uuid = randomUUID()
+    driver.user = user
+    return this.driverRepository.save(driver)
   }
 }
