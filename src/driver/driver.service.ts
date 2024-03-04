@@ -4,11 +4,13 @@ import {UserService} from 'src/user/user.service'
 import {Repository} from 'typeorm'
 import {Driver} from './entities/driver.entity'
 import {randomUUID} from 'crypto'
+import {InjectRepository} from '@nestjs/typeorm'
 
 @Injectable()
 export class DriverService {
   constructor(
     private readonly userService: UserService,
+    @InjectRepository(Driver)
     private readonly driverRepository: Repository<Driver>
   ) {}
 
