@@ -1,7 +1,7 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm'
-import {Exclude} from 'class-transformer'
-import {UUID} from 'node:crypto'
-import {UserType} from './user.type.entity'
+import { Exclude } from 'class-transformer'
+import { UUID } from 'node:crypto'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { UserType } from './user.type.entity'
 
 @Entity()
 export class User {
@@ -20,6 +20,6 @@ export class User {
   email: string
   @Column({type: 'datetime'})
   birthday: Date
-  @ManyToOne(() => UserType, (userType) => userType.users)
+  @ManyToOne(() => UserType, (userType) => userType.users, {eager: true})
   userType: UserType
 }
