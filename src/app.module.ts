@@ -9,7 +9,7 @@ import {DriverModule} from './driver/driver.module'
 import {EstablishmentModule} from './establishment/establishment.module'
 import {Driver} from './driver/entities/driver.entity'
 import {Establishment} from './establishment/entities/establishment.entity'
-import { UserType } from './user/entities/user.type.entity'
+import {UserType} from './user/entities/user.type.entity'
 
 @Module({
   imports: [

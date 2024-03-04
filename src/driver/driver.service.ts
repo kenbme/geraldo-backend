@@ -17,7 +17,7 @@ export class DriverService {
   async create(createDriverDto: CreateDriverDto): Promise<Driver> {
     const user = await this.userService.create(createDriverDto)
     console.log(user)
-    
+
     const driver = new Driver()
     driver.uuid = randomUUID()
     driver.user = user

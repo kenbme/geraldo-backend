@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {UserType} from './entities/user.type.entity'
 import {Repository} from 'typeorm'
-import { randomUUID } from 'crypto'
+import {randomUUID} from 'crypto'
 
 @Injectable()
 export class UserTypeService {
@@ -19,18 +19,18 @@ export class UserTypeService {
   private async createTypes() {
     const driverType = new UserType()
     driverType.uuid = randomUUID()
-    driverType.name = "DRIVER"
-    driverType.description = "descricao de driver"
+    driverType.name = 'DRIVER'
+    driverType.description = 'descricao de driver'
 
     const establishmentType = new UserType()
     establishmentType.uuid = randomUUID()
-    establishmentType.name = "ESTABLISHMENT"
-    establishmentType.description = "descricao de establishment"
+    establishmentType.name = 'ESTABLISHMENT'
+    establishmentType.description = 'descricao de establishment'
 
-    if(!(await this.userTypeRepository.existsBy({name: driverType.name}))) {
+    if (!(await this.userTypeRepository.existsBy({name: driverType.name}))) {
       await this.userTypeRepository.save(driverType)
     }
-    if(!(await this.userTypeRepository.existsBy({name: establishmentType.name}))) {
+    if (!(await this.userTypeRepository.existsBy({name: establishmentType.name}))) {
       await this.userTypeRepository.save(establishmentType)
     }
   }

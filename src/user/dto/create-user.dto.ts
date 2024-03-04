@@ -1,4 +1,4 @@
-import {IsDate, IsEmail, IsEnum, IsString} from 'class-validator'
+import {IsDateString, IsEmail, IsEnum, IsString} from 'class-validator'
 import {UserTypeEnum} from '../enums/user-type.enum'
 
 export class CreateUserDto {
@@ -10,7 +10,7 @@ export class CreateUserDto {
   name: string
   @IsEmail()
   email: string
-  @IsString()
+  @IsDateString()
   birthday: string
   @IsEnum(UserTypeEnum)
   userType: string
