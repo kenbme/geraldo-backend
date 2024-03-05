@@ -5,10 +5,11 @@ import {UserModule} from './user/user.module'
 import {TypeOrmModule} from '@nestjs/typeorm'
 import {User} from './user/entities/user.entity'
 import {AuthModule} from './auth/auth.module'
-import {CepModule} from './cep/cep.module'
-import { UserType } from './user/entities/user.type.entity'
-import { Driver } from './driver/entities/driver.entity'
-import { Establishment } from './establishment/entities/establishment.entity'
+import {Driver} from './driver/entities/driver.entity'
+import {Establishment} from './establishment/entities/establishment.entity'
+import {UserType} from './user/entities/user.type.entity'
+import { EstablishmentType } from './establishment/entities/establishment.type.entity'
+import { CepModule } from './cep/cep.module'
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { Establishment } from './establishment/entities/establishment.entity'
       type: 'sqlite',
       database: 'db/development.sqlite3',
       synchronize: true,
-      entities: [User, UserType, Driver, Establishment]
+      entities: [User, UserType, Driver, Establishment, EstablishmentType]
     }),
     UserModule,
     AuthModule,
