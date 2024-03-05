@@ -5,11 +5,10 @@ import {UserModule} from './user/user.module'
 import {TypeOrmModule} from '@nestjs/typeorm'
 import {User} from './user/entities/user.entity'
 import {AuthModule} from './auth/auth.module'
-import {DriverModule} from './driver/driver.module'
-import {EstablishmentModule} from './establishment/establishment.module'
-import {Driver} from './driver/entities/driver.entity'
-import {Establishment} from './establishment/entities/establishment.entity'
-import {UserType} from './user/entities/user.type.entity'
+import {CepModule} from './cep/cep.module'
+import { UserType } from './user/entities/user.type.entity'
+import { Driver } from './driver/entities/driver.entity'
+import { Establishment } from './establishment/entities/establishment.entity'
 
 @Module({
   imports: [
@@ -21,8 +20,7 @@ import {UserType} from './user/entities/user.type.entity'
     }),
     UserModule,
     AuthModule,
-    DriverModule,
-    EstablishmentModule
+    CepModule
   ],
   controllers: [AppController],
   providers: [AppService]
