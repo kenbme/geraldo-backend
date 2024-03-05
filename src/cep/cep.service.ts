@@ -1,16 +1,19 @@
-import {Injectable, NotFoundException} from '@nestjs/common'
+import {BadRequestException, Injectable, NotFoundException} from '@nestjs/common'
 import {AddressDto} from './dto/address.dto'
-import axios, {AxiosRequestConfig} from 'axios'
+import axios from 'axios'
 
 @Injectable()
 export class CepService {
   constructor() {}
 
   async getAddressByCep(cep: string): Promise<AddressDto> {
-    const config: AxiosRequestConfig = {
-      timeout: 5000
+    if (cep === undefined || cep.trim().length !== 9) {
+      throw new BadRequestException('Cep inválido')
     }
-    const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`, config)
+    cep = cep.replace(/\D/g, '')
+    const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`, {
+      timeout: 5000
+    })
     if (response.data.erro) {
       throw new NotFoundException('CEP não encontrado')
     }
