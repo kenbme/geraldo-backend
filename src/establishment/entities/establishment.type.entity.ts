@@ -1,6 +1,6 @@
 import {UUID} from 'node:crypto'
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
-import { Establishment } from './establishment.entity'
+import {Establishment} from './establishment.entity'
 
 @Entity()
 export class EstablishmentType {

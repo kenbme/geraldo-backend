@@ -8,8 +8,8 @@ import {AuthModule} from './auth/auth.module'
 import {Driver} from './driver/entities/driver.entity'
 import {Establishment} from './establishment/entities/establishment.entity'
 import {UserType} from './user/entities/user.type.entity'
-import { EstablishmentType } from './establishment/entities/establishment.type.entity'
-import { CepModule } from './cep/cep.module'
+import {EstablishmentType} from './establishment/entities/establishment.type.entity'
+import {CepModule} from './cep/cep.module'
 
 @Module({
   imports: [

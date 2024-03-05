@@ -1,9 +1,4 @@
-import {
-  Controller,
-  Get,
-  Query,
-  BadRequestException
-} from '@nestjs/common'
+import {Controller, Get, Query, BadRequestException} from '@nestjs/common'
 import {CepService} from './cep.service'
 import {AddressDto} from './dto/address.dto'
 

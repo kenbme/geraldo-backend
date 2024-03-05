@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {Repository} from 'typeorm'
 import {randomUUID} from 'crypto'
-import { EstablishmentType } from './entities/establishment.type.entity'
+import {EstablishmentType} from './entities/establishment.type.entity'
 
 @Injectable()
 export class EstablishmentTypeService {
@@ -17,7 +17,6 @@ export class EstablishmentTypeService {
   }
 
   private async createTypes() {
-
     const gasStationType = new EstablishmentType()
     gasStationType.uuid = randomUUID()
     gasStationType.name = 'GAS STATION'
