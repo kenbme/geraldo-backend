@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {ConflictException, Injectable} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {hash} from 'bcrypt'
