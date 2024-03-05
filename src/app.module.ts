@@ -10,6 +10,7 @@ import {EstablishmentModule} from './establishment/establishment.module'
 import {Driver} from './driver/entities/driver.entity'
 import {Establishment} from './establishment/entities/establishment.entity'
 import {UserType} from './user/entities/user.type.entity'
+import { EstablishmentType } from './establishment/entities/establishment.type.entity'
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import {UserType} from './user/entities/user.type.entity'
       type: 'sqlite',
       database: 'db/development.sqlite3',
       synchronize: true,
-      entities: [User, UserType, Driver, Establishment]
+      entities: [User, UserType, Driver, Establishment, EstablishmentType]
     }),
     UserModule,
     AuthModule,
