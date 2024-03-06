@@ -56,5 +56,6 @@ describe('EstablishmentController', () => {
       establishmentType: 'GAS STATION',
       alwaysOpen: 1
     })
+    expect(establishment).toBeDefined()
   })
 })
