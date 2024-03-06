@@ -52,10 +52,9 @@ describe('AuthController', () => {
   it('should create user and login', async () => {
     const count = await userRepository.count()
     const user = await userService.create({
-      username: '222.222.222-22',
-      password: 'senhaDificil123!',
+      username: '22222222222',
       email: 'teste@gmail.com',
-      birthday: '2002-12-12',
+      birthday: '2002-12-24',
       name: 'fulano',
       userType: 'DRIVER'
     })
@@ -64,7 +63,7 @@ describe('AuthController', () => {
     expect(user.name).toBe('fulano')
 
     const token = await authController.signIn({
-      username: '222.222.222-22',
+      username: '22222222222',
       password: 'senhaDificil123!'
     })
     expect(token).toBeDefined()
