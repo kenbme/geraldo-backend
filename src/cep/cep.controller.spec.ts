@@ -20,13 +20,13 @@ describe('cepController', () => {
   })
 
   it('should be Monteiro', async () => {
-    const res = await cepController.find_address('58500-000')
+    const res = await cepController.find_address('58500000')
     expect(res).toBeDefined()
     expect(res).toEqual({estado: 'PB', cidade: 'Monteiro', bairro: '', rua: ''})
   })
 
   it('should be Universitario CG', async () => {
-    const res = await cepController.find_address('58429-900')
+    const res = await cepController.find_address('58429900')
     expect(res).toBeDefined()
     expect(res).toEqual({
       estado: 'PB',
@@ -38,7 +38,7 @@ describe('cepController', () => {
 
   it('CEP exceeds maximum length', async () => {
     try {
-      await cepController.find_address('58429-9000000000')
+      await cepController.find_address('584299000000000')
     } catch (err) {
       expect(err).toBeInstanceOf(BadRequestException)
       return
@@ -56,9 +56,9 @@ describe('cepController', () => {
     fail()
   })
 
-  it('CEP should not pass without hifen', async () => {
+  it('CEP should not pass with hifen', async () => {
     try {
-      await cepController.find_address('58500000')
+      await cepController.find_address('58500-000')
     } catch (err) {
       expect(err).toBeInstanceOf(BadRequestException)
       return
@@ -68,7 +68,7 @@ describe('cepController', () => {
 
   it('CEP not found', async () => {
     try {
-      await cepController.find_address('00000-000')
+      await cepController.find_address('00000000')
     } catch (err) {
       expect(err).toBeInstanceOf(NotFoundException)
       return
