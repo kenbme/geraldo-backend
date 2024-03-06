@@ -4,7 +4,6 @@ import {hash} from 'bcrypt'
 import {randomUUID} from 'crypto'
 import {Repository} from 'typeorm'
 import {CreateUserDto} from './dto/create-user.dto'
-import {UpdateUserDto} from './dto/update-user.dto'
 import {User} from './entities/user.entity'
 import {UserTypeService} from './user.type.service'
 
@@ -51,38 +50,7 @@ export class UserService {
     return await this.userRepository.save(newUser)
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.userRepository.find()
-  }
-
-  async findOne(userId: number): Promise<User> {
-    return await this.userRepository.findOneByOrFail({id: userId})
-  }
-
   async findByUsername(userUsername: string): Promise<User> {
     return await this.userRepository.findOneByOrFail({username: userUsername})
-  }
-
-  async update(userId: number, updateUserDto: UpdateUserDto): Promise<User> {
-    if (updateUserDto.username && (await this.usernameExists(updateUserDto.username))) {
-      throw new ConflictException('CPF or CNPJ already exists')
-    }
-    if (updateUserDto.email && (await this.emailExists(updateUserDto.email))) {
-      throw new ConflictException('Email already exists')
-    }
-    const existingUser = await this.userRepository.findOneByOrFail({id: userId})
-    existingUser.username = updateUserDto.username ?? existingUser.username
-    if (updateUserDto.password) {
-      existingUser.password = await this.encryptPassword(updateUserDto.password)
-    }
-    existingUser.name = updateUserDto.name ?? existingUser.name
-    existingUser.email = updateUserDto.email ?? existingUser.email
-    existingUser.birthday = updateUserDto.birthday ?? existingUser.birthday
-    return await this.userRepository.save(existingUser)
-  }
-
-  async remove(userId: number): Promise<void> {
-    const existingUser = await this.userRepository.findOneByOrFail({id: userId})
-    await this.userRepository.delete(existingUser)
   }
 }
