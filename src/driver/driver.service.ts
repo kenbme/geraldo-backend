@@ -19,7 +19,6 @@ export class DriverService {
       birthday: createDriverDto.birthday,
       email: createDriverDto.email,
       name: createDriverDto.name,
-      password: createDriverDto.password,
       username: createDriverDto.username,
       userType: 'DRIVER'
     })

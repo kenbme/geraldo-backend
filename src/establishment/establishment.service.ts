@@ -17,16 +17,22 @@ export class EstablishmentService {
   ) {}
 
   async create(createEstablishmentDto: CreateEstablishmentDto): Promise<Establishment> {
-    const user = await this.userService.create(createEstablishmentDto)
     const establishment = new Establishment()
-    establishment.uuid = randomUUID()
-    establishment.user = user
-    establishment.areaCode = createEstablishmentDto.areaCode
-    establishment.phone = createEstablishmentDto.phone
-    establishment.alwaysOpen = createEstablishmentDto.alwaysOpen
     establishment.establishmentType = await this.establishmentTypeService.findByName(
       createEstablishmentDto.establishmentType
     )
+    establishment.uuid = randomUUID()
+    establishment.areaCode = createEstablishmentDto.areaCode
+    establishment.phone = createEstablishmentDto.phone
+
+    const user = await this.userService.create({
+      email: createEstablishmentDto.email,
+      name: createEstablishmentDto.name,
+      username: createEstablishmentDto.username,
+      userType: 'ESTABLISHMENT'
+    })
+    establishment.user = user
+    // TODO FALTA CRIAR ADRESSES STATES E CITIES
     return this.establishmentRepository.save(establishment)
   }
 }

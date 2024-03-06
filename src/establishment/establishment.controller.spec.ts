@@ -46,15 +46,13 @@ describe('EstablishmentController', () => {
   it('should create a establishment', async () => {
     const establishment = await establishmentController.create({
       username: '222.222.222-22',
-      password: 'senhaDificil123!',
       email: 'teste@gmail.com',
-      birthday: '2002-12-12',
       name: 'fulano',
-      userType: 'ESTABLISHMENT',
-      areaCode: '58429-900',
+      areaCode: '83',
       phone: '83993333333',
-      establishmentType: 'GAS STATION',
-      alwaysOpen: 1
+      establishmentType: 'GAS_STATION',
+      houseNumber: '15',
+      postalCode: '58429-900'
     })
     expect(establishment).toBeDefined()
   })

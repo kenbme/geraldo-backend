@@ -4,8 +4,6 @@ export class CreateDriverDto {
   @IsString()
   username: string
   @IsString()
-  password: string
-  @IsString()
   name: string
   @IsEmail()
   email: string

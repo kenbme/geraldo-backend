@@ -1,3 +1,3 @@
 export enum EstablishmentTypeEnum {
-  GAS_STATION = 'GAS STATION'
+  GAS_STATION = 'GAS_STATION'
 }

@@ -23,7 +23,7 @@ export class EstablishmentTypeService {
   private async createTypes(): Promise<void> {
     const gasStationType = new EstablishmentType()
     gasStationType.uuid = randomUUID()
-    gasStationType.name = 'GAS STATION'
+    gasStationType.name = 'GAS_STATION'
     gasStationType.description = 'descricao de establishment'
 
     if (!(await this.establishmentTypeRepository.existsBy({name: gasStationType.name}))) {

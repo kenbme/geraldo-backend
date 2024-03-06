@@ -37,7 +37,6 @@ describe('DriverController', () => {
   it('should create driver', async () => {
     const driver = await driverController.create({
       username: '22222222222',
-      password: 'senhaDificil123!',
       email: 'teste@gmail.com',
       birthday: '2002-12-15',
       name: 'fulano'
