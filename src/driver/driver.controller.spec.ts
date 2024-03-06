@@ -8,7 +8,7 @@ import {User} from 'src/user/entities/user.entity'
 import {UserModule} from 'src/user/user.module'
 
 describe('DriverController', () => {
-  let controller: DriverController
+  let driverController: DriverController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,10 +27,22 @@ describe('DriverController', () => {
       providers: [DriverService]
     }).compile()
 
-    controller = module.get<DriverController>(DriverController)
+    driverController = module.get<DriverController>(DriverController)
   })
 
   it('should be defined', () => {
-    expect(controller).toBeDefined()
+    expect(driverController).toBeDefined()
+  })
+
+  it('should create driver', async () => {
+    const driver = await driverController.create({
+      username: '222.222.222-22',
+      password: 'senhaDificil123!',
+      email: 'teste@gmail.com',
+      birthday: '2002-12-12',
+      name: 'fulano',
+      userType: 'DRIVER'
+    })
+    expect(driver).toBeDefined()
   })
 })

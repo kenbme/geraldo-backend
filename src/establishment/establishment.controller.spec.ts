@@ -50,7 +50,7 @@ describe('EstablishmentController', () => {
       email: 'teste@gmail.com',
       birthday: '2002-12-12',
       name: 'fulano',
-      userType: 'DRIVER',
+      userType: 'ESTABLISHMENT',
       areaCode: '58429-900',
       phone: '83993333333',
       establishmentType: 'GAS STATION',

@@ -29,7 +29,7 @@ export class EstablishmentTypeService {
     if (!(await this.establishmentTypeRepository.existsBy({name: gasStationType.name}))) {
       await this.establishmentTypeRepository.save(gasStationType)
     }
-    
+
     this.created = true
   }
 }
