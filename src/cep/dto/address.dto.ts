@@ -2,11 +2,11 @@ import {IsString} from 'class-validator'
 
 export class AddressDto {
   @IsString()
-  estado: string
+  state: string
   @IsString()
-  cidade: string
+  city: string
   @IsString()
-  bairro: string
+  district: string
   @IsString()
-  rua: string
+  street: string
 }

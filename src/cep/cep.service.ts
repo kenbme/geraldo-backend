@@ -17,10 +17,10 @@ export class CepService {
       throw new NotFoundException('CEP não encontrado')
     }
     const addressDto: AddressDto = {
-      estado: response.data.uf,
-      cidade: response.data.localidade,
-      bairro: response.data.bairro,
-      rua: response.data.logradouro
+      state: response.data.uf,
+      city: response.data.localidade,
+      district: response.data.bairro,
+      street: response.data.logradouro
     }
     return addressDto
   }
