@@ -36,13 +36,13 @@ describe('DriverController', () => {
 
   it('should create driver', async () => {
     const driver = await driverController.create({
-      username: '222.222.222-22',
+      username: '22222222222',
       password: 'senhaDificil123!',
       email: 'teste@gmail.com',
-      birthday: '2002-12-12',
-      name: 'fulano',
-      userType: 'DRIVER'
+      birthday: '2002-12-15',
+      name: 'fulano'
     })
     expect(driver).toBeDefined()
+    expect(driver.user.name).toEqual('fulano')
   })
 })

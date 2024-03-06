@@ -1,9 +1,14 @@
-import {Equals, IsString} from 'class-validator'
-import {CreateUserDto} from 'src/user/dto/create-user.dto'
-import {UserTypeEnum} from 'src/user/enums/user-type.enum'
+import {IsDateString, IsEmail, IsString} from 'class-validator'
 
-export class CreateDriverDto extends CreateUserDto {
+export class CreateDriverDto {
   @IsString()
-  @Equals(UserTypeEnum.DRIVER)
-  userType: string
+  username: string
+  @IsString()
+  password: string
+  @IsString()
+  name: string
+  @IsEmail()
+  email: string
+  @IsDateString()
+  birthday: string
 }
