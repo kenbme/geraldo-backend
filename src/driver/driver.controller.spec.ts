@@ -15,7 +15,7 @@ describe('DriverController', () => {
       imports: [
         TypeOrmModule.forRoot({
           type: 'sqlite',
-          database: 'db/testing.sqlite3',
+          database: 'db/testing_driver.sqlite3',
           synchronize: true,
           dropSchema: true,
           entities: [User, UserType, Driver]

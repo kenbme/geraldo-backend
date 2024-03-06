@@ -19,7 +19,7 @@ describe('EstablishmentController', () => {
       imports: [
         TypeOrmModule.forRoot({
           type: 'sqlite',
-          database: 'db/testing.sqlite3',
+          database: 'db/testing_establishment.sqlite3',
           synchronize: true,
           dropSchema: true,
           entities: [User, UserType, Establishment, EstablishmentType]

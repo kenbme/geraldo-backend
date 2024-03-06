@@ -20,7 +20,7 @@ describe('AuthController', () => {
       imports: [
         TypeOrmModule.forRoot({
           type: 'sqlite',
-          database: 'db/testing.sqlite3',
+          database: 'db/auth_testing.sqlite3',
           synchronize: true,
           dropSchema: true,
           entities: [User, UserType]
