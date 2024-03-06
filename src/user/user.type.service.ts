@@ -20,7 +20,7 @@ export class UserTypeService {
     return this.userTypeRepository.findOneByOrFail({name: name})
   }
 
-  private async createTypes() {
+  private async createTypes(): Promise<void> {
     const driverType = new UserType()
     driverType.uuid = randomUUID()
     driverType.name = 'DRIVER'
