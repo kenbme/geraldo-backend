@@ -22,6 +22,7 @@ describe('AuthController', () => {
           type: 'sqlite',
           database: 'db/testing.sqlite3',
           synchronize: true,
+          dropSchema: true,
           entities: [User, UserType]
         }),
         TypeOrmModule.forFeature([User]),

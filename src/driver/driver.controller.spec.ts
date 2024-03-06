@@ -17,6 +17,7 @@ describe('DriverController', () => {
           type: 'sqlite',
           database: 'db/testing.sqlite3',
           synchronize: true,
+          dropSchema: true,
           entities: [User, UserType, Driver]
         }),
         TypeOrmModule.forFeature([Driver]),
