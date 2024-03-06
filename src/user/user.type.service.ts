@@ -11,8 +11,12 @@ export class UserTypeService {
     private readonly userTypeRepository: Repository<UserType>
   ) {}
 
+  private created = false
+
   async findByName(name: string): Promise<UserType> {
-    await this.createTypes()
+    if (!this.created) {
+      await this.createTypes()
+    }
     return this.userTypeRepository.findOneByOrFail({name: name})
   }
 
@@ -33,5 +37,7 @@ export class UserTypeService {
     if (!(await this.userTypeRepository.existsBy({name: establishmentType.name}))) {
       await this.userTypeRepository.save(establishmentType)
     }
+
+    this.created = true
   }
 }

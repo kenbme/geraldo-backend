@@ -11,12 +11,16 @@ export class EstablishmentTypeService {
     private readonly establishmentTypeRepository: Repository<EstablishmentType>
   ) {}
 
+  private created = false
+
   async findByName(name: string): Promise<EstablishmentType> {
-    await this.createTypes()
+    if (!this.created) {
+      await this.createTypes()
+    }
     return this.establishmentTypeRepository.findOneByOrFail({name: name})
   }
 
-  private async createTypes() {
+  private async createTypes(): Promise<void> {
     const gasStationType = new EstablishmentType()
     gasStationType.uuid = randomUUID()
     gasStationType.name = 'GAS STATION'
@@ -25,5 +29,7 @@ export class EstablishmentTypeService {
     if (!(await this.establishmentTypeRepository.existsBy({name: gasStationType.name}))) {
       await this.establishmentTypeRepository.save(gasStationType)
     }
+    
+    this.created = true
   }
 }

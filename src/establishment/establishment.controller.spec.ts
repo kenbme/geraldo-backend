@@ -8,7 +8,7 @@ import {Establishment} from './entities/establishment.entity'
 import {UserModule} from 'src/user/user.module'
 import {EstablishmentType} from './entities/establishment.type.entity'
 import {EstablishmentTypeService} from './establishment.type.service'
-import { Repository } from 'typeorm'
+import {Repository} from 'typeorm'
 
 describe('EstablishmentController', () => {
   let establishmentController: EstablishmentController
@@ -28,7 +28,11 @@ describe('EstablishmentController', () => {
         UserModule
       ],
       controllers: [EstablishmentController],
-      providers: [EstablishmentService, EstablishmentTypeService,{provide: getRepositoryToken(User), useClass: Repository}]
+      providers: [
+        EstablishmentService,
+        EstablishmentTypeService,
+        {provide: getRepositoryToken(User), useClass: Repository}
+      ]
     }).compile()
     establishmentController = module.get(EstablishmentController)
     userRepository = module.get(getRepositoryToken(User))
@@ -40,8 +44,8 @@ describe('EstablishmentController', () => {
   })
 
   it('should create a establishment', async () => {
-    const establishment = await establishmentController.create(
-      {username: '222.222.222-22',
+    const establishment = await establishmentController.create({
+      username: '222.222.222-22',
       password: 'senhaDificil123!',
       email: 'teste@gmail.com',
       birthday: '2002-12-12',
@@ -50,7 +54,7 @@ describe('EstablishmentController', () => {
       areaCode: '58429-900',
       phone: '83993333333',
       establishmentType: 'GAS STATION',
-      alwaysOpen: 1}
-    );
+      alwaysOpen: 1
+    })
   })
 })
