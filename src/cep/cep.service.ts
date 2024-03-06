@@ -8,7 +8,7 @@ export class CepService {
 
   async getAddressByCep(cep: string): Promise<AddressDto> {
     if (cep === undefined || cep.trim().length !== 9) {
-      throw new BadRequestException('Cep inválido')
+      throw new BadRequestException('CEP inválido')
     }
     cep = cep.replace(/\D/g, '')
     const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`, {
