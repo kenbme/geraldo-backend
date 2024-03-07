@@ -1,4 +1,4 @@
-import {ConflictException, Injectable} from '@nestjs/common'
+import {ConflictException, Injectable, NotFoundException} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {hash} from 'bcrypt'
 import {randomUUID} from 'crypto'
@@ -6,6 +6,7 @@ import {Repository} from 'typeorm'
 import {CreateUserDto} from './dto/create-user.dto'
 import {User} from './entities/user.entity'
 import {UserTypeService} from './user.type.service'
+import { RecoverPasswordDto } from './dto/recover-password.dto';
 
 @Injectable()
 export class UserService {
@@ -53,4 +54,21 @@ export class UserService {
   async findByUsername(userUsername: string): Promise<User> {
     return await this.userRepository.findOneByOrFail({username: userUsername})
   }
+
+  async recoverPassword(recoverPasswordDto: RecoverPasswordDto): Promise<string> {
+    const { email } = recoverPasswordDto;
+
+    const user = await this.userRepository.findOneBy({ email: email });
+
+    if (!user) {
+      throw new NotFoundException('Usuário ou senha incorretos');
+    }
+
+    const newPassword = Math.random().toString(36).slice(-8); // random 8 character password
+
+    user.password = await this.encryptPassword(newPassword); 
+    await this.userRepository.save(user);
+
+    return newPassword;
+  } 
 }
