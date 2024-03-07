@@ -58,10 +58,14 @@ export class UserService {
   async recoverPassword(recoverPasswordDto: RecoverPasswordDto): Promise<string> {
     const { email } = recoverPasswordDto;
 
+    if (!email) {
+      throw new Error('Campo Obrigatório');
+    }
+
     const user = await this.userRepository.findOneBy({ email: email });
 
     if (!user) {
-      throw new NotFoundException('Usuário ou senha incorretos');
+      throw new NotFoundException('Usuário ou email incorretos');
     }
 
     const newPassword = Math.random().toString(36).slice(-8); // random 8 character password
