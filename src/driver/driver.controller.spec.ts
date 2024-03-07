@@ -10,6 +10,7 @@ import {Catch, ConflictException} from '@nestjs/common'
 import { ValidationError, validate, validateOrReject } from 'class-validator'
 import { CreateDriverDto } from './dto/create-driver.dto'
 import assert from 'assert'
+import { Console } from 'console'
 
 describe('DriverController', () => {
   let driverController: DriverController
@@ -72,46 +73,53 @@ describe('DriverController', () => {
     })
     it('email invalid because is empty', async () => {
       try {
-        await driverController.create({
-          username: '22222222211',
-          email: '',
-          birthday: '2002-12-15',
-          name: 'beltrano'
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
-      }
-      throw new Error()
-    })
-    it('email invalid because not contains @', async () => {
-      try {
-        await driverController.create({
-          username: '22222222211',
-          email: 'testegmail.com',
-          birthday: '2002-12-15',
-          name: 'beltrano'
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
+        const dto = new CreateDriverDto()
+        dto.username = '22222222211',
+        dto.email = '',
+        dto.birthday = '2002-12-15',
+        dto.name = 'beltrano'
+        await  validateOrReject(dto)
+      } catch ([err]) {
+        if (err instanceof ValidationError && err.constraints) {
+          expect(err.constraints.isNotEmpty).toEqual('O email não pode ser vazio')
+          return
+        }
       }
       throw new Error()
     })
     it('email invalid because is blank', async () => {
       try {
-        await driverController.create({
-          username: '22222222211',
-          email: '          ',
-          birthday: '2002-12-15',
-          name: 'beltrano'
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
+        const dto = new CreateDriverDto()
+        dto.username = '22222222211',
+        dto.email = '               ',
+        dto.birthday = '2002-12-15',
+        dto.name = 'beltrano'
+        await  validateOrReject(dto)
+      } catch ([err]) {
+        if (err instanceof ValidationError && err.constraints) {
+          expect(err.constraints.isEmail).toEqual('O email deve ser um email válido')
+          return
+        }
       }
       throw new Error()
     })
+    it('email invalid because not contains @', async () => {
+      try {
+        const dto = new CreateDriverDto()
+        dto.username = '22222222211',
+        dto.email = 'testesgmail.com',
+        dto.birthday = '2002-12-15',
+        dto.name = 'beltrano'
+        await  validateOrReject(dto)
+      } catch ([err]) {
+        if (err instanceof ValidationError && err.constraints) {
+          expect(err.constraints.isEmail).toEqual('O email deve ser um email válido')
+          return
+        }
+      }
+      throw new Error()
+    })
+  
     it('email invalid because is specials character invalid ', async () => {
       try {
         const dto = new CreateDriverDto()
@@ -122,13 +130,15 @@ describe('DriverController', () => {
         await  validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.isEmail).toEqual('Email deve ser um email válido')
+          expect(err.constraints.isEmail).toEqual('O email deve ser um email válido')
           return
         }
       }
       throw new Error()
     })
   })
+
+  
   describe('isValidUserName', () => {
     it('username exist', async () => {
       try {
@@ -152,43 +162,55 @@ describe('DriverController', () => {
     })
     it('username invalid because is empty', async () => {
       try {
-        await driverController.create({
-          username: '',
-          email: 'teste3@gmail.com',
-          birthday: '2002-12-15',
-          name: 'beltrano'
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
+        const dto = new CreateDriverDto()
+        dto.username = '',
+        dto.email = 'teste@gmail.com',
+        dto.birthday = '2002-12-15',
+        dto.name = 'beltrano'
+        await validateOrReject(dto)
+
+      } catch ([err]) {
+        console.log(err.constraints)
+        if (err instanceof ValidationError && err.constraints) {
+        expect(err.constraints.isNotEmpty).toEqual('o cpf não pode ser vazio');
+        return;
+        }
       }
       throw new Error()
     })
     it('username exceeds maximum length', async () => {
       try {
-        await driverController.create({
-          username: '22222222221111111',
-          email: 'teste3@gmail.com',
-          birthday: '2002-12-15',
-          name: 'beltrano'
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
+        const dto = new CreateDriverDto()
+        dto.username = '1234567891123',
+        dto.email = 'teste@gmail.com',
+        dto.birthday = '2002-12-15',
+        dto.name = 'beltrano'
+        await validateOrReject(dto)
+
+      } catch ([err]) {
+        console.log(err.constraints)
+        if (err instanceof ValidationError && err.constraints) {
+        expect(err.constraints.maxLength).toEqual('o cpf não deve exceder 11 caracteres');
+        return;
+        }
       }
       throw new Error()
     })
     it('username does not reach the minimum size', async () => {
       try {
-        await driverController.create({
-          username: '11111',
-          email: 'teste5@gmail.com',
-          birthday: '2002-12-15',
-          name: 'beltrano'
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
+        const dto = new CreateDriverDto()
+        dto.username = '1234',
+        dto.email = 'teste@gmail.com',
+        dto.birthday = '2002-12-15',
+        dto.name = 'beltrano'
+        await validateOrReject(dto)
+
+      } catch ([err]) {
+        console.log(err.constraints)
+        if (err instanceof ValidationError && err.constraints) {
+        expect(err.constraints.minLength).toEqual('o cpf deve ter 11 caracteres');
+        return;
+        }
       }
       throw new Error()
     })
@@ -196,102 +218,134 @@ describe('DriverController', () => {
   describe('isValidName', () => {
     it('name invalid because is empty', async () => {
       try {
-        await driverController.create({
-          username: '22222222211',
-          email: 'teste5@gmail.com',
-          birthday: '2002-12-15',
-          name: ''
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
+        const dto = new CreateDriverDto()
+        dto.username = '12345678911',
+        dto.email = 'teste@gmail.com',
+        dto.birthday = '2002-12-15',
+        dto.name = ''
+        await validateOrReject(dto)
+
+      } catch ([err]) {
+        console.log(err.constraints)
+        if (err instanceof ValidationError && err.constraints) {
+        expect(err.constraints.isNotEmpty).toEqual('O nome não pode ser vazio');
+        return;
+        }
       }
       throw new Error()
     })
 
     it('name invalid because is blank', async () => {
       try {
-        await driverController.create({
-          username: '22222222211',
-          email: 'teste5@gmail.com',
-          birthday: '2002-12-15',
-          name: '        '
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
+        const dto = new CreateDriverDto()
+        dto.username = '12345678910',
+        dto.email = 'teste@gmail.com',
+        dto.birthday = '2002-12-15',
+        dto.name = '   '
+        await validateOrReject(dto)
+
+      } catch ([err]) {
+        console.log(err.constraints)
+        if (err instanceof ValidationError && err.constraints) {
+        expect(err.constraints.isString).toEqual('O nome deve ser válido');
+        return;
+        }
       }
       throw new Error()
     })
     it('name invalid because contains specials character ', async () => {
       try {
-        await driverController.create({
-          username: '22222222211',
-          email: 'teste1@gmail.com',
-          birthday: '2002-12-15',
-          name: 'beltran@'
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
+        const dto = new CreateDriverDto()
+        dto.username = '12345678910',
+        dto.email = 'teste@gmail.com',
+        dto.birthday = '2002-12-15',
+        dto.name = 't&st&'
+        await validateOrReject(dto)
+
+      } catch ([err]) {
+        console.log(err.constraints)
+        if (err instanceof ValidationError && err.constraints) {
+        expect(err.constraints.isString).toEqual('O nome deve ser válido');
+        return;
+        }
       }
       throw new Error()
     })
     it('name does not reach the minimum size', async () => {
       try {
-        await driverController.create({
-          username: '11111',
-          email: 'teste5@gmail.com',
-          birthday: '2002-12-15',
-          name: 'ana'
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
+        const dto = new CreateDriverDto()
+        dto.username = '12345678910',
+        dto.email = 'teste@gmail.com',
+        dto.birthday = '2002-12-15',
+        dto.name = 'ze'
+        await validateOrReject(dto)
+
+      } catch ([err]) {
+        console.log(err.constraints)
+        if (err instanceof ValidationError && err.constraints) {
+        expect(err.constraints.minLength).toEqual('o nome deve ter mais que 4 caracteres');
+        return;
+        }
       }
       throw new Error()
     })
   })
+
+
+
+  
   describe('isValidBirthday', () => {
     it('birthday invalid because is empty', async () => {
       try {
-        await driverController.create({
-          username: '12345678901',
-          email: 'teste3@gmail.com',
-          birthday: '',
-          name: 'beltrano'
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
+        const dto = new CreateDriverDto()
+        dto.username = '12345678910',
+        dto.email = 'teste@gmail.com',
+        dto.birthday = '',
+        dto.name = 'ciclano '
+        await validateOrReject(dto)
+
+      } catch ([err]) {
+        console.log(err.constraints)
+        if (err instanceof ValidationError && err.constraints) {
+        expect(err.constraints.isNotEmpty).toEqual('A data de nascimento não pode ser vazia');
+        return;
+        }
       }
       throw new Error()
     })
     it('birthday does reach the maximum age permitted', async () => {
       try {
-        await driverController.create({
-          username: '22222222221111111',
-          email: 'teste3@gmail.com',
-          birthday: '1910-12-15',
-          name: 'beltrano velho'
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
+        const dto = new CreateDriverDto()
+        dto.username = '12345678910',
+        dto.email = 'teste@gmail.com',
+        dto.birthday = '1910-01-01',
+        dto.name = 'ciclano '
+        await validateOrReject(dto)
+
+      } catch ([err]) {
+        console.log(err.constraints)
+        if (err instanceof ValidationError && err.constraints) {
+        expect(err.constraints.minDate).toEqual('Data de nascimento não permitida');
+        return;
+        }
       }
       throw new Error()
     })
     it('birthday does not reach the minimum age permitted', async () => {
       try {
-        await driverController.create({
-          username: '11111',
-          email: 'teste5@gmail.com',
-          birthday: '2015-12-15',
-          name: 'beltrano jr'
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
+        const dto = new CreateDriverDto()
+        dto.username = '12345678910',
+        dto.email = 'teste@gmail.com',
+        dto.birthday = '2010-01-01',
+        dto.name = 'ciclano '
+        await validateOrReject(dto)
+
+      } catch ([err]) {
+        console.log(err.constraints)
+        if (err instanceof ValidationError && err.constraints) {
+        expect(err.constraints.maxDate).toEqual('Data de nascimento não permitida');
+        return;
+        }
       }
       throw new Error()
     })
