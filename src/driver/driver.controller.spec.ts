@@ -7,6 +7,9 @@ import {UserType} from 'src/user/entities/user.type.entity'
 import {User} from 'src/user/entities/user.entity'
 import {UserModule} from 'src/user/user.module'
 import {Catch, ConflictException} from '@nestjs/common'
+import { ValidationError, validate, validateOrReject } from 'class-validator'
+import { CreateDriverDto } from './dto/create-driver.dto'
+import assert from 'assert'
 
 describe('DriverController', () => {
   let driverController: DriverController
@@ -65,7 +68,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
     it('email invalid because is empty', async () => {
       try {
@@ -79,7 +82,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
     it('email invalid because not contains @', async () => {
       try {
@@ -93,7 +96,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
     it('email invalid because is blank', async () => {
       try {
@@ -107,21 +110,23 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
     it('email invalid because is specials character invalid ', async () => {
       try {
-        await driverController.create({
-          username: '22222222211',
-          email: '..teste#@gmail.com',
-          birthday: '2002-12-15',
-          name: 'beltrano'
-        })
-      } catch (err) {
-        expect(err).toBeInstanceOf(ConflictException)
-        return
+        const dto = new CreateDriverDto()
+        dto.username = '22222222211',
+        dto.email = '..teste#@gmail.com',
+        dto.birthday = '2002-12-15',
+        dto.name = 'beltrano'
+        await  validateOrReject(dto)
+      } catch ([err]) {
+        if (err instanceof ValidationError && err.constraints) {
+          expect(err.constraints.isEmail).toEqual('Email deve ser um email válido')
+          return
+        }
       }
-      fail()
+      throw new Error()
     })
   })
   describe('isValidUserName', () => {
@@ -143,7 +148,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
     it('username invalid because is empty', async () => {
       try {
@@ -157,7 +162,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
     it('username exceeds maximum length', async () => {
       try {
@@ -171,7 +176,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
     it('username does not reach the minimum size', async () => {
       try {
@@ -185,7 +190,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
   })
   describe('isValidName', () => {
@@ -201,7 +206,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
 
     it('name invalid because is blank', async () => {
@@ -216,7 +221,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
     it('name invalid because contains specials character ', async () => {
       try {
@@ -230,7 +235,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
     it('name does not reach the minimum size', async () => {
       try {
@@ -244,7 +249,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
   })
   describe('isValidBirthday', () => {
@@ -260,7 +265,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
     it('birthday does reach the maximum age permitted', async () => {
       try {
@@ -274,7 +279,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
     it('birthday does not reach the minimum age permitted', async () => {
       try {
@@ -288,7 +293,7 @@ describe('DriverController', () => {
         expect(err).toBeInstanceOf(ConflictException)
         return
       }
-      fail()
+      throw new Error()
     })
   })
 })

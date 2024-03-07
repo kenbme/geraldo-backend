@@ -5,7 +5,7 @@ export class CreateDriverDto {
   username: string
   @IsString()
   name: string
-  @IsEmail()
+  @IsEmail({}, {message: 'Email deve ser um email válido'})
   email: string
   @IsDateString()
   birthday: string
