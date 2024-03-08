@@ -22,17 +22,17 @@ describe('cepController', () => {
   it('should be Monteiro', async () => {
     const res = await cepController.find_address('58500000')
     expect(res).toBeDefined()
-    expect(res).toEqual({estado: 'PB', cidade: 'Monteiro', bairro: '', rua: ''})
+    expect(res).toEqual({state: 'PB', city: 'Monteiro', district: '', street: ''})
   })
 
   it('should be Universitario CG', async () => {
     const res = await cepController.find_address('58429900')
     expect(res).toBeDefined()
     expect(res).toEqual({
-      estado: 'PB',
-      cidade: 'Campina Grande',
-      bairro: 'Universitário',
-      rua: 'Rua Aprígio Veloso'
+      state: 'PB',
+      city: 'Campina Grande',
+      district: 'Universitário',
+      street: 'Rua Aprígio Veloso'
     })
   })
 
