@@ -8,12 +8,14 @@ import {
   MinDate,
   MinLength
 } from 'class-validator'
+import {IsCPF} from 'src/user/validators/IsCPF'
 
 export class CreateDriverDto {
   @IsNotEmpty({message: 'o cpf não pode ser vazio'})
   @IsString({message: 'O cpf deve ser válido'})
   @MaxLength(11, {message: 'o cpf não deve exceder 11 caracteres'})
   @MinLength(11, {message: 'o cpf deve ter 11 caracteres'})
+  @IsCPF()
   username: string
 
   @IsNotEmpty({message: 'O nome não pode ser vazio'})

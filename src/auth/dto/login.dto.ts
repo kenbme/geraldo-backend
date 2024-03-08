@@ -1,5 +1,5 @@
 import {IsString} from 'class-validator'
-import { IsDocument } from '../validators/IsDocument'
+import {IsDocument} from '../validators/IsDocument'
 
 export class LoginDTO {
   @IsDocument()

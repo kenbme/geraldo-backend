@@ -1,8 +1,10 @@
 import {IsString, IsEnum, IsEmail} from 'class-validator'
 import {EstablishmentTypeEnum} from '../enums/establishment-type.enum'
+import {IsCNPJ} from 'src/user/validators/IsCNPJ'
 
 export class CreateEstablishmentDto {
   @IsString()
+  @IsCNPJ()
   username: string
   @IsString()
   name: string
