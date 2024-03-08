@@ -9,6 +9,8 @@ import {JwtModule} from '@nestjs/jwt'
 import {jwtConstants} from './constants'
 import {Repository} from 'typeorm'
 import {UserService} from 'src/user/user.service'
+import { validateOrReject } from 'class-validator'
+import { LoginDTO } from './dto/login.dto'
 
 describe('AuthController', () => {
   let authController: AuthController
@@ -41,6 +43,14 @@ describe('AuthController', () => {
     userService = module.get(UserService)
     userRepository = module.get(getRepositoryToken(User))
     await userRepository.clear()
+    
+    await userService.create({
+      username: '11111111111',
+      email: 'teste22@gmail.com',
+      birthday: '1999-12-25',
+      name: 'Sicrano',
+      userType: 'DRIVER'
+    })
   })
 
   it('should be defined', () => {
@@ -51,7 +61,7 @@ describe('AuthController', () => {
 
   it('should create user and login', async () => {
     const count = await userRepository.count()
-    const user = await userService.create({
+    const data = await userService.create({
       username: '22222222222',
       email: 'teste@gmail.com',
       birthday: '2002-12-24',
@@ -60,12 +70,38 @@ describe('AuthController', () => {
     })
     const newCount = await userRepository.count()
     expect(newCount).toBe(count + 1)
-    expect(user.name).toBe('fulano')
+    expect(data.createdUser.name).toBe('fulano')
 
-    const token = await authController.signIn({
+    const token = await authController.login({
       username: '22222222222',
-      password: 'senhaDificil123!'
+      password: data.randomPassword
     })
     expect(token).toBeDefined()
+  })
+
+  it('it should reject invalid CPF or CNPJ', async () => {
+    try {
+      const dto = new LoginDTO()
+      dto.username = '12322'
+      dto.password = '1233214214'
+      validateOrReject(dto)
+    } catch(err) {
+      return
+    }
+    throw new Error()
+  })
+
+  it('it should accept CPF', async () => {
+    const dto = new LoginDTO()
+    dto.username = '33333333333'
+    dto.password = '1233214214'
+    validateOrReject(dto)
+  })
+
+  it('it should accept CNPJ', async () => {
+    const dto = new LoginDTO()
+    dto.username = '111222333444455'
+    dto.password = '1233214214'
+    validateOrReject(dto)
   })
 })

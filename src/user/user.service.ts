@@ -30,7 +30,7 @@ export class UserService {
     return await hash(password, 10)
   }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<{ createdUser: User; randomPassword: string }> {
     if (await this.usernameExists(createUserDto.username)) {
       throw new ConflictException('Usuário já cadastrado')
     }
@@ -50,7 +50,8 @@ export class UserService {
       newUser.birthday = new Date(createUserDto.birthday)
     }
     newUser.userType = await this.userTypeService.findByName(createUserDto.userType)
-    return await this.userRepository.save(newUser)
+    const createdUser = await this.userRepository.save(newUser)
+    return {createdUser, randomPassword}
   }
 
   async findByUsername(userUsername: string): Promise<User> {
