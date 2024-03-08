@@ -7,7 +7,7 @@ import {UserType} from './entities/user.type.entity'
 import {UserModule} from './user.module'
 import {UserService} from './user.service'
 import {UserTypeService} from './user.type.service'
-import {RecoverPasswordDto} from './dto/recover-password.dto'
+import {RecoverPasswordDto} from './dto/request/recover-password.dto'
 import {validateOrReject} from 'class-validator'
 
 describe('UserController', () => {
