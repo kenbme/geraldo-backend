@@ -14,12 +14,12 @@ import { configDotenv } from 'dotenv'
 import { resolve } from 'path'
 
 describe('AuthController', () => {
+  configDotenv({path: resolve(process.cwd(), '.development.env')})
   let authController: AuthController
   let userRepository: Repository<User>
   let userService: UserService
 
   beforeEach(async () => {
-  configDotenv({path: resolve(process.cwd(), '.development.env')})
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot({
