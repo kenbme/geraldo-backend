@@ -7,10 +7,13 @@ import { UserType } from './entities/user.type.entity';
 import { UserModule } from './user.module';
 import { UserService } from './user.service';
 import { UserTypeService } from './user.type.service';
+import { RecoverPasswordDto } from './dto/recover-password.dto';
+import { validateOrReject } from 'class-validator';
 
 describe('UserController', () => {
   let userController: UserController;
   let userRepository: Repository<User>
+  let userService: UserService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,11 +32,12 @@ describe('UserController', () => {
       providers: [
         UserService,
         UserTypeService,
-        {provide: getRepositoryToken(User), useClass: Repository}
+        { provide: getRepositoryToken(User), useClass: Repository }
       ]
     }).compile();
 
-    userController = module.get<UserController>(UserController);
+    userController = module.get(UserController);
+    userService = module.get(UserService)
     userRepository = module.get(getRepositoryToken(User))
     await userRepository.clear()
   });
@@ -43,71 +47,51 @@ describe('UserController', () => {
   });
 
   it('should create a user and change his password', async () => {
-    const user = await userController.create({
+    const data = await userService.create({
       username: 'user-generico',
-      password: 'usersenha321',
       email: 'teste@gmail.com',
       birthday: '2000-09-10',
       name: 'fulano',
       userType: 'DRIVER'
     })
-
-    expect(user).toBeDefined()
-
-    const recoverPasswordDto = {
-      email: 'teste@gmail.com',
-    };
-  
-    await userController.recoverPassword(recoverPasswordDto, { status: () => ({ send: () => null }) });
-  
-    const updatedUser = await userController.findByUsername('user-generico');
-    expect(updatedUser.password).not.toEqual('usersenha321');
+    expect(data).toBeDefined()
+    const oldPassword = data.createdUser.password
+    await userController.recoverPassword({email: 'teste@gmail.com'})
+    const updatedUser = await userService.findByUsername('user-generico');
+    expect(updatedUser.password).not.toEqual(oldPassword);
   })
 
-  it('should not recover password if email is empty', async () => {
-    const user = await userController.create({
-      username: 'user-generico',
-      password: 'usersenha321',
-      email: 'teste@gmail.com',
-      birthday: '2000-09-10',
-      name: 'fulano',
-      userType: 'DRIVER'
-    })
-
-    expect(user).toBeDefined()
-
-    const recoverPasswordDto = {
-      email: '',
-    };
-  
+  it('should not recover password if email is blank', async () => {
     try {
-      await userController.recoverPassword(recoverPasswordDto, { status: () => ({ send: () => null }) });
-    } catch (error) {
-      expect(error.message).toEqual('Campo Obrigatório');
+      const dto = new RecoverPasswordDto()
+      dto.email = '       '
+      await validateOrReject(dto)
+    } catch([err]) {
+      expect(err.constraints.isEmail).toEqual('Formato inválido')
+      return 
     }
-})
-
-it('should not recover password if email does not exist', async () => {
-  const user = await userController.create({
-    username: 'user-generico',
-    password: 'usersenha321',
-    email: 'teste@gmail.com',
-    birthday: '2000-09-10',
-    name: 'fulano',
-    userType: 'DRIVER'
+    throw new Error()
   })
 
-  expect(user).toBeDefined()
+  it('should not recover password if email is invalid', async () => {
+    try {
+      const dto = new RecoverPasswordDto()
+      dto.email = 'asdasd'
+      await validateOrReject(dto)
+    } catch([err]) {
+      expect(err.constraints.isEmail).toEqual('Formato inválido')
+      return 
+    }
+    throw new Error()
+  })
 
-  const recoverPasswordDto = {
-    email: 'emailnaoexistente@gmail.com',
-  };
-
-  try {
-    await userController.recoverPassword(recoverPasswordDto, { status: () => ({ send: () => null }) });
-  } catch (error) {
-    expect(error.message).toEqual('Usuário ou email incorretos');
-  }
-})
-
+  it('should not recover password if email does not exist', async () => {
+    try {
+      await userController.recoverPassword({email: 'emailnaoexistente@gmail.com'});
+    } catch (error) {
+      expect(error.message).toEqual('Usuário Inválido');
+      return
+    }
+    throw new Error()
+  })
 });

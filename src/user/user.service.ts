@@ -1,4 +1,4 @@
-import {ConflictException, Injectable, NotFoundException} from '@nestjs/common'
+import {ConflictException, Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {hash} from 'bcrypt'
 import {randomUUID} from 'crypto'
@@ -42,8 +42,8 @@ export class UserService {
     newUser.username = createUserDto.username
     // TODO randomPassword deve ser enviada para email
     const randomPassword = Math.random().toString().split('0.')[1]
-    console.log(randomPassword)
     newUser.password = await this.encryptPassword(randomPassword)
+    console.log(randomPassword);
     newUser.name = createUserDto.name
     newUser.email = createUserDto.email
     if (createUserDto.birthday) {
@@ -59,23 +59,16 @@ export class UserService {
   }
 
   async recoverPassword(recoverPasswordDto: RecoverPasswordDto): Promise<string> {
-    const { email } = recoverPasswordDto;
-
-    if (!email) {
-      throw new Error('Campo Obrigatório');
-    }
-
-    const user = await this.userRepository.findOneBy({ email: email });
-
+    const user = await this.userRepository.findOneBy({ email: recoverPasswordDto.email });
     if (!user) {
-      throw new NotFoundException('Usuário ou email incorretos');
+      throw new UnauthorizedException('Usuário Inválido');
     }
-
-    const newPassword = Math.random().toString(36).slice(-8); // random 8 character password
-
-    user.password = await this.encryptPassword(newPassword); 
+    // TODO randomPassword deve ser enviada para email
+    const randomPassword = Math.random().toString().split('0.')[1]
+    console.log(randomPassword);
+    user.password = await this.encryptPassword(randomPassword); 
+    user.resetPassword = true
     await this.userRepository.save(user);
-
-    return newPassword;
-  } 
+    return randomPassword;
+  }
 }
