@@ -1,11 +1,11 @@
-import { ConflictException, Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { hash } from 'bcrypt'
-import { randomUUID } from 'crypto'
-import { Repository } from 'typeorm'
-import { CreateUserDto } from './dto/create-user.dto'
-import { User } from './entities/user.entity'
-import { UserTypeService } from './user.type.service'
+import {ConflictException, Injectable} from '@nestjs/common'
+import {InjectRepository} from '@nestjs/typeorm'
+import {hash} from 'bcrypt'
+import {randomUUID} from 'crypto'
+import {Repository} from 'typeorm'
+import {CreateUserDto} from './dto/create-user.dto'
+import {User} from './entities/user.entity'
+import {UserTypeService} from './user.type.service'
 
 @Injectable()
 export class UserService {
@@ -13,15 +13,15 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly userTypeService: UserTypeService
-  ) { }
+  ) {}
 
   private async emailExists(email: string): Promise<boolean> {
-    const user = await this.userRepository.findOneBy({ email: email })
+    const user = await this.userRepository.findOneBy({email: email})
     return user !== null
   }
 
   private async usernameExists(username: string): Promise<boolean> {
-    const user = await this.userRepository.findOneBy({ username: username })
+    const user = await this.userRepository.findOneBy({username: username})
     return user !== null
   }
 
@@ -53,6 +53,6 @@ export class UserService {
   }
 
   async findByUsername(userUsername: string): Promise<User> {
-    return await this.userRepository.findOneByOrFail({ username: userUsername })
+    return await this.userRepository.findOneByOrFail({username: userUsername})
   }
 }
