@@ -1,3 +1,3 @@
 export class LoginResponseDTO {
-    access_token: string
+  access_token: string
 }

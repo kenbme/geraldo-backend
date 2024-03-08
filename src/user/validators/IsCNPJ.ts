@@ -1,7 +1,7 @@
 import {ValidationArguments, ValidationOptions, registerDecorator} from 'class-validator'
 
 export function IsCNPJ(validationOptions?: ValidationOptions) {
-  return function (object: any, propertyName: string) {
+  return function (object: any, propertyName: string): void {
     registerDecorator({
       name: 'IsCNPJ',
       target: object.constructor,
@@ -19,7 +19,7 @@ export function IsCNPJ(validationOptions?: ValidationOptions) {
   }
 }
 
-export const validateCNPJ = (value: any) => {
+export const validateCNPJ = (value: any): boolean => {
   if (typeof value !== 'string') {
     return false
   }

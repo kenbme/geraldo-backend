@@ -19,7 +19,7 @@ export function IsCPF(validationOptions?: ValidationOptions): PropertyDecorator 
   }
 }
 
-export const validateCPF = (value: any) => {
+export const validateCPF = (value: any): boolean => {
   if (typeof value !== 'string') {
     return false
   }

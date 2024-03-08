@@ -2,7 +2,7 @@ import {ArgumentsHost, BadRequestException, Catch, ExceptionFilter} from '@nestj
 
 @Catch(BadRequestException)
 export class BadRequestExceptionFilter implements ExceptionFilter {
-  catch(exception: BadRequestException, host: ArgumentsHost) {
+  catch(exception: BadRequestException, host: ArgumentsHost): void {
     const context = host.switchToHttp()
     const response = context.getResponse()
 
