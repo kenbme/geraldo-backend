@@ -79,12 +79,12 @@ describe('AuthController', () => {
     expect(token).toBeDefined()
   })
 
-  it('it should reject invalid CPF or CNPJ', async () => {
+  it('it should reject invalid Document', async () => {
     try {
       const dto = new LoginDTO()
       dto.username = '12322'
       dto.password = '1233214214'
-      validateOrReject(dto)
+      await validateOrReject(dto)
     } catch (err) {
       return
     }
