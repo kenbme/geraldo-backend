@@ -1,14 +1,15 @@
-import {Test, TestingModule} from '@nestjs/testing'
-import {UserController} from './user.controller'
-import {Repository} from 'typeorm'
-import {User} from './entities/user.entity'
-import {TypeOrmModule, getRepositoryToken} from '@nestjs/typeorm'
-import {UserType} from './entities/user.type.entity'
-import {UserModule} from './user.module'
-import {UserService} from './user.service'
-import {UserTypeService} from './user.type.service'
-import {RecoverPasswordDto} from './dto/request/recover-password.dto'
-import {validateOrReject} from 'class-validator'
+import { Test, TestingModule } from '@nestjs/testing'
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm'
+import { validateOrReject } from 'class-validator'
+import { LoginDTO } from 'src/auth/dto/login.dto'
+import { Repository } from 'typeorm'
+import { RecoverPasswordDto } from './dto/request/recover-password.dto'
+import { User } from './entities/user.entity'
+import { UserType } from './entities/user.type.entity'
+import { UserController } from './user.controller'
+import { UserModule } from './user.module'
+import { UserService } from './user.service'
+import { UserTypeService } from './user.type.service'
 
 describe('UserController', () => {
   let userController: UserController
@@ -93,5 +94,11 @@ describe('UserController', () => {
       return
     }
     throw new Error()
+  })
+  it('it should accept CNPJ', async () => {
+    const dto = new LoginDTO()
+    dto.username = '128212197000141'
+    dto.password = 'umaSenhaQualquer32!'
+    await validateOrReject(dto)
   })
 })
