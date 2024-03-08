@@ -1,4 +1,4 @@
-import {ValidationArguments, ValidationOptions, registerDecorator} from 'class-validator'
+import {ValidationOptions, registerDecorator} from 'class-validator'
 import {validateCNPJ} from 'src/user/validators/IsCNPJ'
 import {validateCPF} from 'src/user/validators/IsCPF'
 
@@ -10,7 +10,7 @@ export function IsDocument(validationOptions?: ValidationOptions): PropertyDecor
       propertyName: propertyName,
       options: validationOptions,
       validator: {
-        validate(value: any, args: ValidationArguments) {
+        validate(value: any) {
           return validateDocument(value)
         },
         defaultMessage: () => {

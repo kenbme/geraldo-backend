@@ -1,4 +1,4 @@
-import {ValidationArguments, ValidationOptions, registerDecorator} from 'class-validator'
+import {ValidationOptions, registerDecorator} from 'class-validator'
 
 export function IsCNPJ(validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string): void {
@@ -8,7 +8,7 @@ export function IsCNPJ(validationOptions?: ValidationOptions) {
       propertyName: propertyName,
       options: validationOptions,
       validator: {
-        validate(value: any, args: ValidationArguments) {
+        validate(value: any) {
           return validateCNPJ(value)
         },
         defaultMessage: () => {
@@ -20,8 +20,8 @@ export function IsCNPJ(validationOptions?: ValidationOptions) {
 }
 
 export const validateCNPJ = (value: any): boolean => {
-  console.log("aaa");
-  
+  console.log('aaa')
+
   if (typeof value !== 'string') {
     return false
   }

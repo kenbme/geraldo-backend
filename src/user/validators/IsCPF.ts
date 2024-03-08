@@ -1,4 +1,4 @@
-import {ValidationArguments, ValidationOptions, registerDecorator} from 'class-validator'
+import {ValidationOptions, registerDecorator} from 'class-validator'
 
 export function IsCPF(validationOptions?: ValidationOptions): PropertyDecorator {
   return function (object: Object, propertyName: string) {
@@ -8,7 +8,7 @@ export function IsCPF(validationOptions?: ValidationOptions): PropertyDecorator 
       propertyName: propertyName,
       options: validationOptions,
       validator: {
-        validate(value: any, args: ValidationArguments) {
+        validate(value: any) {
           return validateCPF(value)
         },
         defaultMessage: () => {
