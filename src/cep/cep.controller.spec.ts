@@ -22,13 +22,13 @@ describe('cepController', () => {
   it('should be Monteiro', async () => {
     const res = await cepController.find_address('58500000')
     expect(res).toBeDefined()
-    expect(res).toEqual({state: 'PB', city: 'Monteiro', district: '', street: ''})
+    expect(res.data).toEqual({state: 'PB', city: 'Monteiro', district: '', street: ''})
   })
 
   it('should be Universitario CG', async () => {
     const res = await cepController.find_address('58429900')
     expect(res).toBeDefined()
-    expect(res).toEqual({
+    expect(res.data).toEqual({
       state: 'PB',
       city: 'Campina Grande',
       district: 'Universitário',
