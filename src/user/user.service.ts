@@ -1,12 +1,13 @@
-import {ConflictException, Injectable} from '@nestjs/common'
-import {CreateUserDto} from './dto/create-user.dto'
-import {UpdateUserDto} from './dto/update-user.dto'
-import {InjectRepository} from '@nestjs/typeorm'
-import {User} from './entities/user.entity'
-import {Repository} from 'typeorm'
-import {hash} from 'bcrypt'
-import {randomUUID} from 'crypto'
-import {UserTypeService} from './user.type.service'
+/* eslint-disable prettier/prettier */
+import { ConflictException, Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { hash } from 'bcrypt'
+import { randomUUID } from 'crypto'
+import { Repository } from 'typeorm'
+import { CreateUserDto } from './dto/create-user.dto'
+import { UpdateUserDto } from './dto/update-user.dto'
+import { User } from './entities/user.entity'
+import { UserTypeService } from './user.type.service'
 
 @Injectable()
 export class UserService {
@@ -57,6 +58,10 @@ export class UserService {
 
   async findOne(userId: number): Promise<User> {
     return await this.userRepository.findOneByOrFail({id: userId})
+  }
+
+  async findByUsername(userUsername: string): Promise<User> {
+    return await this.userRepository.findOneByOrFail({username: userUsername})
   }
 
   async update(userId: number, updateUserDto: UpdateUserDto): Promise<User> {
