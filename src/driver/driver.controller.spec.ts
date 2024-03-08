@@ -8,7 +8,7 @@ import {User} from 'src/user/entities/user.entity'
 import {UserModule} from 'src/user/user.module'
 import {ConflictException} from '@nestjs/common'
 import {ValidationError, validateOrReject} from 'class-validator'
-import {CreateDriverDto} from './dto/create-driver.dto'
+import {CreateDriverDto} from './dto/request/create-driver.dto'
 
 describe('DriverController', () => {
   let driverController: DriverController
