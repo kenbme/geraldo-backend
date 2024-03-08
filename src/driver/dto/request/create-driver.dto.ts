@@ -29,7 +29,7 @@ export class CreateDriverDto {
 
   @IsNotEmpty({message: 'A data de nascimento não pode ser vazia'})
   @IsDateString({}, {message: 'A data de nascimento deve estar em um formato válido'})
-  @MaxDate(new Date(2006), {message: 'Data de nascimento não permitida'})
-  @MinDate(new Date(1923), {message: 'Data de nascimento não permitida'})
+  @MaxDate(new Date(2006, 3), {message: 'Data de nascimento não permitida'})
+  @MinDate(new Date(1923, 3), {message: 'Data de nascimento não permitida'})
   birthday: string
 }
