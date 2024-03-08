@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common'
-import {CreateEstablishmentDto} from './dto/create-establishment.dto'
+import {CreateEstablishmentDto} from './dto/request/create-establishment.dto'
 import {InjectRepository} from '@nestjs/typeorm'
 import {randomUUID} from 'crypto'
 import {UserService} from 'src/user/user.service'
