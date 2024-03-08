@@ -13,8 +13,10 @@ import {LoginDTO} from './dto/login.dto'
 import { configDotenv } from 'dotenv'
 import { resolve } from 'path'
 
+
+configDotenv({path: resolve(process.cwd(), '.development.env')})
+
 describe('AuthController', () => {
-  configDotenv({path: resolve(process.cwd(), '.development.env')})
   let authController: AuthController
   let userRepository: Repository<User>
   let userService: UserService
