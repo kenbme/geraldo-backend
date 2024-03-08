@@ -9,8 +9,8 @@ import {JwtModule} from '@nestjs/jwt'
 import {jwtConstants} from './constants'
 import {Repository} from 'typeorm'
 import {UserService} from 'src/user/user.service'
-import { validateOrReject } from 'class-validator'
-import { LoginDTO } from './dto/login.dto'
+import {validateOrReject} from 'class-validator'
+import {LoginDTO} from './dto/login.dto'
 
 describe('AuthController', () => {
   let authController: AuthController
@@ -43,7 +43,7 @@ describe('AuthController', () => {
     userService = module.get(UserService)
     userRepository = module.get(getRepositoryToken(User))
     await userRepository.clear()
-    
+
     await userService.create({
       username: '11111111111',
       email: 'teste22@gmail.com',
@@ -85,7 +85,7 @@ describe('AuthController', () => {
       dto.username = '12322'
       dto.password = '1233214214'
       validateOrReject(dto)
-    } catch(err) {
+    } catch (err) {
       return
     }
     throw new Error()

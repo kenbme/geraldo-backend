@@ -1,4 +1,4 @@
-import {ConflictException, Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common'
+import {ConflictException, Injectable, UnauthorizedException} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {hash} from 'bcrypt'
 import {randomUUID} from 'crypto'
@@ -6,7 +6,7 @@ import {Repository} from 'typeorm'
 import {CreateUserDto} from './dto/create-user.dto'
 import {User} from './entities/user.entity'
 import {UserTypeService} from './user.type.service'
-import { RecoverPasswordDto } from './dto/recover-password.dto';
+import {RecoverPasswordDto} from './dto/recover-password.dto'
 
 @Injectable()
 export class UserService {
@@ -30,7 +30,7 @@ export class UserService {
     return await hash(password, 10)
   }
 
-  async create(createUserDto: CreateUserDto): Promise<{ createdUser: User; randomPassword: string }> {
+  async create(createUserDto: CreateUserDto): Promise<{createdUser: User; randomPassword: string}> {
     if (await this.usernameExists(createUserDto.username)) {
       throw new ConflictException('Usuário já cadastrado')
     }
@@ -43,7 +43,7 @@ export class UserService {
     // TODO randomPassword deve ser enviada para email
     const randomPassword = Math.random().toString().split('0.')[1]
     newUser.password = await this.encryptPassword(randomPassword)
-    console.log(randomPassword);
+    console.log(randomPassword)
     newUser.name = createUserDto.name
     newUser.email = createUserDto.email
     if (createUserDto.birthday) {
@@ -59,16 +59,16 @@ export class UserService {
   }
 
   async recoverPassword(recoverPasswordDto: RecoverPasswordDto): Promise<string> {
-    const user = await this.userRepository.findOneBy({ email: recoverPasswordDto.email });
+    const user = await this.userRepository.findOneBy({email: recoverPasswordDto.email})
     if (!user) {
-      throw new UnauthorizedException('Usuário Inválido');
+      throw new UnauthorizedException('Usuário Inválido')
     }
     // TODO randomPassword deve ser enviada para email
     const randomPassword = Math.random().toString().split('0.')[1]
-    console.log(randomPassword);
-    user.password = await this.encryptPassword(randomPassword); 
+    console.log(randomPassword)
+    user.password = await this.encryptPassword(randomPassword)
     user.resetPassword = true
-    await this.userRepository.save(user);
-    return randomPassword;
+    await this.userRepository.save(user)
+    return randomPassword
   }
 }

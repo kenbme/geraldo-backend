@@ -1,5 +1,5 @@
-import { IsString, ValidationArguments, ValidationOptions, registerDecorator } from 'class-validator'
-import { User } from 'src/user/entities/user.entity'
+import {IsString, ValidationArguments, ValidationOptions, registerDecorator} from 'class-validator'
+import {User} from 'src/user/entities/user.entity'
 
 export class LoginDTO {
   @IsString()

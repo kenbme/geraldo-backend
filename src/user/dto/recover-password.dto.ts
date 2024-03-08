@@ -1,6 +1,6 @@
-import { IsEmail } from 'class-validator';
+import {IsEmail} from 'class-validator'
 
 export class RecoverPasswordDto {
-  @IsEmail({}, { message: 'Formato inválido' })
-  email: string;
+  @IsEmail({}, {message: 'Formato inválido'})
+  email: string
 }

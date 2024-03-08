@@ -1,17 +1,17 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from './user.controller';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
-import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
-import { UserType } from './entities/user.type.entity';
-import { UserModule } from './user.module';
-import { UserService } from './user.service';
-import { UserTypeService } from './user.type.service';
-import { RecoverPasswordDto } from './dto/recover-password.dto';
-import { validateOrReject } from 'class-validator';
+import {Test, TestingModule} from '@nestjs/testing'
+import {UserController} from './user.controller'
+import {Repository} from 'typeorm'
+import {User} from './entities/user.entity'
+import {TypeOrmModule, getRepositoryToken} from '@nestjs/typeorm'
+import {UserType} from './entities/user.type.entity'
+import {UserModule} from './user.module'
+import {UserService} from './user.service'
+import {UserTypeService} from './user.type.service'
+import {RecoverPasswordDto} from './dto/recover-password.dto'
+import {validateOrReject} from 'class-validator'
 
 describe('UserController', () => {
-  let userController: UserController;
+  let userController: UserController
   let userRepository: Repository<User>
   let userService: UserService
 
@@ -32,19 +32,19 @@ describe('UserController', () => {
       providers: [
         UserService,
         UserTypeService,
-        { provide: getRepositoryToken(User), useClass: Repository }
+        {provide: getRepositoryToken(User), useClass: Repository}
       ]
-    }).compile();
+    }).compile()
 
-    userController = module.get(UserController);
+    userController = module.get(UserController)
     userService = module.get(UserService)
     userRepository = module.get(getRepositoryToken(User))
     await userRepository.clear()
-  });
+  })
 
   it('should be defined', () => {
-    expect(userController).toBeDefined();
-  });
+    expect(userController).toBeDefined()
+  })
 
   it('should create a user and change his password', async () => {
     const data = await userService.create({
@@ -57,8 +57,8 @@ describe('UserController', () => {
     expect(data).toBeDefined()
     const oldPassword = data.createdUser.password
     await userController.recoverPassword({email: 'teste@gmail.com'})
-    const updatedUser = await userService.findByUsername('user-generico');
-    expect(updatedUser.password).not.toEqual(oldPassword);
+    const updatedUser = await userService.findByUsername('user-generico')
+    expect(updatedUser.password).not.toEqual(oldPassword)
   })
 
   it('should not recover password if email is blank', async () => {
@@ -66,9 +66,9 @@ describe('UserController', () => {
       const dto = new RecoverPasswordDto()
       dto.email = '       '
       await validateOrReject(dto)
-    } catch([err]) {
+    } catch ([err]) {
       expect(err.constraints.isEmail).toEqual('Formato inválido')
-      return 
+      return
     }
     throw new Error()
   })
@@ -78,20 +78,20 @@ describe('UserController', () => {
       const dto = new RecoverPasswordDto()
       dto.email = 'asdasd'
       await validateOrReject(dto)
-    } catch([err]) {
+    } catch ([err]) {
       expect(err.constraints.isEmail).toEqual('Formato inválido')
-      return 
+      return
     }
     throw new Error()
   })
 
   it('should not recover password if email does not exist', async () => {
     try {
-      await userController.recoverPassword({email: 'emailnaoexistente@gmail.com'});
+      await userController.recoverPassword({email: 'emailnaoexistente@gmail.com'})
     } catch (error) {
-      expect(error.message).toEqual('Usuário Inválido');
+      expect(error.message).toEqual('Usuário Inválido')
       return
     }
     throw new Error()
   })
-});
+})
