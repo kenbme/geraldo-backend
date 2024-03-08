@@ -8,7 +8,8 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  login(@Body() loginDto: LoginDTO) {
-    return this.authService.login(loginDto.username, loginDto.password)
+  async login(@Body() loginDto: LoginDTO) {
+    const data = await this.authService.login(loginDto.username, loginDto.password)
+    return {data, message: "Login feito com sucesso"}
   }
 }

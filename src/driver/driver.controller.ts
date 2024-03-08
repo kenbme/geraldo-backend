@@ -7,7 +7,8 @@ export class DriverController {
   constructor(private readonly driverService: DriverService) {}
 
   @Post('/driver_register')
-  create(@Body() createDriverDto: CreateDriverDto) {
-    return this.driverService.create(createDriverDto)
+  async create(@Body() createDriverDto: CreateDriverDto) {
+    const data = await this.driverService.create(createDriverDto)
+    return {data, message: 'Motorista cadastrado com sucesso'}
   }
 }

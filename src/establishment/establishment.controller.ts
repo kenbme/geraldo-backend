@@ -7,7 +7,8 @@ export class EstablishmentController {
   constructor(private readonly establishmentService: EstablishmentService) {}
 
   @Post('/establishment_register')
-  create(@Body() createEstablishmentDto: CreateEstablishmentDto) {
-    return this.establishmentService.create(createEstablishmentDto)
+  async create(@Body() createEstablishmentDto: CreateEstablishmentDto) {
+    const data = await this.establishmentService.create(createEstablishmentDto)
+    return {data, response: "Estabelecimento cadastrado com sucesso"}
   }
 }
