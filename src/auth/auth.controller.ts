@@ -9,9 +9,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Body() loginDto: LoginDTO) {
-    console.log(process.env.JWT_SECRET_KEY);
     const data = await this.authService.login(loginDto.username, loginDto.password)
-    
     return {data, message: "Login feito com sucesso"}
   }
 }
