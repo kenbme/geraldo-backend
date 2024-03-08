@@ -1,5 +1,5 @@
 import {BadRequestException, Injectable, NotFoundException} from '@nestjs/common'
-import {AddressDto} from './dto/address.dto'
+import {AddressDto} from './dto/response/address.dto'
 import axios from 'axios'
 
 @Injectable()
