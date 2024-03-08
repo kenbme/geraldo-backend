@@ -25,13 +25,13 @@ export class EstablishmentService {
     establishment.areaCode = createEstablishmentDto.areaCode
     establishment.phone = createEstablishmentDto.phone
 
-    const user = await this.userService.create({
+    const dataUser = await this.userService.create({
       email: createEstablishmentDto.email,
       name: createEstablishmentDto.name,
       username: createEstablishmentDto.username,
       userType: 'ESTABLISHMENT'
     })
-    establishment.user = user
+    establishment.user = dataUser.createdUser
     // TODO FALTA CRIAR ADRESSES STATES E CITIES
     return this.establishmentRepository.save(establishment)
   }

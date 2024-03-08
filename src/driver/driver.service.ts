@@ -15,7 +15,7 @@ export class DriverService {
   ) {}
 
   async create(createDriverDto: CreateDriverDto): Promise<Driver> {
-    const user = await this.userService.create({
+    const data = await this.userService.create({
       birthday: createDriverDto.birthday,
       email: createDriverDto.email,
       name: createDriverDto.name,
@@ -24,7 +24,7 @@ export class DriverService {
     })
     const driver = new Driver()
     driver.uuid = randomUUID()
-    driver.user = user
+    driver.user = data.createdUser
     return this.driverRepository.save(driver)
   }
 }
