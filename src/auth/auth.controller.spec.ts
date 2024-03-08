@@ -6,7 +6,6 @@ import {AuthService} from './auth.service'
 import {User} from 'src/user/entities/user.entity'
 import {UserType} from 'src/user/entities/user.type.entity'
 import {JwtModule} from '@nestjs/jwt'
-import {jwtConstants} from './constants'
 import {Repository} from 'typeorm'
 import {UserService} from 'src/user/user.service'
 import {validateOrReject} from 'class-validator'
@@ -30,7 +29,7 @@ describe('AuthController', () => {
         TypeOrmModule.forFeature([User]),
         JwtModule.register({
           global: true,
-          secret: jwtConstants.secret,
+          secret: process.env.JWT_SECRET_KEY,
           signOptions: {expiresIn: '60s'}
         }),
         UserModule
@@ -93,15 +92,15 @@ describe('AuthController', () => {
 
   it('it should accept CPF', async () => {
     const dto = new LoginDTO()
-    dto.username = '33333333333'
-    dto.password = '1233214214'
-    validateOrReject(dto)
+    dto.username = '69158251006'
+    dto.password = 'senhablablabla2232!'
+    await validateOrReject(dto)
   })
 
   it('it should accept CNPJ', async () => {
     const dto = new LoginDTO()
-    dto.username = '111222333444455'
-    dto.password = '1233214214'
-    validateOrReject(dto)
+    dto.username = '28212197000141'
+    dto.password = 'umaSenhaQualquer32!'
+    await validateOrReject(dto)
   })
 })

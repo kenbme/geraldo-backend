@@ -22,12 +22,5 @@ export function IsDocument(validationOptions?: ValidationOptions): PropertyDecor
 }
 
 export const validateDocument = (value: any): boolean => {
-  let res = false
-  if (validateCPF(value)) {
-    res = true
-  }
-  if (validateCNPJ(value)) {
-    res = true
-  }
-  return res
+  return validateCPF(value) || validateCNPJ(value)
 }

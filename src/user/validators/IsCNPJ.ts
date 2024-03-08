@@ -20,6 +20,8 @@ export function IsCNPJ(validationOptions?: ValidationOptions) {
 }
 
 export const validateCNPJ = (value: any): boolean => {
+  console.log("aaa");
+  
   if (typeof value !== 'string') {
     return false
   }
