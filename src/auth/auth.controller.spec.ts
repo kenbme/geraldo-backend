@@ -10,6 +10,8 @@ import {Repository} from 'typeorm'
 import {UserService} from 'src/user/user.service'
 import {validateOrReject} from 'class-validator'
 import {LoginDTO} from './dto/login.dto'
+import { configDotenv } from 'dotenv'
+import { resolve } from 'path'
 
 describe('AuthController', () => {
   let authController: AuthController
@@ -17,6 +19,7 @@ describe('AuthController', () => {
   let userService: UserService
 
   beforeEach(async () => {
+  configDotenv({path: resolve(process.cwd(), '.development.env')})
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot({
