@@ -8,6 +8,8 @@ import {Establishment} from './establishment/entities/establishment.entity'
 import {UserType} from './user/entities/user.type.entity'
 import {EstablishmentType} from './establishment/entities/establishment.type.entity'
 import {CepModule} from './cep/cep.module'
+import { DriverModule } from './driver/driver.module'
+import { EstablishmentModule } from './establishment/establishment.module'
 
 @Module({
   imports: [
@@ -19,7 +21,9 @@ import {CepModule} from './cep/cep.module'
     }),
     UserModule,
     AuthModule,
-    CepModule
+    CepModule,
+    DriverModule,
+    EstablishmentModule
   ]
 })
 export class AppModule {}
