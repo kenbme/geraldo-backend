@@ -24,7 +24,7 @@ export const validateCNPJ = (value: any): boolean => {
   if (typeof value !== 'string') {
     return false
   }
-  if (value.length != 14) {
+  if (value.length != 14 || sameDigits(value)) {
     return false
   }
   let produto1 = 0
@@ -52,6 +52,15 @@ export const validateCNPJ = (value: any): boolean => {
   }
   if (digito1 !== valorD1 || digito2 !== valorD2) {
     return false
+  }
+  return true
+}
+function sameDigits(value: string): boolean {
+  const firstChar = value.charAt(0)
+  for (let j = 1; j < value.length; j++) {
+    if (value.charAt(j) !== firstChar) {
+      return false
+    }
   }
   return true
 }

@@ -108,4 +108,59 @@ describe('AuthController', () => {
     dto.password = 'umaSenhaQualquer32!'
     await validateOrReject(dto)
   })
+
+  it('it should reject invalid CNPJ', async () => {
+    try {
+      const dto = new LoginDTO()
+      dto.username = '28212197000140'
+      dto.password = '1233214214'
+      await validateOrReject(dto)
+    } catch (err) {
+      return
+    }
+    throw new Error()
+  })
+
+  it('it should reject invalid CNPJ', async () => {
+    try {
+      const dto = new LoginDTO()
+      dto.username = '00000000000000'
+      dto.password = '1233214214'
+      await validateOrReject(dto)
+    } catch (err) {
+      return
+    }
+    throw new Error()
+  })
+
+  it('it should reject invalid CPF', async () => {
+    try {
+      const dto = new LoginDTO()
+      dto.username = '11137419430'
+      dto.password = '1233214214'
+      await validateOrReject(dto)
+    } catch (err) {
+      return
+    }
+    throw new Error()
+  })
+
+  it('it should accept CPF', async () => {
+    const dto = new LoginDTO()
+    dto.username = '10137419430'
+    dto.password = 'senhablablabla2232!'
+    await validateOrReject(dto)
+  })
+
+  it('it should reject invalid CPF', async () => {
+    try {
+      const dto = new LoginDTO()
+      dto.username = '00000000000'
+      dto.password = '1233214214'
+      await validateOrReject(dto)
+    } catch (err) {
+      return
+    }
+    throw new Error()
+  })
 })
