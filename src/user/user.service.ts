@@ -1,4 +1,4 @@
-import {ConflictException, Injectable, UnauthorizedException} from '@nestjs/common'
+import {BadRequestException, ConflictException, Injectable, UnauthorizedException} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {hash} from 'bcrypt'
 import {randomUUID} from 'crypto'
@@ -61,7 +61,7 @@ export class UserService {
   async recoverPassword(recoverPasswordDto: RecoverPasswordDto): Promise<string> {
     const user = await this.userRepository.findOneBy({email: recoverPasswordDto.email})
     if (!user) {
-      throw new UnauthorizedException('Usuário Inválido')
+      throw new BadRequestException('Usuário Inválido')
     }
     // TODO randomPassword deve ser enviada para email
     const randomPassword = Math.random().toString().split('0.')[1]

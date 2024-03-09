@@ -10,8 +10,8 @@ export class UserController {
   @HttpCode(200)
   async recoverPassword(
     @Body() recoverPasswordDTO: RecoverPasswordDto
-  ): Promise<{message: string}> {
+  ): Promise<{message: string, data: Object}> {
     await this.userService.recoverPassword(recoverPasswordDTO)
-    return {message: 'Uma senha temporária foi enviada para o seu email'}
+    return {message: 'Uma senha temporária foi enviada para o seu email', data:{}}
   }
 }
