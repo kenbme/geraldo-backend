@@ -236,7 +236,7 @@ describe('DriverController', () => {
         if (err instanceof ValidationError && err.constraints) {
           console.log(err.constraints.minLength)
 
-          expect(err.constraints.isNotEmpty).toEqual('O nome não pode ser vazio')
+          expect(err.constraints.noWhiteSpace).toEqual('O nome não pode estar em branco')
           return
         }
       }
@@ -252,7 +252,9 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.isString).toEqual('O nome deve ser válido')
+          expect(err.constraints.noContainsSpecialCharacter).toEqual(
+            'O nome não pode conter caracteres especiais'
+          )
           return
         }
       }
@@ -303,7 +305,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.minDate).toEqual('Data de nascimento não permitida')
+          expect(err.constraints.validerData).toEqual('Data de nascimento não permitida')
           return
         }
       }
@@ -319,7 +321,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.maxDate).toEqual('Data de nascimento não permitida')
+          expect(err.constraints.validerData).toEqual('Data de nascimento não permitida')
           return
         }
       }
