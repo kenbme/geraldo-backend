@@ -9,4 +9,6 @@ export class AddressDto {
   district: string
   @IsString()
   street: string
+  @IsString()
+  uf: string
 }

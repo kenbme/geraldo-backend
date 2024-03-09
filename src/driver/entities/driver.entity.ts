@@ -11,4 +11,5 @@ export class Driver {
   @OneToOne(() => User)
   @JoinColumn()
   user: User
+  
 }

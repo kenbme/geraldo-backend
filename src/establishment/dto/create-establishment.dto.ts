@@ -20,4 +20,6 @@ export class CreateEstablishmentDto {
   postalCode: string
   @IsString()
   houseNumber: string
+  @IsString()
+  street: string
 }
