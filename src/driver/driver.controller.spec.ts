@@ -230,11 +230,13 @@ describe('DriverController', () => {
         dto.username = '10137419430'
         dto.email = 'teste@gmail.com'
         dto.birthday = '2002-12-15'
-        dto.name = '   '
+        dto.name = '        '
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.isString).toEqual('O nome deve ser válido')
+          console.log(err.constraints.minLength)
+
+          expect(err.constraints.isNotEmpty).toEqual('O nome não pode ser vazio')
           return
         }
       }
