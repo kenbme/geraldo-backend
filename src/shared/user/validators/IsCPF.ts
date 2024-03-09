@@ -20,10 +20,7 @@ export function IsCPF(validationOptions?: ValidationOptions): PropertyDecorator 
 }
 
 export const validateCPF = (value: any): boolean => {
-  if (typeof value !== 'string') {
-    return false
-  }
-  if (value.length !== 11 || sameDigits(value)) {
+  if (!value || typeof value !== 'string' || value.length !== 11 || sameDigits(value)) {
     return false
   }
   let produto1 = 0
