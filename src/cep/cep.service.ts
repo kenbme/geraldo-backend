@@ -20,7 +20,7 @@ export class CepService {
       state: response.data.uf,
       city: response.data.localidade,
       district: response.data.bairro,
-      street: response.data.logradouro
+      address: response.data.logradouro
     }
     return addressDto
   }
