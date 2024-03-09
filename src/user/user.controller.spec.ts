@@ -48,7 +48,7 @@ describe('UserController', () => {
 
   it('should create a user and change his password', async () => {
     const data = await userService.create({
-      username: 'user-generico',
+      username: '10137419430',
       email: 'teste@gmail.com',
       birthday: '2000-09-10',
       name: 'fulano',
@@ -57,7 +57,7 @@ describe('UserController', () => {
     expect(data).toBeDefined()
     const oldPassword = data.createdUser.password
     await userController.recoverPassword({email: 'teste@gmail.com'})
-    const updatedUser = await userService.findByUsername('user-generico')
+    const updatedUser = await userService.findByUsername('10137419430')
     expect(updatedUser.password).not.toEqual(oldPassword)
   })
 
