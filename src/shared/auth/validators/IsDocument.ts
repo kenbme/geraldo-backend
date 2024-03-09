@@ -14,7 +14,7 @@ export function IsDocument(validationOptions?: ValidationOptions): PropertyDecor
           return validateDocument(value)
         },
         defaultMessage: () => {
-          return 'CPF inválido'
+          return 'Usuário inválido'
         }
       }
     })

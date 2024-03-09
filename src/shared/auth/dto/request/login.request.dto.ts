@@ -4,6 +4,6 @@ import {IsDocument} from '../../validators/IsDocument'
 export class LoginRequestDTO {
   @IsDocument()
   username: string
-  @IsString()
+  @IsString({message: 'A senha deve ser uma string'})
   password: string
 }
