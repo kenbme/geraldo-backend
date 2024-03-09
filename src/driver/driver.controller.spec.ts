@@ -72,10 +72,10 @@ describe('DriverController', () => {
     it('email invalid because is empty', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = '22222222211'),
-          (dto.email = ''),
-          (dto.birthday = '2002-12-15'),
-          (dto.name = 'beltrano')
+        dto.username = '10137419430'
+        dto.email = ''
+        dto.birthday = '2002-12-15'
+        dto.name = 'beltrano'
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
@@ -88,10 +88,10 @@ describe('DriverController', () => {
     it('email invalid because is blank', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = '22222222211'),
-          (dto.email = '               '),
-          (dto.birthday = '2002-12-15'),
-          (dto.name = 'beltrano')
+        dto.username = '10137419430'
+        dto.email = '               '
+        dto.birthday = '2002-12-15'
+        dto.name = 'beltrano'
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
@@ -104,10 +104,10 @@ describe('DriverController', () => {
     it('email invalid because not contains @', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = '22222222211'),
-          (dto.email = 'testesgmail.com'),
-          (dto.birthday = '2002-12-15'),
-          (dto.name = 'beltrano')
+        dto.username = '10137419430'
+        dto.email = 'testesgmail.com'
+        dto.birthday = '2002-12-15'
+        dto.name = 'beltrano'
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
@@ -121,10 +121,10 @@ describe('DriverController', () => {
     it('email invalid because is specials character invalid ', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = '22222222211'),
-          (dto.email = '..teste#@gmail.com'),
-          (dto.birthday = '2002-12-15'),
-          (dto.name = 'beltrano')
+        dto.username = '10137419430'
+        dto.email = '..teste#@gmail.com'
+        dto.birthday = '2002-12-15'
+        dto.name = 'beltrano'
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
@@ -160,10 +160,10 @@ describe('DriverController', () => {
     it('username invalid because is empty', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = ''),
-          (dto.email = 'teste@gmail.com'),
-          (dto.birthday = '2002-12-15'),
-          (dto.name = 'beltrano')
+        dto.username = ''
+        dto.email = 'teste@gmail.com'
+        dto.birthday = '2002-12-15'
+        dto.name = 'beltrano'
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
@@ -176,10 +176,10 @@ describe('DriverController', () => {
     it('username exceeds maximum length', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = '1234567891123'),
-          (dto.email = 'teste@gmail.com'),
-          (dto.birthday = '2002-12-15'),
-          (dto.name = 'beltrano')
+        dto.username = '1234567891123'
+        dto.email = 'teste@gmail.com'
+        dto.birthday = '2002-12-15'
+        dto.name = 'beltrano'
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
@@ -192,10 +192,10 @@ describe('DriverController', () => {
     it('username does not reach the minimum size', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = '1234'),
-          (dto.email = 'teste@gmail.com'),
-          (dto.birthday = '2002-12-15'),
-          (dto.name = 'beltrano')
+        dto.username = '1234'
+        dto.email = 'teste@gmail.com'
+        dto.birthday = '2002-12-15'
+        dto.name = 'beltrano'
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
@@ -210,10 +210,10 @@ describe('DriverController', () => {
     it('name invalid because is empty', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = '12345678911'),
-          (dto.email = 'teste@gmail.com'),
-          (dto.birthday = '2002-12-15'),
-          (dto.name = '')
+        dto.username = '10137419430'
+        dto.email = 'teste@gmail.com'
+        dto.birthday = '2002-12-15'
+        dto.name = ''
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
@@ -227,10 +227,10 @@ describe('DriverController', () => {
     it('name invalid because is blank', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = '12345678910'),
-          (dto.email = 'teste@gmail.com'),
-          (dto.birthday = '2002-12-15'),
-          (dto.name = '   ')
+        dto.username = '10137419430'
+        dto.email = 'teste@gmail.com'
+        dto.birthday = '2002-12-15'
+        dto.name = '   '
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
@@ -243,10 +243,10 @@ describe('DriverController', () => {
     it('name invalid because contains specials character ', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = '12345678910'),
-          (dto.email = 'teste@gmail.com'),
-          (dto.birthday = '2002-12-15'),
-          (dto.name = 't&st&')
+        dto.username = '10137419430'
+        dto.email = 'teste@gmail.com'
+        dto.birthday = '2002-12-15'
+        dto.name = 't&st&'
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
@@ -259,10 +259,10 @@ describe('DriverController', () => {
     it('name does not reach the minimum size', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = '12345678910'),
-          (dto.email = 'teste@gmail.com'),
-          (dto.birthday = '2002-12-15'),
-          (dto.name = 'ze')
+        dto.username = '10137419430'
+        dto.email = 'teste@gmail.com'
+        dto.birthday = '2002-12-15'
+        dto.name = 'ze'
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
@@ -278,10 +278,10 @@ describe('DriverController', () => {
     it('birthday invalid because is empty', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = '12345678910'),
-          (dto.email = 'teste@gmail.com'),
-          (dto.birthday = ''),
-          (dto.name = 'ciclano ')
+        dto.username = '10137419430'
+        dto.email = 'teste@gmail.com'
+        dto.birthday = ''
+        dto.name = 'ciclano '
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
@@ -294,10 +294,10 @@ describe('DriverController', () => {
     it('birthday does reach the maximum age permitted', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = '12345678910'),
-          (dto.email = 'teste@gmail.com'),
-          (dto.birthday = '1910-01-01'),
-          (dto.name = 'ciclano ')
+        dto.username = '10137419430'
+        dto.email = 'teste@gmail.com'
+        dto.birthday = '1910-01-01'
+        dto.name = 'ciclano '
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
@@ -310,10 +310,10 @@ describe('DriverController', () => {
     it('birthday does not reach the minimum age permitted', async () => {
       try {
         const dto = new CreateDriverDto()
-        ;(dto.username = '12345678910'),
-          (dto.email = 'teste@gmail.com'),
-          (dto.birthday = '2010-01-01'),
-          (dto.name = 'ciclano ')
+        dto.username = '10137419430'
+        dto.email = 'teste@gmail.com'
+        dto.birthday = '2010-01-01'
+        dto.name = 'ciclano '
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {

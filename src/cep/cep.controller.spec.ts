@@ -1,7 +1,7 @@
-import { BadRequestException, NotFoundException } from '@nestjs/common'
-import { Test, TestingModule } from '@nestjs/testing'
-import { CepController } from './cep.controller'
-import { CepService } from './cep.service'
+import {BadRequestException, NotFoundException} from '@nestjs/common'
+import {Test, TestingModule} from '@nestjs/testing'
+import {CepController} from './cep.controller'
+import {CepService} from './cep.service'
 
 describe('cepController', () => {
   let cepController: CepController

@@ -1,4 +1,4 @@
-import { ValidationOptions, registerDecorator } from 'class-validator'
+import {ValidationOptions, registerDecorator} from 'class-validator'
 
 export function IsCNPJ(validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string): void {
@@ -20,7 +20,6 @@ export function IsCNPJ(validationOptions?: ValidationOptions) {
 }
 
 export const validateCNPJ = (value: any): boolean => {
-  
   if (typeof value !== 'string') {
     return false
   }
@@ -34,7 +33,7 @@ export const validateCNPJ = (value: any): boolean => {
   const digito1 = parseInt(value.charAt(12))
   const digito2 = parseInt(value.charAt(13))
   const pesos = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-  const pesos2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const pesos2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
   for (let i = 0; i < pesos.length; i++) {
     produto1 += parseInt(value.charAt(i)) * pesos[i]
     produto2 += parseInt(value.charAt(i)) * pesos2[i]
