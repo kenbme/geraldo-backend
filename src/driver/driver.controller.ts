@@ -1,7 +1,7 @@
 import {Controller, Post, Body} from '@nestjs/common'
 import {DriverService} from './driver.service'
-import {CreateDriverDto} from './dto/request/create-driver.dto'
-import {DriverResponseDTO} from './dto/response/driver.response.dto'
+import {CreateDriverDto} from '../shared/driver/dto/request/create-driver.dto'
+import {DriverResponseDTO} from '../shared/driver/dto/response/driver.response.dto'
 
 @Controller('')
 export class DriverController {

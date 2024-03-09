@@ -3,10 +3,10 @@ import {InjectRepository} from '@nestjs/typeorm'
 import {hash} from 'bcrypt'
 import {randomUUID} from 'crypto'
 import {Repository} from 'typeorm'
-import {CreateUserDto} from './dto/request/create-user.dto'
+import {CreateUserDto} from 'src/shared/user/dto/request/create-user.dto'
 import {User} from './entities/user.entity'
 import {UserTypeService} from './user.type.service'
-import {RecoverPasswordDto} from './dto/request/recover-password.dto'
+import {RecoverPasswordDto} from 'src/shared/user/dto/request/recover-password.dto'
 
 @Injectable()
 export class UserService {

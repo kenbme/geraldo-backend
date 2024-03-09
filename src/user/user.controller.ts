@@ -1,5 +1,5 @@
 import {Controller, Post, Body, HttpCode} from '@nestjs/common'
-import {RecoverPasswordDto} from './dto/request/recover-password.dto'
+import {RecoverPasswordDto} from 'src/shared/user/dto/request/recover-password.dto'
 import {UserService} from './user.service'
 
 @Controller('')

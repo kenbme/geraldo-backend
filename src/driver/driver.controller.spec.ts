@@ -8,7 +8,7 @@ import {User} from 'src/user/entities/user.entity'
 import {UserModule} from 'src/user/user.module'
 import {ConflictException} from '@nestjs/common'
 import {ValidationError, validateOrReject} from 'class-validator'
-import {CreateDriverDto} from './dto/request/create-driver.dto'
+import {CreateDriverDto} from '../shared/driver/dto/request/create-driver.dto'
 
 describe('DriverController', () => {
   let driverController: DriverController
@@ -45,7 +45,7 @@ describe('DriverController', () => {
       name: 'fulano'
     })
     expect(driver).toBeDefined()
-    expect(driver.user.name).toEqual('fulano')
+    expect(driver.data.name).toEqual('fulano')
   })
 
   describe('isValidEmail', () => {

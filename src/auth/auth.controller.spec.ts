@@ -11,7 +11,7 @@ import { UserService } from 'src/user/user.service'
 import { Repository } from 'typeorm'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
-import { LoginDTO } from './dto/login.dto'
+import { LoginRequestDTO } from 'src/shared/auth/dto/request/login.request.dto'
 
 
 configDotenv({path: resolve(process.cwd(), '.development.env')})
@@ -85,7 +85,7 @@ describe('AuthController', () => {
 
   it('it should reject invalid Document', async () => {
     try {
-      const dto = new LoginDTO()
+      const dto = new LoginRequestDTO()
       dto.username = '12322'
       dto.password = '1233214214'
       await validateOrReject(dto)
@@ -96,14 +96,14 @@ describe('AuthController', () => {
   })
 
   it('it should accept CPF', async () => {
-    const dto = new LoginDTO()
+    const dto = new LoginRequestDTO()
     dto.username = '69158251006'
     dto.password = 'senhablablabla2232!'
     await validateOrReject(dto)
   })
 
   it('it should accept CNPJ', async () => {
-    const dto = new LoginDTO()
+    const dto = new LoginRequestDTO()
     dto.username = '28212197000141'
     dto.password = 'umaSenhaQualquer32!'
     await validateOrReject(dto)
@@ -111,7 +111,7 @@ describe('AuthController', () => {
 
   it('it should reject invalid CNPJ', async () => {
     try {
-      const dto = new LoginDTO()
+      const dto = new LoginRequestDTO()
       dto.username = '28212197000140'
       dto.password = '1233214214'
       await validateOrReject(dto)
@@ -123,7 +123,7 @@ describe('AuthController', () => {
 
   it('it should reject invalid CNPJ', async () => {
     try {
-      const dto = new LoginDTO()
+      const dto = new LoginRequestDTO()
       dto.username = '00000000000000'
       dto.password = '1233214214'
       await validateOrReject(dto)
@@ -135,7 +135,7 @@ describe('AuthController', () => {
 
   it('it should reject invalid CPF', async () => {
     try {
-      const dto = new LoginDTO()
+      const dto = new LoginRequestDTO()
       dto.username = '11137419430'
       dto.password = '1233214214'
       await validateOrReject(dto)
@@ -146,7 +146,7 @@ describe('AuthController', () => {
   })
 
   it('it should accept CPF', async () => {
-    const dto = new LoginDTO()
+    const dto = new LoginRequestDTO()
     dto.username = '10137419430'
     dto.password = 'senhablablabla2232!'
     await validateOrReject(dto)
@@ -154,7 +154,7 @@ describe('AuthController', () => {
 
   it('it should reject invalid CPF', async () => {
     try {
-      const dto = new LoginDTO()
+      const dto = new LoginRequestDTO()
       dto.username = '00000000000'
       dto.password = '1233214214'
       await validateOrReject(dto)

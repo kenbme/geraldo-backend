@@ -6,7 +6,7 @@ import {
   MaxLength,
   MinLength
 } from 'class-validator'
-import {IsCPF} from 'src/user/validators/IsCPF'
+import {IsCPF} from 'src/shared/user/validators/IsCPF'
 
 export class CreateDriverDto {
   @IsNotEmpty({message: 'o cpf não pode ser vazio'})

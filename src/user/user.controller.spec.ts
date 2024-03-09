@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm'
 import { validateOrReject } from 'class-validator'
-import { LoginDTO } from 'src/auth/dto/login.dto'
 import { Repository } from 'typeorm'
-import { RecoverPasswordDto } from './dto/request/recover-password.dto'
+import { RecoverPasswordDto } from 'src/shared/user/dto/request/recover-password.dto'
 import { User } from './entities/user.entity'
 import { UserType } from './entities/user.type.entity'
 import { UserController } from './user.controller'
@@ -94,11 +93,5 @@ describe('UserController', () => {
       return
     }
     throw new Error()
-  })
-  it('it should accept CNPJ', async () => {
-    const dto = new LoginDTO()
-    dto.username = '128212197000141'
-    dto.password = 'umaSenhaQualquer32!'
-    await validateOrReject(dto)
   })
 })

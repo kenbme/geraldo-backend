@@ -1,6 +1,6 @@
 import {Controller, Get, Query} from '@nestjs/common'
 import {CepService} from './cep.service'
-import {AddressDto} from './dto/response/address.dto'
+import {AddressDto} from '../shared/cep/dto/response/address.dto'
 
 @Controller('')
 export class CepController {

@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common'
-import {CreateDriverDto} from './dto/request/create-driver.dto'
+import {CreateDriverDto} from '../shared/driver/dto/request/create-driver.dto'
 import {UserService} from 'src/user/user.service'
 import {Repository} from 'typeorm'
 import {Driver} from './entities/driver.entity'
