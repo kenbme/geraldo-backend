@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { randomUUID } from 'crypto'
+import { UUID, randomUUID } from 'crypto'
 import { DriverService } from 'src/driver/driver.service'
 import { CreateVehicleDto } from 'src/shared/vehicle/dto/request/create-vehicle.dto'
 import { Repository } from 'typeorm'
@@ -13,9 +13,9 @@ export class VehicleService {
     @InjectRepository(Vehicle)
     private readonly vehicleRepository: Repository<Vehicle>
   ) {}
-  async create(userId: number, createVehicleDto: CreateVehicleDto): Promise<Vehicle> {
+  async create(userUUid: UUID, createVehicleDto: CreateVehicleDto): Promise<Vehicle> {
     if (await this.existPlate(createVehicleDto.plate)) {
-      if (await this.isOwner(createVehicleDto.plate, userId)) {
+      if (await this.isOwner(createVehicleDto.plate, userUUid)) {
         throw new ConflictException('Veículo já encontra-se cadastrado')
       }
       throw new ConflictException('Veículo pertence a outro motorista')
@@ -26,7 +26,7 @@ export class VehicleService {
     vehicle.plate = createVehicleDto.plate
     vehicle.kilometers = createVehicleDto.kilometers
     vehicle.year = createVehicleDto.year
-    const owner = await this.driverService.findById(userId)
+    const owner = await this.driverService.findByUUid(userUUid)
     vehicle.owners.push(owner)
     return this.vehicleRepository.save(vehicle)
   }
@@ -37,9 +37,9 @@ export class VehicleService {
     }
     return false
   }
-  async isOwner(targetplate: string, driverId: number): Promise<boolean> {
+  async isOwner(targetplate: string, driverUUid: UUID): Promise<boolean> {
     const vehicleUsed = await this.vehicleRepository.findOneBy({plate: targetplate})
-    const driver = await this.driverService.findById(driverId)
+    const driver = await this.driverService.findByUUid(driverUUid)
     if (vehicleUsed !== null) {
       if (vehicleUsed.owners.includes(driver)) {
         return true

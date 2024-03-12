@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { randomUUID } from 'crypto'
+import { UUID, randomUUID } from 'crypto'
 import { UserService } from 'src/user/user.service'
 import { Repository } from 'typeorm'
 import { CreateDriverDto } from '../shared/driver/dto/request/create-driver.dto'
@@ -29,7 +29,9 @@ export class DriverService {
   }
   async findById(driverId: number): Promise<Driver>{
     return await this.driverRepository.findOneByOrFail({id: driverId})
-    
-
+  }
+  async findByUUid(driverUUid: UUID): Promise<Driver>{
+    return await this.driverRepository.findOneByOrFail({uuid: driverUUid})
+  
   }
 }
