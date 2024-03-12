@@ -10,6 +10,7 @@ import { randomUUID } from "crypto";
 import { StateService } from "./state.service";
 import { CityService } from "./cities.service";
 import { CreateEstablishmentDto } from "src/establishment/dto/create-establishment.dto";
+import { Establishment } from "src/establishment/entities/establishment.entity";
 
 
 @Injectable()
@@ -21,7 +22,7 @@ export class AddressesService {
         private readonly cityService: CityService
     ) { }
 
-    async createAddress(dto: CreateEstablishmentDto): Promise<Addresses> {
+    async createAddress(dto: CreateEstablishmentDto, establishmentId: number): Promise<Addresses> {
 
         const add = await this.cepService.getAddressByCep(dto.postalCode)
 
@@ -33,7 +34,7 @@ export class AddressesService {
 
         newAddress.street = dto.street
         newAddress.houseNumber = dto.houseNumber
-
+        newAddress.establishmentId = establishmentId
         return await this.addressesRepository.save(newAddress)
     }
 

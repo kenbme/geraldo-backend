@@ -24,7 +24,7 @@ export class StateService{
     }
 
     async findStateByUf(uf: string){
+        
         return await this.statesRepository.findOneByOrFail({ uf: uf})
     }
-
 }

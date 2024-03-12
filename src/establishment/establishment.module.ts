@@ -7,10 +7,11 @@ import {TypeOrmModule} from '@nestjs/typeorm'
 import {Establishment} from './entities/establishment.entity'
 import {EstablishmentType} from './entities/establishment.type.entity'
 import { AddressesModule } from 'src/addresses/addresses.module'
+import { CepService } from 'src/cep/cep.service'
 
 @Module({
   imports: [UserModule, TypeOrmModule.forFeature([Establishment, EstablishmentType]),AddressesModule],
   controllers: [EstablishmentController],
-  providers: [EstablishmentService, EstablishmentTypeService]
+  providers: [EstablishmentService, EstablishmentTypeService, CepService]
 })
 export class EstablishmentModule {}

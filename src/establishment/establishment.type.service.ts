@@ -24,10 +24,19 @@ export class EstablishmentTypeService {
     const gasStationType = new EstablishmentType()
     gasStationType.uuid = randomUUID()
     gasStationType.name = 'GAS_STATION'
-    gasStationType.description = 'descricao de establishment'
+    gasStationType.description = 'descricao de gas station'
+
+    const workshopType = new EstablishmentType()
+    workshopType.uuid = randomUUID()
+    workshopType.name = 'WORKSHOP'
+    workshopType.description = 'descricao de workshop'
 
     if (!(await this.establishmentTypeRepository.existsBy({name: gasStationType.name}))) {
       await this.establishmentTypeRepository.save(gasStationType)
+    }
+
+    if (!(await this.establishmentTypeRepository.existsBy({name: workshopType.name}))) {
+      await this.establishmentTypeRepository.save(workshopType)
     }
 
     this.created = true
