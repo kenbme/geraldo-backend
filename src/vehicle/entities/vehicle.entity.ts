@@ -12,10 +12,10 @@ export class Vehicle{
     model: string
     @Column({type: 'varchar', unique: true})
     plate: string
-    @Column({type: 'number'})
+    @Column({type: 'integer'})
     kilometers: number
-    @Column({type: 'number'})
+    @Column({type: 'integer'})
     year: number
-    @ManyToMany(() => Driver, (driver) => driver.vehicles, {eager: true})
+    @ManyToMany(() => Driver, (driver) => driver.vehicles)
     owners: Driver[]
 }

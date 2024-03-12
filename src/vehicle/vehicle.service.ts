@@ -14,7 +14,7 @@ export class VehicleService {
     private readonly vehicleRepository: Repository<Vehicle>
   ) {}
   async create(userId: number, createVehicleDto: CreateVehicleDto): Promise<Vehicle> {
-    if (await this.existePlaca(createVehicleDto.plate)) {
+    if (await this.existPlate(createVehicleDto.plate)) {
       if (await this.isOwner(createVehicleDto.plate, userId)) {
         throw new ConflictException('Veículo já encontra-se cadastrado')
       }
@@ -30,7 +30,7 @@ export class VehicleService {
     vehicle.owners.push(owner)
     return this.vehicleRepository.save(vehicle)
   }
-  async existePlaca(placaAlvo: string): Promise<Boolean> {
+  async existPlate(placaAlvo: string): Promise<Boolean> {
     const vehicle = this.vehicleRepository.findOneBy({plate: placaAlvo})
     if (vehicle !== undefined) {
       return true

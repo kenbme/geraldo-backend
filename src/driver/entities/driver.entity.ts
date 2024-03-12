@@ -12,6 +12,6 @@ export class Driver {
   @OneToOne(() => User)
   @JoinColumn()
   user: User
-  @ManyToMany(() => Vehicle, (vehicle) => vehicle.owners, {eager: true})
+  @ManyToMany(() => Vehicle, (vehicle) => vehicle.owners)
   vehicles: Vehicle[]
 }
