@@ -9,6 +9,7 @@ import {UserModule} from 'src/user/user.module'
 import {ConflictException} from '@nestjs/common'
 import {ValidationError, validateOrReject} from 'class-validator'
 import {CreateDriverDto} from '../shared/driver/dto/request/create-driver.dto'
+import { Vehicle } from 'src/vehicle/entities/vehicle.entity'
 
 describe('DriverController', () => {
   let driverController: DriverController
@@ -21,7 +22,7 @@ describe('DriverController', () => {
           database: 'db/testing_driver.sqlite3',
           synchronize: true,
           dropSchema: true,
-          entities: [User, UserType, Driver]
+          entities: [User, UserType, Driver, Vehicle]
         }),
         TypeOrmModule.forFeature([Driver]),
         UserModule
