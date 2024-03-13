@@ -2,7 +2,7 @@ import {IsString, IsEnum, IsEmail, MinLength, IsNotEmpty, Matches, Length, Valid
 import {EstablishmentTypeEnum} from '../enums/establishment-type.enum'
 import { NotEmptyStringValidator } from 'src/validators/not-empty-string.validator'
 import { CnpjValidator } from 'src/validators/cnpj.validator'
-
+//establishment DTO
 export class CreateEstablishmentDto {
   @IsString()
   @Validate(NotEmptyStringValidator)
