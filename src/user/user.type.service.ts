@@ -2,7 +2,6 @@ import {Injectable} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {UserType} from './entities/user.type.entity'
 import {Repository} from 'typeorm'
-import {randomUUID} from 'crypto'
 
 @Injectable()
 export class UserTypeService {
@@ -22,12 +21,10 @@ export class UserTypeService {
 
   private async createTypes(): Promise<void> {
     const driverType = new UserType()
-    driverType.uuid = randomUUID()
     driverType.name = 'DRIVER'
     driverType.description = 'descricao de driver'
 
     const establishmentType = new UserType()
-    establishmentType.uuid = randomUUID()
     establishmentType.name = 'ESTABLISHMENT'
     establishmentType.description = 'descricao de establishment'
 

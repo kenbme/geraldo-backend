@@ -12,10 +12,9 @@ export class VehicleController {
   @Post('/vehicle')
   @HttpCode(200)
   async create(
-    @Body() body: {createVehicleDto: CreateVehicleDto; driverUUid: UUID}
+    @Body() createVehicleDto: CreateVehicleDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
-    const {createVehicleDto, driverUUid} = body
-    const vehicle = await this.vehicleService.create(driverUUid, createVehicleDto)
+    const vehicle = await this.vehicleService.create(createVehicleDto)
     const data = createVehicleResponseDTO(vehicle)
     return {data, message: 'Veiculo cadastrado com sucesso'}
   }

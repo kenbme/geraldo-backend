@@ -1,7 +1,6 @@
 import {Injectable} from '@nestjs/common'
 import {CreateEstablishmentDto} from 'src/shared/establishment/dto/request/create-establishment.dto'
 import {InjectRepository} from '@nestjs/typeorm'
-import {randomUUID} from 'crypto'
 import {UserService} from 'src/user/user.service'
 import {Repository} from 'typeorm'
 import {Establishment} from './entities/establishment.entity'
@@ -21,7 +20,6 @@ export class EstablishmentService {
     establishment.establishmentType = await this.establishmentTypeService.findByName(
       createEstablishmentDto.establishmentType
     )
-    establishment.uuid = randomUUID()
     establishment.areaCode = createEstablishmentDto.areaCode
     establishment.phone = createEstablishmentDto.phone
 

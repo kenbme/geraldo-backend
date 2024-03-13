@@ -1,12 +1,10 @@
-import {UUID} from 'node:crypto'
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
 import {Establishment} from './establishment.entity'
+import { UUID } from 'crypto'
 
 @Entity()
 export class EstablishmentType {
-  @PrimaryGeneratedColumn()
-  id: number
-  @Column({type: 'uuid', unique: true})
+  @PrimaryGeneratedColumn('uuid')
   uuid: UUID
   @Column({type: 'varchar', unique: true})
   name: string

@@ -1,5 +1,6 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator'
+import { IsInt, IsNotEmpty, IsString, IsUUID } from 'class-validator'
 import { isValidYear } from '../../validators/isValidYear'
+import { UUID } from 'crypto'
 
 export class CreateVehicleDto {
   @IsString()
@@ -18,4 +19,7 @@ export class CreateVehicleDto {
   @IsNotEmpty()
   @isValidYear()
   year: number
+
+  @IsUUID()
+  driverId: UUID
 }

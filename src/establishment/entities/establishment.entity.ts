@@ -5,10 +5,8 @@ import {EstablishmentType} from './establishment.type.entity'
 
 @Entity()
 export class Establishment {
-  @PrimaryGeneratedColumn()
-  id: number
-  @Column({type: 'varchar', unique: true})
-  uuid: UUID
+  @PrimaryGeneratedColumn('uuid')
+  id: UUID
   @OneToOne(() => User)
   @JoinColumn()
   user: User

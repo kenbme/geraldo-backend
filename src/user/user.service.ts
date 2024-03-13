@@ -1,7 +1,6 @@
 import {BadRequestException, ConflictException, Injectable} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {hash} from 'bcrypt'
-import {randomUUID} from 'crypto'
 import {Repository} from 'typeorm'
 import {CreateUserDto} from 'src/shared/user/dto/request/create-user.dto'
 import {User} from './entities/user.entity'
@@ -38,7 +37,6 @@ export class UserService {
       throw new ConflictException('Email já cadastrado')
     }
     const newUser = new User()
-    newUser.uuid = randomUUID()
     newUser.username = createUserDto.username
     // TODO randomPassword deve ser enviada para email
     const randomPassword = Math.random().toString().split('0.')[1]

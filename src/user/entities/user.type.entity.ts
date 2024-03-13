@@ -4,10 +4,8 @@ import {User} from './user.entity'
 
 @Entity()
 export class UserType {
-  @PrimaryGeneratedColumn()
-  id: number
-  @Column({type: 'uuid', unique: true})
-  uuid: UUID
+  @PrimaryGeneratedColumn('uuid')
+  id: UUID
   @Column({type: 'varchar', unique: true})
   name: string
   @Column({type: 'varchar'})

@@ -7,7 +7,7 @@ import { Vehicle } from "src/vehicle/entities/vehicle.entity";
 
 export const createDriverResponseDTO = (driver: Driver): DriverResponseDTO => {
     const dto = new DriverResponseDTO()
-    dto.uuid = driver.uuid
+    dto.id = driver.id
     dto.email = driver.user.email
     dto.birthday = driver.user.birthday
     dto.name = driver.user.name
@@ -17,7 +17,7 @@ export const createDriverResponseDTO = (driver: Driver): DriverResponseDTO => {
 
 export const createVehicleResponseDTO = (vehicle: Vehicle): VehicleResponseDTO => {
     const dto = new VehicleResponseDTO
-    dto.uuid = vehicle.uuid
+    dto.id = vehicle.id
     dto.model = vehicle.model
     dto.plate = vehicle.plate
     dto.year = vehicle.year
@@ -27,7 +27,7 @@ export const createVehicleResponseDTO = (vehicle: Vehicle): VehicleResponseDTO =
 
 export const createEstablishmentResponseDTO = (establishment: Establishment): EstablishmentResponseDTO => {
     const dto = new EstablishmentResponseDTO()
-    dto.uuid = establishment.uuid
+    dto.id = establishment.id
     dto.email = establishment.user.email
     dto.birthday = establishment.user.birthday
     dto.name = establishment.user.name

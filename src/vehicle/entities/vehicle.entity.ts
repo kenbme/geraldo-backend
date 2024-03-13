@@ -5,9 +5,7 @@ import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class Vehicle{
     @PrimaryGeneratedColumn()
-    id: number
-    @Column({type: 'uuid', unique: true})
-    uuid: UUID
+    id: UUID
     @Column({type: 'varchar'})
     model: string
     @Column({type: 'varchar', unique: true})

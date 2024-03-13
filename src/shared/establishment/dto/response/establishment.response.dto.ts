@@ -1,7 +1,7 @@
 import {UUID} from 'crypto'
 
 export class EstablishmentResponseDTO {
-  uuid: UUID
+  id: UUID
   username: string
   name: string
   email: string
