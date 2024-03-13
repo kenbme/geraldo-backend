@@ -7,6 +7,6 @@ export class ComponentType {
   id: string
   @Column({type: 'varchar', unique: true})
   name: string
-  @OneToMany(() => Component, (components) => components.componentsType)
+  @OneToMany(() => Component, (components) => components.componentType)
   components: Component
 }
