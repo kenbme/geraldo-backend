@@ -2,6 +2,7 @@ import {Body, Controller, HttpCode, HttpStatus, Post} from '@nestjs/common'
 import {AuthService} from './auth.service'
 import {LoginResponseDTO} from '../shared/auth/dto/response/login.response.dto'
 import {LoginRequestDTO} from 'src/shared/auth/dto/request/login.request.dto'
+import { Public } from 'src/decorator';
 
 @Controller('')
 export class AuthController {
@@ -9,6 +10,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
+  @Public()
   async login(
     @Body() loginDto: LoginRequestDTO
   ): Promise<{data: LoginResponseDTO; message: string}> {

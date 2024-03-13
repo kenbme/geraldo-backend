@@ -1,6 +1,7 @@
 import {Controller, Post, Body, HttpCode} from '@nestjs/common'
 import {RecoverPasswordDto} from 'src/shared/user/dto/request/recover-password.dto'
 import {UserService} from './user.service'
+import { Public } from 'src/decorator'
 
 @Controller('')
 export class UserController {
@@ -8,6 +9,7 @@ export class UserController {
 
   @Post('/forgot_password')
   @HttpCode(200)
+  @Public()
   async recoverPassword(
     @Body() recoverPasswordDTO: RecoverPasswordDto
   ): Promise<{message: string, data: Object}> {
