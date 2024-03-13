@@ -67,7 +67,7 @@ describe('UserController', () => {
       dto.email = '       '
       await validateOrReject(dto)
     } catch ([err]) {
-      expect(err.constraints.isEmail).toEqual('Formato inválido')
+      expect(err.constraints.isEmail).toEqual('Email inválido')
       return
     }
     throw new Error()
@@ -79,7 +79,7 @@ describe('UserController', () => {
       dto.email = 'asdasd'
       await validateOrReject(dto)
     } catch ([err]) {
-      expect(err.constraints.isEmail).toEqual('Formato inválido')
+      expect(err.constraints.isEmail).toEqual('Email inválido')
       return
     }
     throw new Error()
