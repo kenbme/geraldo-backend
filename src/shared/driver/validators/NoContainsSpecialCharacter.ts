@@ -1,27 +1,27 @@
 import {ValidationOptions, registerDecorator} from 'class-validator'
 
-export function noWhiteSpace(validationOptions?: ValidationOptions) {
+export function NoContainsSpecialCharacter(validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string) {
     registerDecorator({
-      name: 'noWhiteSpace',
+      name: 'noContainsSpecialCharacter',
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       validator: {
         validate(value: string) {
-          return noContainsWhiteSpace(value)
+          return validateName(value)
         },
         defaultMessage: () => {
-          return 'O nome não pode estar em branco'
+          return 'Não pode conter caracteres especiais'
         }
       }
     })
   }
 }
 
-export const noContainsWhiteSpace = (value: string): boolean => {
+export const validateName = (value: string): boolean => {
   if (typeof value !== 'string') {
     return false
   }
-  return !/^\s*$/.test(value)
+  return !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(value)
 }

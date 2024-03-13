@@ -20,7 +20,7 @@ describe('UserController', () => {
       imports: [
         TypeOrmModule.forRoot({
           type: 'sqlite',
-          database: 'db/testing_establishment.sqlite3',
+          database: 'db/testing_user.sqlite3',
           synchronize: true,
           dropSchema: true,
           entities: [User, UserType]
