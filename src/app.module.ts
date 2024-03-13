@@ -17,6 +17,9 @@ import { UserType } from './user/entities/user.type.entity'
 import { UserModule } from './user/user.module'
 import { Vehicle } from './vehicle/entities/vehicle.entity'
 import { VehicleModule } from './vehicle/vehicle.module'
+import { ComponentsController } from './components/components.controller';
+import { ComponentsService } from './components/components.service';
+import { ComponentsModule } from './components/components.module';
 
 @Module({
   imports: [
@@ -31,7 +34,8 @@ import { VehicleModule } from './vehicle/vehicle.module'
     CepModule,
     DriverModule,
     EstablishmentModule,
-    VehicleModule
+    VehicleModule,
+    ComponentsModule
   ],
   providers: [
     {
@@ -49,7 +53,9 @@ import { VehicleModule } from './vehicle/vehicle.module'
     {
       provide: APP_FILTER,
       useClass: TypeORMExceptionFilter
-    }
-  ]
+    },
+    ComponentsService
+  ],
+  controllers: [ComponentsController]
 })
 export class AppModule {}
