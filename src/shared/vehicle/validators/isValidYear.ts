@@ -8,7 +8,7 @@ export function isValidYear(validationOptions?: ValidationOptions) {
       propertyName: propertyName,
       options: validationOptions,
       validator: {
-        validate(value: any, args: ValidationArguments) {
+        validate(value: any) {
           const currentYear = new Date().getFullYear()
           if (typeof value !== 'number') {
             return false

@@ -5,6 +5,7 @@ import {CepService} from './cep.service'
 @Module({
   imports: [],
   controllers: [CepController],
-  providers: [CepService]
+  providers: [CepService],
+  exports: [CepService]
 })
 export class CepModule {}

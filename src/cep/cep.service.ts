@@ -16,6 +16,9 @@ export class CepService {
     if (response.data.erro) {
       throw new NotFoundException('CEP não encontrado')
     }
+    if (!response.data.logradouro) {
+      throw new NotFoundException('CEP não encontrado')
+    }
     const addressDto: AddressDto = {
       state: response.data.uf,
       city: response.data.localidade,

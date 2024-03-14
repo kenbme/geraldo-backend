@@ -19,6 +19,10 @@ import {Vehicle} from './vehicle/entities/vehicle.entity'
 import {VehicleModule} from './vehicle/vehicle.module'
 import {AuthGuard} from './authguard'
 import {RolesGuard} from './roles.guard'
+import {State} from './addresses/entities/state.entity'
+import {City} from './addresses/entities/cities.entity'
+import {AddressesModule} from './addresses/addresses.module'
+import {Address} from './addresses/entities/addresses.entity'
 
 @Module({
   imports: [
@@ -26,14 +30,25 @@ import {RolesGuard} from './roles.guard'
       type: 'sqlite',
       database: 'db/development.sqlite3',
       synchronize: true,
-      entities: [User, UserType, Driver, Establishment, EstablishmentType, Vehicle]
+      entities: [
+        User,
+        UserType,
+        Driver,
+        Establishment,
+        EstablishmentType,
+        Vehicle,
+        Address,
+        State,
+        City
+      ]
     }),
     UserModule,
     AuthModule,
     CepModule,
     DriverModule,
     EstablishmentModule,
-    VehicleModule
+    VehicleModule,
+    AddressesModule
   ],
   providers: [
     {
