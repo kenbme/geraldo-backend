@@ -6,11 +6,8 @@ import {Establishment} from 'src/establishment/entities/establishment.entity'
 
 @Entity()
 export class Address {
-  @PrimaryGeneratedColumn()
-  id: number
-
-  @Column({type: 'uuid'})
-  uuid: UUID
+  @PrimaryGeneratedColumn('uuid')
+  id: UUID
 
   @OneToOne(() => Establishment)
   establishment: Establishment

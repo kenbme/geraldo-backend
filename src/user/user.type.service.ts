@@ -10,31 +10,7 @@ export class UserTypeService {
     private readonly userTypeRepository: Repository<UserType>
   ) {}
 
-  private created = false
-
   async findByName(name: string): Promise<UserType> {
-    if (!this.created) {
-      await this.createTypes()
-    }
     return this.userTypeRepository.findOneByOrFail({name: name})
-  }
-
-  private async createTypes(): Promise<void> {
-    const driverType = new UserType()
-    driverType.name = 'DRIVER'
-    driverType.description = 'descricao de driver'
-
-    const establishmentType = new UserType()
-    establishmentType.name = 'ESTABLISHMENT'
-    establishmentType.description = 'descricao de establishment'
-
-    if (!(await this.userTypeRepository.existsBy({name: driverType.name}))) {
-      await this.userTypeRepository.save(driverType)
-    }
-    if (!(await this.userTypeRepository.existsBy({name: establishmentType.name}))) {
-      await this.userTypeRepository.save(establishmentType)
-    }
-
-    this.created = true
   }
 }

@@ -4,6 +4,7 @@ import {AppModule} from './app.module'
 import {ValidationPipe} from '@nestjs/common'
 import {configDotenv} from 'dotenv'
 import {resolve} from 'path'
+import { SeederService } from './seeder.service'
 
 async function bootstrap(): Promise<void> {
   configDotenv({path: resolve(process.cwd(), '.development.env')})
@@ -11,6 +12,8 @@ async function bootstrap(): Promise<void> {
     AppModule,
     new FastifyAdapter({logger: true})
   )
+  const seederService = app.get(SeederService)
+  seederService.seedData()
   app.useGlobalPipes(new ValidationPipe())
   await app.listen(3000)
 }

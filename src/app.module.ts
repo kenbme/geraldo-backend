@@ -23,6 +23,7 @@ import {State} from './addresses/entities/state.entity'
 import {City} from './addresses/entities/cities.entity'
 import {AddressesModule} from './addresses/addresses.module'
 import {Address} from './addresses/entities/addresses.entity'
+import { SeederService } from './seeder.service'
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import {Address} from './addresses/entities/addresses.entity'
         City
       ]
     }),
+    TypeOrmModule.forFeature([EstablishmentType, UserType]),
     UserModule,
     AuthModule,
     CepModule,
@@ -74,7 +76,8 @@ import {Address} from './addresses/entities/addresses.entity'
     {
       provide: APP_GUARD,
       useClass: RolesGuard
-    }
+    },
+    SeederService
   ]
 })
 export class AppModule {}
