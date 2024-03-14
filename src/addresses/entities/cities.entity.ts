@@ -4,10 +4,8 @@ import {State} from './state.entity'
 
 @Entity()
 export class City {
-  @PrimaryGeneratedColumn()
-  id: number
-  @Column({type: 'uuid'})
-  uuid: UUID
+  @PrimaryGeneratedColumn('uuid')
+  id: UUID
   @Column({type: 'varchar', unique: true})
   name: string
   @ManyToOne(() => State, (state) => state.cities)

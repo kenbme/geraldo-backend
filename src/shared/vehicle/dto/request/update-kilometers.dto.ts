@@ -1,15 +1,11 @@
-import {IsNotEmpty, IsInt, Min} from 'class-validator'
+import {IsInt, Min} from 'class-validator'
+import { UUID } from 'crypto'
 
 export class UpdateKilometersDto {
-  @IsNotEmpty()
-  @IsInt()
-  driverId: number
+  driverId: UUID
 
-  @IsNotEmpty()
-  @IsInt()
-  vehicleId: number
+  vehicleId: UUID
 
-  @IsNotEmpty()
   @IsInt()
   @Min(0)
   kilometers: number
