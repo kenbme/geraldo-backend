@@ -10,6 +10,7 @@ import {ConflictException} from '@nestjs/common'
 import {ValidationError, validateOrReject} from 'class-validator'
 import {CreateDriverDto} from '../shared/driver/dto/request/create-driver.dto'
 import {Vehicle} from 'src/vehicle/entities/vehicle.entity'
+import { UserTypeSeeder } from 'src/user/seeders/user.type.seeder'
 
 describe('DriverController', () => {
   let driverController: DriverController
@@ -24,14 +25,16 @@ describe('DriverController', () => {
           dropSchema: true,
           entities: [User, UserType, Driver, Vehicle]
         }),
-        TypeOrmModule.forFeature([Driver]),
+        TypeOrmModule.forFeature([Driver, UserType]),
         UserModule
       ],
       controllers: [DriverController],
-      providers: [DriverService]
+      providers: [DriverService, UserTypeSeeder]
     }).compile()
 
     driverController = module.get<DriverController>(DriverController)
+    const userTypeSeeder = module.get(UserTypeSeeder)
+    await userTypeSeeder.seed()
   })
 
   it('should be defined', () => {

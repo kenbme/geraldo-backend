@@ -9,6 +9,7 @@ import {UserController} from './user.controller'
 import {UserModule} from './user.module'
 import {UserService} from './user.service'
 import {UserTypeService} from './user.type.service'
+import { UserTypeSeeder } from './seeders/user.type.seeder'
 
 describe('UserController', () => {
   let userController: UserController
@@ -32,7 +33,8 @@ describe('UserController', () => {
       providers: [
         UserService,
         UserTypeService,
-        {provide: getRepositoryToken(User), useClass: Repository}
+        {provide: getRepositoryToken(User), useClass: Repository},
+        UserTypeSeeder
       ]
     }).compile()
 
@@ -40,6 +42,8 @@ describe('UserController', () => {
     userService = module.get(UserService)
     userRepository = module.get(getRepositoryToken(User))
     await userRepository.clear()
+    const userTypeSeeder = module.get(UserTypeSeeder)
+    await userTypeSeeder.seed()
   })
 
   it('should be defined', () => {

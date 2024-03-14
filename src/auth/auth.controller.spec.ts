@@ -12,6 +12,7 @@ import {UserService} from 'src/user/user.service'
 import {Repository} from 'typeorm'
 import {AuthController} from './auth.controller'
 import {AuthService} from './auth.service'
+import { UserTypeSeeder } from 'src/user/seeders/user.type.seeder'
 
 configDotenv({path: resolve(process.cwd(), '.development.env')})
 
@@ -30,7 +31,7 @@ describe('AuthController', () => {
           dropSchema: true,
           entities: [User, UserType]
         }),
-        TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([User, UserType]),
         JwtModule.register({
           global: true,
           secret: process.env.JWT_SECRET_KEY,
@@ -39,13 +40,15 @@ describe('AuthController', () => {
         UserModule
       ],
       controllers: [AuthController],
-      providers: [AuthService, {provide: getRepositoryToken(User), useClass: Repository}]
+      providers: [AuthService, {provide: getRepositoryToken(User), useClass: Repository}, UserTypeSeeder]
     }).compile()
 
     authController = module.get(AuthController)
     userService = module.get(UserService)
     userRepository = module.get(getRepositoryToken(User))
     await userRepository.clear()
+    const userTypeSeeder = module.get(UserTypeSeeder)
+    await userTypeSeeder.seed()
 
     await userService.create({
       username: '11111111111',
