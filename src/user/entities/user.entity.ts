@@ -6,7 +6,7 @@ import {UserType} from './user.type.entity'
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: UUID 
+  id: UUID
   @Column({type: 'varchar', unique: true})
   username: string
   @Column({type: 'varchar'})

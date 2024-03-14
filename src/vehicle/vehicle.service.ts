@@ -1,10 +1,10 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { UUID } from 'crypto'
-import { DriverService } from 'src/driver/driver.service'
-import { CreateVehicleDto } from 'src/shared/vehicle/dto/request/create-vehicle.dto'
-import { Repository } from 'typeorm'
-import { Vehicle } from './entities/vehicle.entity'
+import {ConflictException, Injectable} from '@nestjs/common'
+import {InjectRepository} from '@nestjs/typeorm'
+import {UUID} from 'crypto'
+import {DriverService} from 'src/driver/driver.service'
+import {CreateVehicleDto} from 'src/shared/vehicle/dto/request/create-vehicle.dto'
+import {Repository} from 'typeorm'
+import {Vehicle} from './entities/vehicle.entity'
 
 @Injectable()
 export class VehicleService {
@@ -46,5 +46,4 @@ export class VehicleService {
     }
     return false
   }
-
 }

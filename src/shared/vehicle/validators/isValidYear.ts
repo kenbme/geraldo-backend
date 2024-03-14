@@ -1,4 +1,4 @@
-import { ValidationArguments, ValidationOptions, registerDecorator } from 'class-validator';
+import {ValidationArguments, ValidationOptions, registerDecorator} from 'class-validator'
 
 export function isValidYear(validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string): void {
@@ -15,13 +15,13 @@ export function isValidYear(validationOptions?: ValidationOptions) {
           }
           if (value <= currentYear + 1) {
             return true
-        }
-        return false
+          }
+          return false
         },
         defaultMessage(args: ValidationArguments) {
-          return `${args.property} deve ser menor ou igual ao ano seguinte ao ano atual`;
-        },
-      },
-    });
-  };
+          return `${args.property} deve ser menor ou igual ao ano seguinte ao ano atual`
+        }
+      }
+    })
+  }
 }

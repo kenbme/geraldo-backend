@@ -1,6 +1,6 @@
-import { ValidationOptions, registerDecorator } from 'class-validator'
-import { validateCNPJ } from 'src/shared/user/validators/IsCNPJ'
-import { validateCPF } from 'src/shared/user/validators/IsCPF'
+import {ValidationOptions, registerDecorator} from 'class-validator'
+import {validateCNPJ} from 'src/shared/user/validators/IsCNPJ'
+import {validateCPF} from 'src/shared/user/validators/IsCPF'
 
 export function IsDocument(validationOptions?: ValidationOptions): PropertyDecorator {
   return function (object: Object, propertyName: string) {

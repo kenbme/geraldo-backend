@@ -18,7 +18,7 @@ import {UserModule} from './user/user.module'
 import {Vehicle} from './vehicle/entities/vehicle.entity'
 import {VehicleModule} from './vehicle/vehicle.module'
 import {AuthGuard} from './authguard'
-import { RolesGuard } from './roles.guard'
+import {RolesGuard} from './roles.guard'
 
 @Module({
   imports: [

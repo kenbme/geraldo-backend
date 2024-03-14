@@ -1,7 +1,7 @@
-import { ValidationOptions, registerDecorator } from 'class-validator'
+import {ValidationOptions, registerDecorator} from 'class-validator'
 
 export function IsValidDate(validationOptions?: ValidationOptions) {
-  return function (object: any, propertyName: string) {
+  return function (object: any, propertyName: string): void {
     registerDecorator({
       name: 'isValidDate',
       target: object.constructor,
@@ -24,7 +24,7 @@ export const validateDate = (value: string): boolean => {
     return false
   }
   try {
-    const splited = value.split("-")
+    const splited = value.split('-')
     const year = parseInt(splited[0])
     if (year < 1) {
       return false
@@ -41,6 +41,6 @@ export const validateDate = (value: string): boolean => {
     const userDate = new Date(year, month, day)
     const diffInYears = (currentDate.getTime() - userDate.getTime()) / (1000 * 60 * 60 * 24 * 365)
     return diffInYears >= 18 && diffInYears <= 100
-  } catch (err) { }
+  } catch (err) {}
   return false
 }

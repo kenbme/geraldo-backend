@@ -9,7 +9,7 @@ import {UserModule} from 'src/user/user.module'
 import {ConflictException} from '@nestjs/common'
 import {ValidationError, validateOrReject} from 'class-validator'
 import {CreateDriverDto} from '../shared/driver/dto/request/create-driver.dto'
-import { Vehicle } from 'src/vehicle/entities/vehicle.entity'
+import {Vehicle} from 'src/vehicle/entities/vehicle.entity'
 
 describe('DriverController', () => {
   let driverController: DriverController
@@ -251,7 +251,9 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.noContainsSpecialCharacter).toBe('O nome não pode ter caracteres especiais')
+          expect(err.constraints.noContainsSpecialCharacter).toBe(
+            'O nome não pode ter caracteres especiais'
+          )
           return
         }
       }

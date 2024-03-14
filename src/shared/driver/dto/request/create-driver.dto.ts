@@ -1,8 +1,8 @@
-import {IsDateString, IsEmail, IsNotEmpty, IsString, MaxLength, MinLength} from 'class-validator'
+import {IsEmail, IsString, MinLength} from 'class-validator'
 import {IsCPF} from 'src/shared/user/validators/IsCPF'
-import { NoContainsSpecialCharacter } from '../../validators/NoContainsSpecialCharacter'
-import { IsValidDate } from '../../validators/ValiderDate'
-import { NoWhiteSpace } from '../../validators/NoWhiteSpace'
+import {NoContainsSpecialCharacter} from '../../validators/NoContainsSpecialCharacter'
+import {IsValidDate} from '../../validators/ValiderDate'
+import {NoWhiteSpace} from '../../validators/NoWhiteSpace'
 
 export class CreateDriverDto {
   @IsCPF()

@@ -1,7 +1,7 @@
 import {Controller, Post, Body, HttpCode} from '@nestjs/common'
 import {RecoverPasswordDto} from 'src/shared/user/dto/request/recover-password.dto'
 import {UserService} from './user.service'
-import { Public } from 'src/decorator'
+import {Public} from 'src/decorator'
 
 @Controller('')
 export class UserController {
@@ -12,8 +12,8 @@ export class UserController {
   @Public()
   async recoverPassword(
     @Body() recoverPasswordDTO: RecoverPasswordDto
-  ): Promise<{message: string, data: Object}> {
+  ): Promise<{message: string; data: Object}> {
     await this.userService.recoverPassword(recoverPasswordDTO)
-    return {message: 'Uma senha temporária foi enviada para o seu email', data:{}}
+    return {message: 'Uma senha temporária foi enviada para o seu email', data: {}}
   }
 }

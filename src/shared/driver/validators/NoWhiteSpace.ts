@@ -1,7 +1,7 @@
 import {ValidationOptions, registerDecorator} from 'class-validator'
 
 export function NoWhiteSpace(validationOptions?: ValidationOptions) {
-  return function (object: any, propertyName: string) {
+  return function (object: any, propertyName: string): void {
     registerDecorator({
       name: 'noWhiteSpace',
       target: object.constructor,

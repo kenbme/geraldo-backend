@@ -1,7 +1,7 @@
 import {ValidationOptions, registerDecorator} from 'class-validator'
 
 export function NoContainsSpecialCharacter(validationOptions?: ValidationOptions) {
-  return function (object: any, propertyName: string) {
+  return function (object: any, propertyName: string): void {
     registerDecorator({
       name: 'noContainsSpecialCharacter',
       target: object.constructor,
