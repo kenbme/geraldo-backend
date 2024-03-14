@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common'
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UUID, randomUUID } from 'crypto'
 import { DriverService } from 'src/driver/driver.service'
@@ -8,6 +8,7 @@ import { Vehicle } from './entities/vehicle.entity'
 
 @Injectable()
 export class VehicleService {
+
   constructor(
     private readonly driverService: DriverService,
     @InjectRepository(Vehicle)
@@ -21,7 +22,6 @@ export class VehicleService {
       throw new ConflictException('Veículo pertence a outro motorista')
     }
     const vehicle = new Vehicle()
-    vehicle.uuid = randomUUID()
     vehicle.model = createVehicleDto.model
     vehicle.plate = createVehicleDto.plate
     vehicle.kilometers = createVehicleDto.kilometers
@@ -46,5 +46,19 @@ export class VehicleService {
       }
     }
     return false
+  }
+
+  async getVehicles(driver_UUid: UUID): Promise<Vehicle[]> {
+    const vehicles = await this.vehicleRepository.createQueryBuilder("vehicle").leftJoinAndSelect('vehicle.owners', 'driver')
+    .where('driver.uuid = :driverUUId', { driver_UUid })
+    .getMany();
+    if (!vehicles || vehicles.length === 0) {
+      throw new NotFoundException('Nenhum veículo encontrado para este motorista.')
+    }
+
+    return vehicles;
+  }
+  async getVehicle(id: UUID): Promise<Vehicle> { 
+    return await this.vehicleRepository.findOneByOrFail({id: id}) 
   }
 }

@@ -1,14 +1,17 @@
-import { IsDate, IsEnum, IsInt, IsNotEmpty, IsString, IsUUID } from 'class-validator'
-import { isValidYear } from 'src/shared/vehicle/validators/isValidYear'
+import { IsDate, IsEnum, IsInt, IsNotEmpty, IsString, IsUUID, isNotEmpty } from 'class-validator'
 import { ComponentsTypeEnum } from '../../enums/components-type.enum'
+import { UUID } from 'crypto'
+import { isDateValid } from '../../validators/IsDateValid'
 
 export class CreateComponentsDto {
   
   @IsEnum(ComponentsTypeEnum)
+  @IsNotEmpty()
   componentsType: string
   
   @IsDate()
-  @isValidYear()
+  @isDateValid()
+  @IsNotEmpty()
   dateLastExchange: Date
 
   @IsInt()
@@ -20,6 +23,6 @@ export class CreateComponentsDto {
   maintenanceFrequency: number
 
   @IsUUID()
-  vehicleUuid: string
+  vehicleUuid: UUID
     
 }

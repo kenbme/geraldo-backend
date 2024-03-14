@@ -1,3 +1,4 @@
+import { UUID } from 'crypto';
 import { Component } from 'src/components/entities/component.entity';
 import { Driver } from "src/driver/entities/driver.entity";
 import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
@@ -5,7 +6,7 @@ import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "t
 @Entity()
 export class Vehicle{
     @PrimaryGeneratedColumn('uuid')
-    id: string
+    id: UUID
     @Column({type: 'varchar'})
     model: string
     @Column({type: 'varchar', unique: true})

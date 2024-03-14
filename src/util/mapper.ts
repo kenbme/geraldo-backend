@@ -19,7 +19,7 @@ export const createDriverResponseDTO = (driver: Driver): DriverResponseDTO => {
 
 export const createVehicleResponseDTO = (vehicle: Vehicle): VehicleResponseDTO => {
     const dto = new VehicleResponseDTO
-    dto.uuid = vehicle.uuid
+    dto.id = vehicle.id
     dto.model = vehicle.model
     dto.plate = vehicle.plate
     dto.year = vehicle.year
