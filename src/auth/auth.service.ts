@@ -3,6 +3,7 @@ import {JwtService} from '@nestjs/jwt'
 import * as bcrypt from 'bcrypt'
 import {UserService} from 'src/user/user.service'
 import {LoginResponseDTO} from '../shared/auth/dto/response/login.response.dto'
+import { createLoginPayload } from 'src/util/mapper'
 
 @Injectable()
 export class AuthService {
@@ -17,13 +18,10 @@ export class AuthService {
     if (!match) {
       throw new UnauthorizedException()
     }
-    const payload = {
-      sub: user.id,
-      username: user.name,
-      userType: user.userType.name
-    }
+    const {id, userType} = createLoginPayload(user)
+    
     return {
-      access_token: await this.jwtService.signAsync(payload, {
+      access_token: await this.jwtService.signAsync({id, userType}, {
         secret: process.env.JWT_SECRET_KEY
       })
     }

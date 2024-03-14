@@ -1,8 +1,11 @@
 import { Driver } from "src/driver/entities/driver.entity";
 import { Establishment } from "src/establishment/entities/establishment.entity";
+import { LoginPayload } from "src/shared/auth/dto/login.payload.dto";
 import { DriverResponseDTO } from "src/shared/driver/dto/response/driver.response.dto";
 import { EstablishmentResponseDTO } from "src/shared/establishment/dto/response/establishment.response.dto";
+import { UserTypeEnum } from "src/shared/user/enums/user-type.enum";
 import { VehicleResponseDTO } from "src/shared/vehicle/dto/response/vahicle.response.dto";
+import { User } from "src/user/entities/user.entity";
 import { Vehicle } from "src/vehicle/entities/vehicle.entity";
 
 export const createDriverResponseDTO = (driver: Driver): DriverResponseDTO => {
@@ -33,4 +36,11 @@ export const createEstablishmentResponseDTO = (establishment: Establishment): Es
     dto.name = establishment.user.name
     dto.username = establishment.user.username
     return dto
+}
+
+export const createLoginPayload = (user: User): LoginPayload => {
+    const payload = new LoginPayload()
+    payload.id = user.id
+    payload.userType = (UserTypeEnum as any)[user.userType.name]
+    return payload
 }
