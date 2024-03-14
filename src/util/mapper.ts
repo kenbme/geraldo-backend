@@ -18,7 +18,7 @@ export const createDriverResponseDTO = (driver: Driver): DriverResponseDTO => {
 }
 
 export const createVehicleResponseDTO = (vehicle: Vehicle): VehicleResponseDTO => {
-    const dto = new VehicleResponseDTO
+    const dto = new VehicleResponseDTO()
     dto.id = vehicle.id
     dto.model = vehicle.model
     dto.plate = vehicle.plate
@@ -37,7 +37,7 @@ export const createEstablishmentResponseDTO = (establishment: Establishment): Es
     return dto
 }
 export const createComponentResponseDTO = (component: Component): ComponentsResponseDTO => {
-    const dto = new ComponentsResponseDTO
+    const dto = new ComponentsResponseDTO()
     dto.id = component.id
     dto.componentType = component.componentType.name
     dto.dateLastExchange = component.dateLastExchange
