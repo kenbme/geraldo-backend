@@ -12,7 +12,7 @@ import {UserService} from 'src/user/user.service'
 import {Repository} from 'typeorm'
 import {AuthController} from './auth.controller'
 import {AuthService} from './auth.service'
-import { UserTypeSeeder } from 'src/user/seeders/user.type.seeder'
+import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
 
 configDotenv({path: resolve(process.cwd(), '.development.env')})
 
@@ -40,7 +40,11 @@ describe('AuthController', () => {
         UserModule
       ],
       controllers: [AuthController],
-      providers: [AuthService, {provide: getRepositoryToken(User), useClass: Repository}, UserTypeSeeder]
+      providers: [
+        AuthService,
+        {provide: getRepositoryToken(User), useClass: Repository},
+        UserTypeSeeder
+      ]
     }).compile()
 
     authController = module.get(AuthController)

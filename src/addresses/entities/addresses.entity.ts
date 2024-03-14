@@ -32,9 +32,9 @@ export class Address {
   @Column({type: 'varchar'})
   houseNumber: string
 
-  @Column({type: 'decimal'})
+  @Column({type: 'decimal', nullable: true})
   longitude: number
 
-  @Column({type: 'decimal'})
-  latitude: string
+  @Column({type: 'decimal', nullable: true})
+  latitude: number
 }

@@ -1,4 +1,4 @@
-import {BadRequestException, NotFoundException} from '@nestjs/common'
+import {BadRequestException, ForbiddenException, NotFoundException} from '@nestjs/common'
 import {Test, TestingModule} from '@nestjs/testing'
 import {CepController} from './cep.controller'
 import {CepService} from './cep.service'
@@ -20,9 +20,13 @@ describe('cepController', () => {
   })
 
   it('should be Monteiro', async () => {
-    const res = await cepController.find_address('58500000')
-    expect(res).toBeDefined()
-    expect(res.data).toEqual({state: 'PB', city: 'Monteiro', district: '', address: ''})
+    try {
+      await cepController.find_address('58500000')
+    } catch (err) {
+      expect(err).toBeInstanceOf(ForbiddenException)
+      return
+    }
+    throw new Error()
   })
 
   it('should be Universitario CG', async () => {

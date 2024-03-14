@@ -8,6 +8,7 @@ export class CityService {
   constructor(@InjectRepository(City) private readonly cityRepository: Repository<City>) {}
 
   async findCityByName(name: string): Promise<City> {
+    await this.cityRepository.upsert({name: name}, {conflictPaths: ['name']})
     return await this.cityRepository.findOneByOrFail({name: name})
   }
 }

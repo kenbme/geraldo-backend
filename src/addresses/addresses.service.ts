@@ -23,6 +23,7 @@ export class AddressesService {
     address.state = state
     address.city = city
     address.block = dto.district
+    address.street = dto.address
     address.postalCode = postalCode
     address.houseNumber = houseNumber
     return await this.addressRepository.save(address)

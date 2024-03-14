@@ -10,7 +10,7 @@ import {ConflictException} from '@nestjs/common'
 import {ValidationError, validateOrReject} from 'class-validator'
 import {CreateDriverDto} from '../shared/driver/dto/request/create-driver.dto'
 import {Vehicle} from 'src/vehicle/entities/vehicle.entity'
-import { UserTypeSeeder } from 'src/user/seeders/user.type.seeder'
+import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
 
 describe('DriverController', () => {
   let driverController: DriverController

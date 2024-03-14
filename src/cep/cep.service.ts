@@ -1,4 +1,9 @@
-import {BadRequestException, Injectable, NotFoundException} from '@nestjs/common'
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common'
 import {AddressDto} from '../shared/cep/dto/response/address.dto'
 import axios from 'axios'
 
@@ -17,7 +22,7 @@ export class CepService {
       throw new NotFoundException('CEP não encontrado')
     }
     if (!response.data.logradouro) {
-      throw new NotFoundException('CEP não encontrado')
+      throw new ForbiddenException('CEP inválido')
     }
     const addressDto: AddressDto = {
       state: response.data.uf,

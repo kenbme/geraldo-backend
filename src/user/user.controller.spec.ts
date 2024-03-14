@@ -9,7 +9,7 @@ import {UserController} from './user.controller'
 import {UserModule} from './user.module'
 import {UserService} from './user.service'
 import {UserTypeService} from './user.type.service'
-import { UserTypeSeeder } from './seeders/user.type.seeder'
+import {UserTypeSeeder} from './seeders/user.type.seeder'
 
 describe('UserController', () => {
   let userController: UserController
