@@ -6,8 +6,6 @@ import {configDotenv} from 'dotenv'
 import {resolve} from 'path'
 
 async function bootstrap(): Promise<void> {
-  console.log('INICIANDO')
-
   configDotenv({path: resolve(process.cwd(), '.development.env')})
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
