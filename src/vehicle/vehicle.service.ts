@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common'
+import { BadRequestException, ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UUID } from 'crypto'
 import { DriverService } from 'src/driver/driver.service'
@@ -46,4 +46,5 @@ export class VehicleService {
     }
     return false
   }
+
 }
