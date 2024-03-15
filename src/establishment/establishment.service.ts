@@ -5,12 +5,12 @@ import {UserService} from 'src/user/user.service'
 import {Repository} from 'typeorm'
 import {Establishment} from './entities/establishment.entity'
 import {EstablishmentTypeService} from './establishment.type.service'
-import {AddressesService} from 'src/addresses/addresses.service'
+import {AddressService} from 'src/address/address.service'
 
 @Injectable()
 export class EstablishmentService {
   constructor(
-    private readonly addressService: AddressesService,
+    private readonly addressService: AddressService,
     private readonly userService: UserService,
     @InjectRepository(Establishment)
     private readonly establishmentRepository: Repository<Establishment>,

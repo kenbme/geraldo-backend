@@ -1,13 +1,13 @@
 import {Injectable} from '@nestjs/common'
-import {Address} from './entities/addresses.entity'
+import {Address} from './entities/address.entity'
 import {InjectRepository} from '@nestjs/typeorm'
 import {Repository} from 'typeorm'
 import {CepService} from 'src/cep/cep.service'
 import {StateService} from './state.service'
-import {CityService} from './cities.service'
+import {CityService} from './city.service'
 
 @Injectable()
-export class AddressesService {
+export class AddressService {
   constructor(
     @InjectRepository(Address) private readonly addressRepository: Repository<Address>,
     private readonly cepService: CepService,

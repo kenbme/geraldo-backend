@@ -6,14 +6,14 @@ import {EstablishmentTypeService} from './establishment.type.service'
 import {TypeOrmModule} from '@nestjs/typeorm'
 import {Establishment} from './entities/establishment.entity'
 import {EstablishmentType} from './entities/establishment.type.entity'
-import {AddressesModule} from 'src/addresses/addresses.module'
+import {AddressModule} from 'src/address/address.module'
 import {CepService} from 'src/cep/cep.service'
 
 @Module({
   imports: [
     UserModule,
     TypeOrmModule.forFeature([Establishment, EstablishmentType]),
-    AddressesModule
+    AddressModule
   ],
   controllers: [EstablishmentController],
   providers: [EstablishmentService, EstablishmentTypeService, CepService]

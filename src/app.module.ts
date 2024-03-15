@@ -19,12 +19,12 @@ import {Vehicle} from './vehicle/entities/vehicle.entity'
 import {VehicleModule} from './vehicle/vehicle.module'
 import {AuthGuard} from './config/authguard'
 import {RolesGuard} from './config/roles.guard'
-import {State} from './addresses/entities/state.entity'
-import {City} from './addresses/entities/cities.entity'
-import {AddressesModule} from './addresses/addresses.module'
-import {Address} from './addresses/entities/addresses.entity'
+import {State} from './address/entities/state.entity'
+import {City} from './address/entities/cities.entity'
+import {AddressModule} from './address/address.module'
+import {Address} from './address/entities/address.entity'
 import {SeederService} from './config/seeder.service'
-import {StateSeeder} from './addresses/seeders/state.seeder'
+import {StateSeeder} from './address/seeders/state.seeder'
 import {UserTypeSeeder} from './user/seeders/user.type.seeder'
 import {EstablishmentTypeSeeder} from './establishment/seeders/establishment.type.seeder'
 import {Component} from './component/entities/component.entity'
@@ -59,7 +59,7 @@ import {ComponentModule} from './component/component.module'
     EstablishmentModule,
     VehicleModule,
     ComponentModule,
-    AddressesModule
+    AddressModule
   ],
   providers: [
     {
