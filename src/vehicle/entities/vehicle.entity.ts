@@ -1,5 +1,5 @@
 import { UUID } from 'crypto';
-import { Component } from 'src/components/entities/component.entity';
+import { Component } from 'src/component/entities/component.entity';
 import { Driver } from "src/driver/entities/driver.entity";
 import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 

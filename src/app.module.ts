@@ -27,9 +27,9 @@ import {SeederService} from './seeder.service'
 import {StateSeeder} from './addresses/seeders/state.seeder'
 import {UserTypeSeeder} from './user/seeders/user.type.seeder'
 import {EstablishmentTypeSeeder} from './establishment/seeders/establishment.type.seeder'
-import { Component } from './components/entities/component.entity'
-import { ComponentType } from './components/entities/component.type.entity'
-import { ComponentsModule } from './components/components.module'
+import { Component } from './component/entities/component.entity'
+import { ComponentType } from './component/entities/component.type.entity'
+import { ComponentModule } from './component/component.module'
 
 @Module({
   imports: [
@@ -58,7 +58,7 @@ import { ComponentsModule } from './components/components.module'
     DriverModule,
     EstablishmentModule,
     VehicleModule,
-    ComponentsModule,
+    ComponentModule,
     AddressesModule
   ],
   providers: [

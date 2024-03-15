@@ -1,4 +1,4 @@
-export class ComponentsResponseDTO {
+export class ComponentResponseDTO {
   id: string
   componentType: string
   dateLastExchange: Date

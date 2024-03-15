@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { ComponentsController } from './components.controller'
-import { ComponentsService } from './components.service'
+import { ComponentController } from './component.controller'
+import { ComponentsService } from './component.service'
 import { Component } from './entities/component.entity'
 import { ComponentType } from './entities/component.type.entity'
 import { VehicleService } from 'src/vehicle/vehicle.service'
@@ -11,8 +11,8 @@ import { VehicleModule } from 'src/vehicle/vehicle.module'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Component , ComponentType]),VehicleModule],
-  controllers: [ComponentsController],
+  controllers: [ComponentController],
   providers: [ComponentsService],
   exports: [ComponentsService]
 })
-export class ComponentsModule {}
+export class ComponentModule {}

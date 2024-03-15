@@ -1,11 +1,11 @@
 import { IsDate, IsEnum, IsInt, IsNotEmpty, IsString, IsUUID, isNotEmpty } from 'class-validator'
-import { ComponentsTypeEnum } from '../../enums/components-type.enum'
 import { UUID } from 'crypto'
 import { isDateValid } from '../../validators/IsDateValid'
+import { ComponentTypeEnum } from '../../enums/component-type.enum'
 
-export class CreateComponentsDto {
+export class CreateComponentDto {
   
-  @IsEnum(ComponentsTypeEnum)
+  @IsEnum(ComponentTypeEnum)
   @IsNotEmpty()
   componentsType: string
   
@@ -23,6 +23,6 @@ export class CreateComponentsDto {
   maintenanceFrequency: number
 
   @IsUUID()
-  vehicleUuid: UUID
+  vehicleId: UUID
     
 }

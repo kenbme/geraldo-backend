@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Component } from './entities/component.entity';
 import { Repository } from 'typeorm';
 import { ComponentType } from './entities/component.type.entity';
-import { CreateComponentsDto } from 'src/shared/components/dto/request/create-components';
+import { CreateComponentDto } from 'src/shared/components/dto/request/create-component';
 import { VehicleService } from 'src/vehicle/vehicle.service';
 import { UUID } from 'crypto';
 
@@ -18,10 +18,10 @@ export class ComponentsService {
         private readonly vehicleService: VehicleService
     ) {}
 
-    async create(dto: CreateComponentsDto) {
+    async create(dto: CreateComponentDto) {
         const componentType = await this.componentTypeRepository.findOneByOrFail({name: dto.componentsType})
         const component = new Component()
-        const vehicle = await this.vehicleService.getVehicle(dto.vehicleUuid)
+        const vehicle = await this.vehicleService.getVehicle(dto.vehicleId)
         const DateCurrent = new Date() 
 
         if (await this.findByComponentInVehicle(componentType, vehicle.id)) {
