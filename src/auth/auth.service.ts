@@ -18,11 +18,10 @@ export class AuthService {
     if (!match) {
       throw new UnauthorizedException()
     }
-    const {id, userType} = createLoginPayload(user)
-
+    const {id, userType, resetPassword} = createLoginPayload(user)
     return {
       access_token: await this.jwtService.signAsync(
-        {id, userType},
+        {id, userType, resetPassword},
         {
           secret: process.env.JWT_SECRET_KEY
         }
