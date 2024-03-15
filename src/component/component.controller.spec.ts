@@ -12,9 +12,9 @@ import {VehicleModule} from 'src/vehicle/vehicle.module'
 import {DriverModule} from 'src/driver/driver.module'
 import {UserModule} from 'src/user/user.module'
 import {ComponentTypeSeeder} from './seeders/component.type.seeder'
-import { UserTypeSeeder } from 'src/user/seeders/user.type.seeder'
-import { DriverService } from 'src/driver/driver.service'
-import { VehicleService } from 'src/vehicle/vehicle.service'
+import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
+import {DriverService} from 'src/driver/driver.service'
+import {VehicleService} from 'src/vehicle/vehicle.service'
 
 describe('ComponentController', () => {
   let componentController: ComponentController
