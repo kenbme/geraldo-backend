@@ -27,6 +27,9 @@ import {SeederService} from './seeder.service'
 import {StateSeeder} from './addresses/seeders/state.seeder'
 import {UserTypeSeeder} from './user/seeders/user.type.seeder'
 import {EstablishmentTypeSeeder} from './establishment/seeders/establishment.type.seeder'
+import { Component } from './components/entities/component.entity'
+import { ComponentType } from './components/entities/component.type.entity'
+import { ComponentsModule } from './components/components.module'
 
 @Module({
   imports: [
@@ -43,16 +46,19 @@ import {EstablishmentTypeSeeder} from './establishment/seeders/establishment.typ
         Vehicle,
         Address,
         State,
-        City
+        City,
+        Component,
+        ComponentType
       ]
     }),
-    TypeOrmModule.forFeature([EstablishmentType, UserType, State]),
+    TypeOrmModule.forFeature([EstablishmentType, UserType, State, ComponentType]),
     UserModule,
     AuthModule,
     CepModule,
     DriverModule,
     EstablishmentModule,
     VehicleModule,
+    ComponentsModule,
     AddressesModule
   ],
   providers: [

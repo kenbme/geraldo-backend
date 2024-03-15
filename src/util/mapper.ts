@@ -1,6 +1,8 @@
+import { Component } from 'src/components/entities/component.entity'
 import {Driver} from 'src/driver/entities/driver.entity'
 import {Establishment} from 'src/establishment/entities/establishment.entity'
 import {LoginPayload} from 'src/shared/auth/dto/login.payload.dto'
+import { ComponentsResponseDTO } from 'src/shared/components/dto/response/components.response.dto'
 import {DriverResponseDTO} from 'src/shared/driver/dto/response/driver.response.dto'
 import {EstablishmentResponseDTO} from 'src/shared/establishment/dto/response/establishment.response.dto'
 import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
@@ -45,4 +47,15 @@ export const createLoginPayload = (user: User): LoginPayload => {
   payload.id = user.id
   payload.userType = (UserTypeEnum as any)[user.userType.name]
   return payload
+}
+
+export const createComponentResponseDTO = (component: Component): ComponentsResponseDTO => {
+  const dto = new ComponentsResponseDTO()
+  dto.id = component.id
+  dto.componentType = component.componentType.name
+  dto.dateLastExchange = component.dateLastExchange
+  dto.maintenanceFrequency = component.maintenanceFrequency
+  dto.kilometersLastExnchange = component.kilometersLastExnchange
+  dto.vehicleId = component.vehicle.id
+  return dto
 }
