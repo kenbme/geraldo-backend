@@ -1,8 +1,8 @@
 import {ConflictException, Injectable, NotFoundException} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {UUID} from 'crypto'
-import {DriverService} from 'src/driver/driver.service'
-import {CreateVehicleDto} from 'src/shared/vehicle/dto/request/create-vehicle.dto'
+import {DriverService} from '../driver/driver.service'
+import {CreateVehicleDto} from '../shared/vehicle/dto/request/create-vehicle.dto'
 import {Repository} from 'typeorm'
 import {Vehicle} from './entities/vehicle.entity'
 

@@ -1,5 +1,5 @@
 import {IsEmail, IsString, MinLength} from 'class-validator'
-import {IsCPF} from 'src/shared/user/validators/IsCPF'
+import {IsCPF} from '../../../../shared/user/validators/IsCPF'
 import {NoContainsSpecialCharacter} from '../../validators/NoContainsSpecialCharacter'
 import {IsValidDate} from '../../validators/ValiderDate'
 import {NoWhiteSpace} from '../../validators/NoWhiteSpace'

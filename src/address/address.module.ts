@@ -1,5 +1,5 @@
 import {Module} from '@nestjs/common'
-import {CepModule} from 'src/cep/cep.module'
+import {CepModule} from '../cep/cep.module'
 import {Address} from './entities/address.entity'
 import {AddressService} from './address.service'
 import {TypeOrmModule} from '@nestjs/typeorm'

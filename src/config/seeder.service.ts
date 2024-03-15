@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common'
 import {StateSeeder} from '../address/seeders/state.seeder'
 import {EstablishmentTypeSeeder} from '../establishment/seeders/establishment.type.seeder'
 import {UserTypeSeeder} from '../user/seeders/user.type.seeder'
-import {ComponentTypeSeeder} from 'src/component/seeders/component.type.seeder'
+import {ComponentTypeSeeder} from '../component/seeders/component.type.seeder'
 
 @Injectable()
 export class SeederService {

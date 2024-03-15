@@ -1,11 +1,11 @@
 import {Body, Controller, Get, HttpCode, Post} from '@nestjs/common'
 import {UUID} from 'crypto'
-import {CreateVehicleDto} from 'src/shared/vehicle/dto/request/create-vehicle.dto'
+import {CreateVehicleDto} from '../shared/vehicle/dto/request/create-vehicle.dto'
 import {VehicleService} from './vehicle.service'
-import {createVehicleResponseDTO} from 'src/util/mapper'
-import {VehicleResponseDTO} from 'src/shared/vehicle/dto/response/vahicle.response.dto'
-import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
-import {Roles} from 'src/config/decorator'
+import {createVehicleResponseDTO} from '../util/mapper'
+import {VehicleResponseDTO} from '../shared/vehicle/dto/response/vahicle.response.dto'
+import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
+import {Roles} from '../config/decorator'
 
 @Controller('')
 export class VehicleController {

@@ -1,11 +1,11 @@
 import {Injectable} from '@nestjs/common'
-import {CreateEstablishmentDto} from 'src/shared/establishment/dto/request/create-establishment.dto'
+import {CreateEstablishmentDto} from '../shared/establishment/dto/request/create-establishment.dto'
 import {InjectRepository} from '@nestjs/typeorm'
-import {UserService} from 'src/user/user.service'
+import {UserService} from '../user/user.service'
 import {Repository} from 'typeorm'
 import {Establishment} from './entities/establishment.entity'
 import {EstablishmentTypeService} from './establishment.type.service'
-import {AddressService} from 'src/address/address.service'
+import {AddressService} from '../address/address.service'
 
 @Injectable()
 export class EstablishmentService {

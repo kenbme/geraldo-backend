@@ -1,9 +1,9 @@
 import {Controller, Post, Body} from '@nestjs/common'
 import {EstablishmentService} from './establishment.service'
-import {CreateEstablishmentDto} from 'src/shared/establishment/dto/request/create-establishment.dto'
-import {EstablishmentResponseDTO} from 'src/shared/establishment/dto/response/establishment.response.dto'
-import {createEstablishmentResponseDTO} from 'src/util/mapper'
-import {Public} from 'src/config/decorator'
+import {CreateEstablishmentDto} from '../shared/establishment/dto/request/create-establishment.dto'
+import {EstablishmentResponseDTO} from '../shared/establishment/dto/response/establishment.response.dto'
+import {createEstablishmentResponseDTO} from '../util/mapper'
+import {Public} from '../config/decorator'
 
 @Controller('')
 export class EstablishmentController {

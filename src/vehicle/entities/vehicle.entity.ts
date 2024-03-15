@@ -1,6 +1,6 @@
 import {UUID} from 'crypto'
-import {Component} from 'src/component/entities/component.entity'
-import {Driver} from 'src/driver/entities/driver.entity'
+import {Component} from '../../component/entities/component.entity'
+import {Driver} from '../../driver/entities/driver.entity'
 import {Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
 
 @Entity()

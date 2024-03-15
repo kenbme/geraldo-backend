@@ -1,5 +1,5 @@
 import {CustomDecorator, SetMetadata} from '@nestjs/common'
-import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
+import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
 
 export const IS_PUBLIC_KEY = 'isPublic'
 export const Public = (): CustomDecorator<string> => SetMetadata(IS_PUBLIC_KEY, true)

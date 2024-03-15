@@ -1,7 +1,7 @@
 import {Controller, Post, Body, HttpCode} from '@nestjs/common'
-import {RecoverPasswordDto} from 'src/shared/user/dto/request/recover-password.dto'
+import {RecoverPasswordDto} from '../shared/user/dto/request/recover-password.dto'
 import {UserService} from './user.service'
-import {Public} from 'src/config/decorator'
+import {Public} from '../config/decorator'
 
 @Controller('')
 export class UserController {

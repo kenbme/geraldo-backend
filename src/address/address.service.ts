@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common'
 import {Address} from './entities/address.entity'
 import {InjectRepository} from '@nestjs/typeorm'
 import {Repository} from 'typeorm'
-import {CepService} from 'src/cep/cep.service'
+import {CepService} from '../cep/cep.service'
 import {StateService} from './state.service'
 import {CityService} from './city.service'
 

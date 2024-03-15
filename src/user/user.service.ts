@@ -2,10 +2,10 @@ import {BadRequestException, ConflictException, Injectable} from '@nestjs/common
 import {InjectRepository} from '@nestjs/typeorm'
 import {hash} from 'bcrypt'
 import {Repository} from 'typeorm'
-import {CreateUserDto} from 'src/shared/user/dto/request/create-user.dto'
+import {CreateUserDto} from '../shared/user/dto/request/create-user.dto'
 import {User} from './entities/user.entity'
 import {UserTypeService} from './user.type.service'
-import {RecoverPasswordDto} from 'src/shared/user/dto/request/recover-password.dto'
+import {RecoverPasswordDto} from '../shared/user/dto/request/recover-password.dto'
 
 @Injectable()
 export class UserService {

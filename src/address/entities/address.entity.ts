@@ -2,7 +2,7 @@ import {UUID} from 'crypto'
 import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {State} from './state.entity'
 import {City} from './cities.entity'
-import {Establishment} from 'src/establishment/entities/establishment.entity'
+import {Establishment} from '../../establishment/entities/establishment.entity'
 
 @Entity()
 export class Address {

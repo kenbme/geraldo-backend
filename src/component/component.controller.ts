@@ -1,7 +1,7 @@
 import {Body, Controller, HttpCode, Post} from '@nestjs/common'
-import {CreateComponentDto} from 'src/shared/component/dto/request/create-component'
-import {ComponentResponseDTO} from 'src/shared/component/dto/response/component.response.dto'
-import {createComponentResponseDTO} from 'src/util/mapper'
+import {CreateComponentDto} from '../shared/component/dto/request/create-component'
+import {ComponentResponseDTO} from '../shared/component/dto/response/component.response.dto'
+import {createComponentResponseDTO} from '../util/mapper'
 import {ComponentsService} from './component.service'
 
 @Controller('components')

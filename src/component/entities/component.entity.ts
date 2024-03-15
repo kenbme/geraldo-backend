@@ -1,4 +1,4 @@
-import {Vehicle} from 'src/vehicle/entities/vehicle.entity'
+import {Vehicle} from '../../vehicle/entities/vehicle.entity'
 import {Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {ComponentType} from './component.type.entity'
 

@@ -1,7 +1,7 @@
 import {Controller, Get, Query} from '@nestjs/common'
 import {CepService} from './cep.service'
 import {AddressDto} from '../shared/cep/dto/response/address.dto'
-import {Public} from 'src/config/decorator'
+import {Public} from '../config/decorator'
 
 @Controller('')
 export class CepController {
