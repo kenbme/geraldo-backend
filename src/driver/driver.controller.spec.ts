@@ -11,6 +11,8 @@ import {ValidationError, validateOrReject} from 'class-validator'
 import {CreateDriverDto} from '../shared/driver/dto/request/create-driver.dto'
 import {Vehicle} from 'src/vehicle/entities/vehicle.entity'
 import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
+import {Component} from 'src/component/entities/component.entity'
+import {ComponentType} from 'src/component/entities/component.type.entity'
 
 describe('DriverController', () => {
   let driverController: DriverController
@@ -23,7 +25,7 @@ describe('DriverController', () => {
           database: 'db/testing_driver.sqlite3',
           synchronize: true,
           dropSchema: true,
-          entities: [User, UserType, Driver, Vehicle]
+          entities: [User, UserType, Driver, Vehicle, Component, ComponentType]
         }),
         TypeOrmModule.forFeature([Driver, UserType]),
         UserModule
