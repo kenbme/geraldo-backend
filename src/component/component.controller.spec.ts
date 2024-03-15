@@ -11,6 +11,7 @@ import {ComponentType} from './entities/component.type.entity'
 import {VehicleModule} from 'src/vehicle/vehicle.module'
 import {DriverModule} from 'src/driver/driver.module'
 import {UserModule} from 'src/user/user.module'
+import {ComponentTypeSeeder} from './seeders/component.type.seeder'
 
 describe('ComponentController', () => {
   let controller: ComponentController
@@ -31,10 +32,12 @@ describe('ComponentController', () => {
         TypeOrmModule.forFeature([Driver, Vehicle, Component, ComponentType])
       ],
       controllers: [ComponentController],
-      providers: [ComponentsService]
+      providers: [ComponentsService, ComponentTypeSeeder]
     }).compile()
 
-    controller = module.get<ComponentController>(ComponentController)
+    controller = module.get(ComponentController)
+    const seeder = module.get(ComponentTypeSeeder)
+    await seeder.seed()
   })
 
   it('should be defined', () => {

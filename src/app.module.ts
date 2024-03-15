@@ -30,6 +30,7 @@ import {EstablishmentTypeSeeder} from './establishment/seeders/establishment.typ
 import {Component} from './component/entities/component.entity'
 import {ComponentType} from './component/entities/component.type.entity'
 import {ComponentModule} from './component/component.module'
+import {ComponentTypeSeeder} from './component/seeders/component.type.seeder'
 
 @Module({
   imports: [
@@ -89,6 +90,7 @@ import {ComponentModule} from './component/component.module'
     StateSeeder,
     UserTypeSeeder,
     EstablishmentTypeSeeder,
+    ComponentTypeSeeder,
     SeederService
   ]
 })
