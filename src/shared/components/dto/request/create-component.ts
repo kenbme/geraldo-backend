@@ -1,14 +1,13 @@
-import { IsDate, IsEnum, IsInt, IsNotEmpty, IsString, IsUUID, isNotEmpty } from 'class-validator'
-import { UUID } from 'crypto'
-import { isDateValid } from '../../validators/IsDateValid'
-import { ComponentTypeEnum } from '../../enums/component-type.enum'
+import {IsDate, IsEnum, IsInt, IsNotEmpty, IsString, IsUUID} from 'class-validator'
+import {UUID} from 'crypto'
+import {isDateValid} from '../../validators/IsDateValid'
+import {ComponentTypeEnum} from '../../enums/component-type.enum'
 
 export class CreateComponentDto {
-  
   @IsEnum(ComponentTypeEnum)
   @IsNotEmpty()
-  componentsType: string
-  
+  componentType: string
+
   @IsDate()
   @isDateValid()
   @IsNotEmpty()
@@ -24,5 +23,4 @@ export class CreateComponentDto {
 
   @IsUUID()
   vehicleId: UUID
-    
 }

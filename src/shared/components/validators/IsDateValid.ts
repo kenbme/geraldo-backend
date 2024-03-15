@@ -1,18 +1,17 @@
 import {ValidationOptions, registerDecorator} from 'class-validator'
-import { validateDate } from 'src/shared/driver/validators/ValiderDate'
 
 export function isDateValid(validationOptions?: ValidationOptions) {
-  return function (object: any, propertyName: string) {
+  return function (object: any, propertyName: string): void {
     registerDecorator({
       name: 'isDateValid',
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       validator: {
-        validate(value: Date) {
+        validate(value: Date): boolean {
           return validerDate(value)
         },
-        defaultMessage: () => {
+        defaultMessage: (): string => {
           return 'Data da ultima troca menor que a atual'
         }
       }
@@ -20,8 +19,7 @@ export function isDateValid(validationOptions?: ValidationOptions) {
   }
 }
 
-export const validerDate= (value: Date): boolean => {
-    const dateCurrent = new Date()
-    return dateCurrent > value 
-
+export const validerDate = (value: Date): boolean => {
+  const dateCurrent = new Date()
+  return dateCurrent > value
 }

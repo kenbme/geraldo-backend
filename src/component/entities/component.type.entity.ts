@@ -1,5 +1,5 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
-import { Component } from './component.entity'
+import {Component} from './component.entity'
 
 @Entity()
 export class ComponentType {

@@ -1,14 +1,13 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { UUID } from 'crypto'
-import { DriverService } from 'src/driver/driver.service'
-import { CreateVehicleDto } from 'src/shared/vehicle/dto/request/create-vehicle.dto'
-import { Repository } from 'typeorm'
-import { Vehicle } from './entities/vehicle.entity'
+import {ConflictException, Injectable, NotFoundException} from '@nestjs/common'
+import {InjectRepository} from '@nestjs/typeorm'
+import {UUID} from 'crypto'
+import {DriverService} from 'src/driver/driver.service'
+import {CreateVehicleDto} from 'src/shared/vehicle/dto/request/create-vehicle.dto'
+import {Repository} from 'typeorm'
+import {Vehicle} from './entities/vehicle.entity'
 
 @Injectable()
 export class VehicleService {
-
   constructor(
     private readonly driverService: DriverService,
     @InjectRepository(Vehicle)
@@ -49,16 +48,18 @@ export class VehicleService {
   }
 
   async getVehicles(driver_UUid: UUID): Promise<Vehicle[]> {
-    const vehicles = await this.vehicleRepository.createQueryBuilder("vehicle").leftJoinAndSelect('vehicle.owners', 'driver')
-    .where('driver.uuid = :driverUUId', { driver_UUid })
-    .getMany();
+    const vehicles = await this.vehicleRepository
+      .createQueryBuilder('vehicle')
+      .leftJoinAndSelect('vehicle.owners', 'driver')
+      .where('driver.uuid = :driverUUId', {driver_UUid})
+      .getMany()
     if (!vehicles || vehicles.length === 0) {
       throw new NotFoundException('Nenhum veículo encontrado para este motorista.')
     }
 
-    return vehicles;
+    return vehicles
   }
-  async getVehicle(id: UUID): Promise<Vehicle> { 
-    return await this.vehicleRepository.findOneByOrFail({id: id}) 
+  async getVehicle(id: UUID): Promise<Vehicle> {
+    return await this.vehicleRepository.findOneByOrFail({id: id})
   }
 }
