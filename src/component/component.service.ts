@@ -8,7 +8,7 @@ import {VehicleService} from '../vehicle/vehicle.service'
 import {UUID} from 'crypto'
 
 @Injectable()
-export class ComponentsService {
+export class ComponentService {
   constructor(
     @InjectRepository(Component)
     private readonly componentRepository: Repository<Component>,
@@ -18,6 +18,7 @@ export class ComponentsService {
   ) {}
 
   async create(dto: CreateComponentDto): Promise<Component> {
+    // TODO deve verificar se user é dono desse carro
     const componentType = await this.componentTypeRepository.findOneByOrFail({
       name: dto.componentType
     })
