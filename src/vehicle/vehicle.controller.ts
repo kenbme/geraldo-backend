@@ -5,7 +5,7 @@ import {VehicleService} from './vehicle.service'
 import {createVehicleResponseDTO} from 'src/util/mapper'
 import {VehicleResponseDTO} from 'src/shared/vehicle/dto/response/vahicle.response.dto'
 import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
-import {Roles} from 'src/decorator'
+import {Roles} from 'src/config/decorator'
 
 @Controller('')
 export class VehicleController {

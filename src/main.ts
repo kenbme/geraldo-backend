@@ -4,7 +4,7 @@ import {AppModule} from './app.module'
 import {ValidationPipe} from '@nestjs/common'
 import {configDotenv} from 'dotenv'
 import {resolve} from 'path'
-import {SeederService} from './seeder.service'
+import {SeederService} from './config/seeder.service'
 
 async function bootstrap(): Promise<void> {
   configDotenv({path: resolve(process.cwd(), '.development.env')})

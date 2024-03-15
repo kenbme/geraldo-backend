@@ -3,7 +3,7 @@ import {EstablishmentService} from './establishment.service'
 import {CreateEstablishmentDto} from 'src/shared/establishment/dto/request/create-establishment.dto'
 import {EstablishmentResponseDTO} from 'src/shared/establishment/dto/response/establishment.response.dto'
 import {createEstablishmentResponseDTO} from 'src/util/mapper'
-import {Public} from 'src/decorator'
+import {Public} from 'src/config/decorator'
 
 @Controller('')
 export class EstablishmentController {
