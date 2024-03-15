@@ -9,8 +9,8 @@ import {UserModule} from 'src/user/user.module'
 import {EstablishmentType} from './entities/establishment.type.entity'
 import {EstablishmentTypeService} from './establishment.type.service'
 import {Repository} from 'typeorm'
-import {AddressesModule} from 'src/address/addresses.module'
-import {Address} from 'src/address/entities/addresses.entity'
+import {AddressModule} from 'src/address/address.module'
+import {Address} from 'src/address/entities/address.entity'
 import {State} from 'src/address/entities/state.entity'
 import {City} from 'src/address/entities/cities.entity'
 import {EstablishmentTypeSeeder} from './seeders/establishment.type.seeder'
@@ -33,7 +33,7 @@ describe('EstablishmentController', () => {
         }),
         TypeOrmModule.forFeature([Establishment, EstablishmentType, State, UserType]),
         UserModule,
-        AddressesModule
+        AddressModule
       ],
       controllers: [EstablishmentController],
       providers: [

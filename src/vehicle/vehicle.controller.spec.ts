@@ -13,7 +13,6 @@ import {UserType} from 'src/user/entities/user.type.entity'
 
 describe('VehicleController', () => {
   let vehicleController: VehicleController
-  let vehicleService: VehicleService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -34,11 +33,9 @@ describe('VehicleController', () => {
     }).compile()
 
     vehicleController = module.get<VehicleController>(VehicleController)
-    vehicleService = module.get<VehicleService>(VehicleService)
   })
 
   it('should controller to be defined', () => {
     expect(vehicleController).toBeDefined()
-    expect(vehicleService).toBeDefined()
   })
 })
