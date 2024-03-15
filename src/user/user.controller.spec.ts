@@ -10,6 +10,7 @@ import {UserModule} from './user.module'
 import {UserService} from './user.service'
 import {UserTypeService} from './user.type.service'
 import {UserTypeSeeder} from './seeders/user.type.seeder'
+import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
 
 describe('UserController', () => {
   let userController: UserController
@@ -56,7 +57,7 @@ describe('UserController', () => {
       email: 'teste@gmail.com',
       birthday: '2000-09-10',
       name: 'fulano',
-      userType: 'DRIVER'
+      userType: UserTypeEnum.DRIVER
     })
     expect(data).toBeDefined()
     const oldPassword = data.createdUser.password

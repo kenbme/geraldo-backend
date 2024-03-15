@@ -10,7 +10,7 @@ export class CreateEstablishmentDto {
   @IsEmail()
   email: string
   @IsEnum(EstablishmentTypeEnum)
-  establishmentType: string
+  establishmentType: EstablishmentTypeEnum
 
   @IsString()
   areaCode: string

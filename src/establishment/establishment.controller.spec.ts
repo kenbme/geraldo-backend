@@ -16,6 +16,7 @@ import {City} from 'src/address/entities/cities.entity'
 import {EstablishmentTypeSeeder} from './seeders/establishment.type.seeder'
 import {StateSeeder} from 'src/address/seeders/state.seeder'
 import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
+import {EstablishmentTypeEnum} from 'src/shared/establishment/enums/establishment-type.enum'
 
 describe('EstablishmentController', () => {
   let establishmentController: EstablishmentController
@@ -67,7 +68,7 @@ describe('EstablishmentController', () => {
       name: 'fulano',
       areaCode: '83',
       phone: '83993333333',
-      establishmentType: 'GAS_STATION',
+      establishmentType: EstablishmentTypeEnum.GAS_STATION,
       houseNumber: '15',
       postalCode: '58429900'
     })

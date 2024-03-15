@@ -5,8 +5,7 @@ import {ComponentTypeEnum} from '../../enums/component-type.enum'
 
 export class CreateComponentDto {
   @IsEnum(ComponentTypeEnum)
-  @IsNotEmpty()
-  componentType: string
+  componentType: ComponentTypeEnum
 
   @IsDate()
   @isDateValid()
@@ -15,7 +14,7 @@ export class CreateComponentDto {
 
   @IsInt()
   @IsNotEmpty()
-  kilometersLastExnchange: number
+  kilometersLastExchange: number
 
   @IsString()
   @IsNotEmpty()

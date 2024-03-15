@@ -31,13 +31,13 @@ export class ComponentService {
     if (!this.componentExists(componentType)) {
       throw new BadRequestException({message: 'Componente veicular não encontrado'})
     }
-    if (dto.kilometersLastExnchange > vehicle.kilometers) {
+    if (dto.kilometersLastExchange > vehicle.kilometers) {
       throw new BadRequestException({
         message: 'Quilometragem da última troca não pode ser maior do que a atual'
       })
     }
     component.componentType = componentType
-    component.kilometersLastExnchange = dto.kilometersLastExnchange
+    component.kilometersLastExnchange = dto.kilometersLastExchange
     component.dateLastExchange = dto.dateLastExchange
     component.maintenanceFrequency = currentDate.setMonth(
       currentDate.getMonth() + dto.maintenanceFrequency

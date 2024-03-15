@@ -11,5 +11,5 @@ export class CreateUserDto {
   @IsDateString()
   birthday?: string
   @IsEnum(UserTypeEnum)
-  userType: string
+  userType: UserTypeEnum
 }

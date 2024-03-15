@@ -5,6 +5,7 @@ import {UserService} from '../user/user.service'
 import {Repository} from 'typeorm'
 import {CreateDriverDto} from '../shared/driver/dto/request/create-driver.dto'
 import {Driver} from './entities/driver.entity'
+import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
 
 @Injectable()
 export class DriverService {
@@ -20,7 +21,7 @@ export class DriverService {
       email: createDriverDto.email,
       name: createDriverDto.name,
       username: createDriverDto.username,
-      userType: 'DRIVER'
+      userType: UserTypeEnum.DRIVER
     })
     const driver = new Driver()
     driver.user = data.createdUser

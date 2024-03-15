@@ -6,6 +6,7 @@ import {Repository} from 'typeorm'
 import {Establishment} from './entities/establishment.entity'
 import {EstablishmentTypeService} from './establishment.type.service'
 import {AddressService} from '../address/address.service'
+import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
 
 @Injectable()
 export class EstablishmentService {
@@ -24,7 +25,7 @@ export class EstablishmentService {
       email: dto.email,
       name: dto.name,
       username: dto.username,
-      userType: 'ESTABLISHMENT'
+      userType: UserTypeEnum.ESTABLISHMENT
     })
     const establishment = new Establishment()
     establishment.areaCode = dto.areaCode

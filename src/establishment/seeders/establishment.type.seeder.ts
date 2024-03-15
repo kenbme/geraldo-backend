@@ -2,6 +2,7 @@ import {Injectable} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {Repository} from 'typeorm'
 import {EstablishmentType} from '../entities/establishment.type.entity'
+import {EstablishmentTypeEnum} from '../../shared/establishment/enums/establishment-type.enum'
 
 @Injectable()
 export class EstablishmentTypeSeeder {
@@ -12,8 +13,8 @@ export class EstablishmentTypeSeeder {
 
   async seed(): Promise<void> {
     const data = [
-      {name: 'GAS_STATION', description: 'descricao de gas station'},
-      {name: 'WORKSHOP', description: 'descricao de workshop'}
+      {name: EstablishmentTypeEnum.GAS_STATION, description: 'descricao de gas station'},
+      {name: EstablishmentTypeEnum.WORKSHOP, description: 'descricao de workshop'}
     ]
     await this.establishmentTypeRepository.upsert(data, {conflictPaths: ['name']})
   }

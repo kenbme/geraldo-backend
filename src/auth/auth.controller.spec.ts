@@ -13,6 +13,7 @@ import {Repository} from 'typeorm'
 import {AuthController} from './auth.controller'
 import {AuthService} from './auth.service'
 import {UserTypeSeeder} from '../user/seeders/user.type.seeder'
+import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
 
 configDotenv({path: resolve(process.cwd(), '.development.env')})
 
@@ -59,7 +60,7 @@ describe('AuthController', () => {
       email: 'teste22@gmail.com',
       birthday: '1999-12-25',
       name: 'Sicrano',
-      userType: 'DRIVER'
+      userType: UserTypeEnum.DRIVER
     })
   })
 
@@ -76,7 +77,7 @@ describe('AuthController', () => {
       email: 'teste@gmail.com',
       birthday: '2002-12-24',
       name: 'fulano',
-      userType: 'DRIVER'
+      userType: UserTypeEnum.DRIVER
     })
     const newCount = await userRepository.count()
     expect(newCount).toBe(count + 1)

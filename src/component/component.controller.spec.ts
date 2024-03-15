@@ -15,6 +15,7 @@ import {ComponentTypeSeeder} from './seeders/component.type.seeder'
 import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
 import {DriverService} from 'src/driver/driver.service'
 import {VehicleService} from 'src/vehicle/vehicle.service'
+import {ComponentTypeEnum} from 'src/shared/component/enums/component-type.enum'
 
 describe('ComponentController', () => {
   let componentController: ComponentController
@@ -75,10 +76,10 @@ describe('ComponentController', () => {
     // TODO necessário revisar
     await componentService.create({
       vehicleId: vehicle.id,
-      componentType: 'BALANCE',
+      componentType: ComponentTypeEnum.BALANCE,
       dateLastExchange: new Date(),
       maintenanceFrequency: 2,
-      kilometersLastExnchange: 50
+      kilometersLastExchange: 50
     })
   })
 })
