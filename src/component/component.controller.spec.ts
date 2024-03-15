@@ -72,6 +72,7 @@ describe('ComponentController', () => {
   })
 
   it('should create a component', async () => {
+    // TODO necessário revisar
     await componentService.create({
       vehicleId: vehicle.id,
       componentType: 'BALANCE',

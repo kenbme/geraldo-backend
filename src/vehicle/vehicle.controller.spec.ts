@@ -56,7 +56,6 @@ describe('VehicleController', () => {
   })
 
   it('should create a vehicle', async () => {
-    // TODO necessário revisar
     await vehicleService.create({
       driverId: driver.id,
       kilometers: 500,
