@@ -22,7 +22,7 @@ export class ComponentsService {
       name: dto.componentType
     })
     const component = new Component()
-    const vehicle = await this.vehicleService.getVehicle(dto.vehicleId)
+    const vehicle = await this.vehicleService.findById(dto.vehicleId)
     const currentDate = new Date()
     if (await this.componentExistsInVehicle(componentType, vehicle.id)) {
       throw new BadRequestException({message: 'Já existe esse componente cadastrado no veículo'})
@@ -46,7 +46,7 @@ export class ComponentsService {
   }
 
   async componentExistsInVehicle(componentType: ComponentType, id: UUID): Promise<boolean> {
-    const vehicle = await this.vehicleService.getVehicle(id)
+    const vehicle = await this.vehicleService.findById(id)
     for (const component of vehicle.components) {
       if (component.componentType === componentType) {
         return true

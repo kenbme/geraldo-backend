@@ -13,8 +13,9 @@ export class VehicleService {
     @InjectRepository(Vehicle)
     private readonly vehicleRepository: Repository<Vehicle>
   ) {}
+
   async create(createVehicleDto: CreateVehicleDto): Promise<Vehicle> {
-    if (await this.existPlate(createVehicleDto.plate)) {
+    if (await this.existsPlate(createVehicleDto.plate)) {
       if (await this.isOwner(createVehicleDto.plate, createVehicleDto.driverId)) {
         throw new ConflictException('Veículo já encontra-se cadastrado')
       }
@@ -26,18 +27,20 @@ export class VehicleService {
     vehicle.kilometers = createVehicleDto.kilometers
     vehicle.year = createVehicleDto.year
     const owner = await this.driverService.findById(createVehicleDto.driverId)
-    vehicle.owners.push(owner)
-    return this.vehicleRepository.save(vehicle)
+    vehicle.owners = [owner]
+    return await this.vehicleRepository.save(vehicle)
   }
-  async existPlate(placaAlvo: string): Promise<Boolean> {
-    const vehicle = this.vehicleRepository.findOneBy({plate: placaAlvo})
-    if (vehicle !== undefined) {
+
+  async existsPlate(targetPlate: string): Promise<Boolean> {
+    const vehicle = await this.vehicleRepository.findOneBy({plate: targetPlate})
+    if (vehicle !== null) {
       return true
     }
     return false
   }
-  async isOwner(targetplate: string, driverId: UUID): Promise<boolean> {
-    const vehicleUsed = await this.vehicleRepository.findOneBy({plate: targetplate})
+
+  async isOwner(targetPlate: string, driverId: UUID): Promise<boolean> {
+    const vehicleUsed = await this.vehicleRepository.findOneBy({plate: targetPlate})
     const driver = await this.driverService.findById(driverId)
     if (vehicleUsed !== null) {
       if (vehicleUsed.owners.includes(driver)) {
@@ -47,19 +50,19 @@ export class VehicleService {
     return false
   }
 
-  async getVehicles(driver_UUid: UUID): Promise<Vehicle[]> {
+  async getVehicles(driverId: UUID): Promise<Vehicle[]> {
     const vehicles = await this.vehicleRepository
       .createQueryBuilder('vehicle')
       .leftJoinAndSelect('vehicle.owners', 'driver')
-      .where('driver.uuid = :driverUUId', {driver_UUid})
+      .where('driver.id = :driverId', {driverId: driverId})
       .getMany()
     if (!vehicles || vehicles.length === 0) {
       throw new NotFoundException('Nenhum veículo encontrado para este motorista.')
     }
-
     return vehicles
   }
-  async getVehicle(id: UUID): Promise<Vehicle> {
+
+  async findById(id: UUID): Promise<Vehicle> {
     return await this.vehicleRepository.findOneByOrFail({id: id})
   }
 }
