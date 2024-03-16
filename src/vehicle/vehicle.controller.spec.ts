@@ -12,6 +12,7 @@ import {DriverModule} from 'src/driver/driver.module'
 import {UserType} from 'src/user/entities/user.type.entity'
 import {DriverService} from 'src/driver/driver.service'
 import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
+import { NotFoundException } from '@nestjs/common'
 
 describe('VehicleController', () => {
   let vehicleController: VehicleController
@@ -58,10 +59,39 @@ describe('VehicleController', () => {
   it('should create a vehicle', async () => {
     await vehicleService.create({
       driverId: driver.id,
+      kilometers: 502,
+      year: 2023,
+      model: 'Civic',
+      plate: 'NEV3118'
+    })
+  })
+  it('result get lists', async () => {
+    const veiculo1 =await vehicleService.create({
+      driverId: driver.id,
       kilometers: 500,
       year: 2022,
       model: 'Civic',
       plate: 'NET3818'
     })
+    const veiculo2 = await vehicleService.create({
+      driverId: driver.id,
+      kilometers: 502,
+      year: 2023,
+      model: 'Civic',
+      plate: 'NEV3118'
+    })
+    const vehicles = await vehicleService.getVehicles(driver.id)
+    expect(vehicles).toEqual([veiculo1,veiculo2])
   })
+  it('result get lists empty', async () => {
+    try {
+      const vehicles = await vehicleService.getVehicles("606e374a-ca2f-4676-9adc-f31ef238288e")
+    } catch (error) {
+      expect(error).toBeInstanceOf(NotFoundException)
+      expect(error.message).toEqual('Nenhum veículo encontrado para este motorista.')
+
+    
+    }
+  })
+
 })

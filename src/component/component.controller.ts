@@ -13,8 +13,8 @@ export class ComponentController {
   async create(
     @Body() createComponentsDTO: CreateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
-    const vehicle = await this.componentsService.create(createComponentsDTO)
-    const data = createComponentResponseDTO(vehicle)
-    return {data, message: 'Veiculo cadastrado com sucesso'}
+    const component = await this.componentsService.create(createComponentsDTO)
+    const data = createComponentResponseDTO(component)
+    return {data, message: 'Componente cadastrado com sucesso'}
   }
 }

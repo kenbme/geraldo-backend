@@ -74,7 +74,7 @@ describe('ComponentController', () => {
 
   it('should create a component', async () => {
     // TODO necessário revisar
-    await componentService.create({
+    const component = await componentController.create({
       vehicleId: vehicle.id,
       componentType: ComponentTypeEnum.BALANCE,
       dateLastExchange: new Date(),

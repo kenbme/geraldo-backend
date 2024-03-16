@@ -22,9 +22,7 @@ export class ComponentService {
     const componentType = await this.componentTypeRepository.findOneByOrFail({
       name: dto.componentType
     })
-    const component = new Component()
     const vehicle = await this.vehicleService.findById(dto.vehicleId)
-    const currentDate = new Date()
     if (await this.componentExistsInVehicle(componentType, vehicle.id)) {
       throw new BadRequestException({message: 'Já existe esse componente cadastrado no veículo'})
     }
@@ -36,24 +34,33 @@ export class ComponentService {
         message: 'Quilometragem da última troca não pode ser maior do que a atual'
       })
     }
+    if(dto.dateLastExchange > new Date()){
+      throw new BadRequestException({
+        message: 'Data da última troca não pode ser maior do que a atual'
+      })
+    }
+
+    const component = new Component()
     component.componentType = componentType
     component.kilometersLastExnchange = dto.kilometersLastExchange
     component.dateLastExchange = dto.dateLastExchange
-    component.maintenanceFrequency = currentDate.setMonth(
-      currentDate.getMonth() + dto.maintenanceFrequency
-    )
+    component.maintenanceFrequency = dto.maintenanceFrequency
     component.vehicle = vehicle
-    return this.componentRepository.save(component)
+    const createdComponent = this.componentRepository.save(component)
+
+    return component
   }
 
   async componentExistsInVehicle(componentType: ComponentType, id: UUID): Promise<boolean> {
     const vehicle = await this.vehicleService.findById(id)
-    for (const component of vehicle.components) {
-      if (component.componentType === componentType) {
-        return true
+    if (vehicle && vehicle.components) {
+      for (const component of vehicle.components) {
+          if (component.componentType === componentType) {
+              return true;
+          }
       }
-    }
-    return false
+  }  
+  return false;
   }
 
   async componentExists(ComponentType: ComponentType): Promise<boolean> {

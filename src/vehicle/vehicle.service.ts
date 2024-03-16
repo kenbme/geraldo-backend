@@ -1,9 +1,9 @@
-import {ConflictException, Injectable, NotFoundException} from '@nestjs/common'
+import {BadRequestException, ConflictException, Injectable, NotFoundException} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {UUID} from 'crypto'
 import {DriverService} from '../driver/driver.service'
 import {CreateVehicleDto} from '../shared/vehicle/dto/request/create-vehicle.dto'
-import {Repository} from 'typeorm'
+import {EntityNotFoundError, Repository} from 'typeorm'
 import {Vehicle} from './entities/vehicle.entity'
 
 @Injectable()
@@ -51,6 +51,11 @@ export class VehicleService {
   }
 
   async getVehicles(driverId: UUID): Promise<Vehicle[]> {
+    try {
+      const driver = await this.driverService.findById(driverId)
+    } catch (error) {
+      throw new NotFoundException("Motorista não encontrado")
+    }
     const vehicles = await this.vehicleRepository
       .createQueryBuilder('vehicle')
       .leftJoinAndSelect('vehicle.owners', 'driver')
@@ -59,10 +64,16 @@ export class VehicleService {
     if (!vehicles || vehicles.length === 0) {
       throw new NotFoundException('Nenhum veículo encontrado para este motorista.')
     }
+    console.log(vehicles)
     return vehicles
   }
 
   async findById(id: UUID): Promise<Vehicle> {
-    return await this.vehicleRepository.findOneByOrFail({id: id})
+    const vehicle = await this.vehicleRepository.findOneBy({id: id})
+    if (vehicle === null) {
+      throw new NotFoundException('Nenhum veículo')
+    }
+    return vehicle
   }
+  
 }
