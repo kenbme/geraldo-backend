@@ -20,7 +20,6 @@ export function IsDateValid(validationOptions?: ValidationOptions) {
 }
 
 export const validerDate = (value: string): boolean => {
-  console.log(value)
   if (value.length !== 10) {
     return false
   }

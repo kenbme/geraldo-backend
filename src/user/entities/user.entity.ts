@@ -18,7 +18,7 @@ export class User {
   name: string
   @Column({type: 'varchar', unique: true})
   email: string
-  @Column({type: 'datetime', nullable: true})
+  @Column({type: 'date', nullable: true})
   birthday: Date
   @ManyToOne(() => UserType, (userType) => userType.users, {eager: true})
   userType: UserType

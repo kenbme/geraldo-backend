@@ -9,7 +9,6 @@ export function IsValidDate(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: string) {
-          console.log('isValidDate')
           return validateDate(value)
         },
         defaultMessage: () => {

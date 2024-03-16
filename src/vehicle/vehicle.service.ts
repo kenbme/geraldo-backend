@@ -64,7 +64,6 @@ export class VehicleService {
     if (!vehicles || vehicles.length === 0) {
       throw new NotFoundException('Nenhum veículo encontrado para este motorista.')
     }
-    console.log(vehicles)
     return vehicles
   }
 

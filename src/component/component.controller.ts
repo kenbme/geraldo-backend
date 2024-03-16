@@ -1,5 +1,5 @@
 import {Body, Controller, HttpCode, Post} from '@nestjs/common'
-import {CreateComponentDto} from '../shared/component/dto/request/create-component'
+import {CreateComponentDto} from '../shared/component/dto/request/create-component.dto'
 import {ComponentResponseDTO} from '../shared/component/dto/response/component.response.dto'
 import {createComponentResponseDTO} from '../util/mapper'
 import {ComponentService} from './component.service'

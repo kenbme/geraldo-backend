@@ -3,7 +3,7 @@ import {InjectRepository} from '@nestjs/typeorm'
 import {Component} from './entities/component.entity'
 import {Repository} from 'typeorm'
 import {ComponentType} from './entities/component.type.entity'
-import {CreateComponentDto} from '../shared/component/dto/request/create-component'
+import {CreateComponentDto} from '../shared/component/dto/request/create-component.dto'
 import {VehicleService} from '../vehicle/vehicle.service'
 import {UUID} from 'crypto'
 

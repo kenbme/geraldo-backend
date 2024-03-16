@@ -1,4 +1,4 @@
-import {IsDate, IsEnum, IsInt, IsNotEmpty, IsString, IsUUID} from 'class-validator'
+import {IsEnum, IsInt, IsUUID} from 'class-validator'
 import {UUID} from 'crypto'
 import {IsDateValid} from '../../validators/IsDateValid'
 import {ComponentTypeEnum} from '../../enums/component-type.enum'

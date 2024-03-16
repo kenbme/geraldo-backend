@@ -11,13 +11,13 @@ export class Component {
   @OneToOne(() => ComponentType)
   componentType: ComponentType
 
-  @Column({type: 'datetime'})
+  @Column({type: 'date'})
   dateLastExchange: Date
 
   @Column({type: 'integer'})
   kilometersLastExnchange: number
 
-  @Column({type: 'datetime'})
+  @Column({type: 'date'})
   maintenanceFrequency: Date
 
   @ManyToOne(() => Vehicle, (vehicle) => vehicle.components)

@@ -1,22 +1,23 @@
-import {Test, TestingModule} from '@nestjs/testing'
-import {ComponentController} from './component.controller'
-import {TypeOrmModule} from '@nestjs/typeorm'
-import {User} from 'src/user/entities/user.entity'
-import {UserType} from 'src/user/entities/user.type.entity'
-import {Driver} from 'src/driver/entities/driver.entity'
-import {Component} from './entities/component.entity'
-import {Vehicle} from 'src/vehicle/entities/vehicle.entity'
-import {ComponentService} from './component.service'
-import {ComponentType} from './entities/component.type.entity'
-import {VehicleModule} from 'src/vehicle/vehicle.module'
-import {DriverModule} from 'src/driver/driver.module'
-import {UserModule} from 'src/user/user.module'
-import {ComponentTypeSeeder} from './seeders/component.type.seeder'
-import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
-import {DriverService} from 'src/driver/driver.service'
-import {VehicleService} from 'src/vehicle/vehicle.service'
-import {ComponentTypeEnum} from 'src/shared/component/enums/component-type.enum'
+import { Test, TestingModule } from '@nestjs/testing'
+import { ComponentController } from './component.controller'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { User } from 'src/user/entities/user.entity'
+import { UserType } from 'src/user/entities/user.type.entity'
+import { Driver } from 'src/driver/entities/driver.entity'
+import { Component } from './entities/component.entity'
+import { Vehicle } from 'src/vehicle/entities/vehicle.entity'
+import { ComponentService } from './component.service'
+import { ComponentType } from './entities/component.type.entity'
+import { VehicleModule } from 'src/vehicle/vehicle.module'
+import { DriverModule } from 'src/driver/driver.module'
+import { UserModule } from 'src/user/user.module'
+import { ComponentTypeSeeder } from './seeders/component.type.seeder'
+import { UserTypeSeeder } from 'src/user/seeders/user.type.seeder'
+import { DriverService } from 'src/driver/driver.service'
+import { VehicleService } from 'src/vehicle/vehicle.service'
+import { ComponentTypeEnum } from 'src/shared/component/enums/component-type.enum'
 import { ValidationError, validateOrReject } from 'class-validator'
+import { CreateComponentDto } from 'src/shared/component/dto/request/create-component.dto'
 
 describe('ComponentController', () => {
   let componentController: ComponentController
@@ -97,18 +98,16 @@ describe('ComponentController', () => {
   })
   it('Date greater than the current', async () => {
     try {
-      
-      const component = await componentController.create({
-        vehicleId: vehicle.id,
-        componentType: ComponentTypeEnum.BALANCE,
-        dateLastExchange: '2025-10-10',
-        maintenanceFrequency: 2,
-        kilometersLastExchange: 50
-      })
-      await validateOrReject(component)
+      const dto = new CreateComponentDto()
+      dto.vehicleId = vehicle.id
+      dto.componentType = ComponentTypeEnum.BALANCE
+      dto.dateLastExchange = '2025-10-10'
+      dto.maintenanceFrequency = 2
+      dto.kilometersLastExchange = 50
+      await validateOrReject(dto)
     } catch ([err]) {
       if (err instanceof ValidationError && err.constraints) {
-        expect(err.constraints.isValidDate).toBe('Data da última troca não pode ser maior do que a atual')
+        expect(err.constraints.isDateValid).toBe('Data da última troca não pode ser maior do que a atual')
         return
       }
     }
@@ -134,5 +133,5 @@ describe('ComponentController', () => {
       expect(error.message).toEqual('Já existe esse componente cadastrado no veículo')
     }
   })
-  
+
 })
