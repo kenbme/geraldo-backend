@@ -26,7 +26,7 @@ export class ComponentService {
     if (await this.componentExistsInVehicle(componentType, vehicle.id)) {
       throw new BadRequestException({message: 'Já existe esse componente cadastrado no veículo'})
     }
-    if (!this.componentExists(componentType)) {
+    if (await this.componentNotExists(componentType)) {
       throw new BadRequestException({message: 'Componente veicular não encontrado'})
     }
     if (dto.kilometersLastExchange > vehicle.kilometers) {
@@ -44,26 +44,25 @@ export class ComponentService {
     component.componentType = componentType
     component.kilometersLastExnchange = dto.kilometersLastExchange
     component.dateLastExchange = dto.dateLastExchange
-    component.maintenanceFrequency = dto.maintenanceFrequency
+    component.maintenanceFrequency = dto.maintenanceFrequency //todo: revisão de lógica
     component.vehicle = vehicle
-    const createdComponent = this.componentRepository.save(component)
-
-    return component
+    return await this.componentRepository.create(component)
   }
 
   async componentExistsInVehicle(componentType: ComponentType, id: UUID): Promise<boolean> {
     const vehicle = await this.vehicleService.findById(id)
     if (vehicle && vehicle.components) {
-      for (const component of vehicle.components) {
-          if (component.componentType === componentType) {
-              return true;
-          }
+      for (let index = 0; index < vehicle.components.length; index++) {
+        if (vehicle.components[index].componentType.name === componentType.name) {
+          return true
+        }
+        
       }
   }  
   return false;
   }
 
-  async componentExists(ComponentType: ComponentType): Promise<boolean> {
-    return await this.componentTypeRepository.existsBy(ComponentType)
+  async componentNotExists(ComponentType: ComponentType): Promise<boolean> {
+    return await !(this.componentTypeRepository.existsBy({name: ComponentType.name}))
   }
 }

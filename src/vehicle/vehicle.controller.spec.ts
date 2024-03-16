@@ -85,10 +85,20 @@ describe('VehicleController', () => {
   })
   it('result get lists empty', async () => {
     try {
-      const vehicles = await vehicleService.getVehicles("606e374a-ca2f-4676-9adc-f31ef238288e")
+      const vehicles = await vehicleService.getVehicles(driver.id)
     } catch (error) {
       expect(error).toBeInstanceOf(NotFoundException)
       expect(error.message).toEqual('Nenhum veículo encontrado para este motorista.')
+
+    
+    }
+  })
+  it('result get lists driver not found', async () => {
+    try {
+      const vehicles = await vehicleService.getVehicles("606e374a-ca2f-4676-9adc-f31ef238288e")
+    } catch (error) {
+      expect(error).toBeInstanceOf(NotFoundException)
+      expect(error.message).toEqual('Motorista não encontrado')
 
     
     }

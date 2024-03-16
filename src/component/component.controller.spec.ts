@@ -73,7 +73,6 @@ describe('ComponentController', () => {
   })
 
   it('should create a component', async () => {
-    // TODO necessário revisar
     const component = await componentController.create({
       vehicleId: vehicle.id,
       componentType: ComponentTypeEnum.BALANCE,
@@ -82,4 +81,51 @@ describe('ComponentController', () => {
       kilometersLastExchange: 50
     })
   })
+  it('Killometers greater than the current', async () => {
+    try {
+      const component = await componentController.create({
+        vehicleId: vehicle.id,
+        componentType: ComponentTypeEnum.BALANCE,
+        dateLastExchange: new Date(),
+        maintenanceFrequency: 2,
+        kilometersLastExchange: 5000
+      })
+    } catch (error) {
+      expect(error.message).toEqual('Quilometragem da última troca não pode ser maior do que a atual')
+    }
+  })
+  it('Date greater than the current', async () => {
+    try {
+      const component = await componentController.create({
+        vehicleId: vehicle.id,
+        componentType: ComponentTypeEnum.BALANCE,
+        dateLastExchange: new Date('2025-10-10'),
+        maintenanceFrequency: 2,
+        kilometersLastExchange: 50
+      })
+    } catch (error) {
+      expect(error.message).toEqual('Data da última troca não pode ser maior do que a atual')
+    }
+  })
+  it('type of existing component', async () => {
+    try {
+      const component = await componentController.create({
+        vehicleId: vehicle.id,
+        componentType: ComponentTypeEnum.BALANCE,
+        dateLastExchange: new Date(),
+        maintenanceFrequency: 2,
+        kilometersLastExchange: 50
+      })
+      const componentEqual = await componentController.create({
+        vehicleId: vehicle.id,
+        componentType: ComponentTypeEnum.BALANCE,
+        dateLastExchange: new Date('2023-10-10'),
+        maintenanceFrequency: 2,
+        kilometersLastExchange: 50
+      })
+    } catch (error) {
+      expect(error.message).toEqual('Já existe esse componente cadastrado no veículo')
+    }
+  })
+  
 })
