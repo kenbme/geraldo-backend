@@ -46,6 +46,7 @@ export const createLoginPayload = (user: User): LoginPayload => {
   const payload = new LoginPayload()
   payload.id = user.id
   payload.userType = (UserTypeEnum as any)[user.userType.name]
+  payload.resetPassword = user.resetPassword
   return payload
 }
 
