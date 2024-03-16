@@ -34,17 +34,13 @@ export class ComponentService {
         message: 'Quilometragem da última troca não pode ser maior do que a atual'
       })
     }
-    if(dto.dateLastExchange > new Date()){
-      throw new BadRequestException({
-        message: 'Data da última troca não pode ser maior do que a atual'
-      })
-    }
-
+    const maintenanceFrequency = new Date()
+    maintenanceFrequency.setMonth(maintenanceFrequency.getMonth() + dto.maintenanceFrequency)
     const component = new Component()
     component.componentType = componentType
     component.kilometersLastExnchange = dto.kilometersLastExchange
-    component.dateLastExchange = dto.dateLastExchange
-    component.maintenanceFrequency = dto.maintenanceFrequency //todo: revisão de lógica
+    component.dateLastExchange = new Date(dto.dateLastExchange)
+    component.maintenanceFrequency =  maintenanceFrequency //todo: revisão de lógica
     component.vehicle = vehicle
     return await this.componentRepository.create(component)
   }

@@ -16,6 +16,7 @@ import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
 import {DriverService} from 'src/driver/driver.service'
 import {VehicleService} from 'src/vehicle/vehicle.service'
 import {ComponentTypeEnum} from 'src/shared/component/enums/component-type.enum'
+import { ValidationError, validateOrReject } from 'class-validator'
 
 describe('ComponentController', () => {
   let componentController: ComponentController
@@ -76,7 +77,7 @@ describe('ComponentController', () => {
     const component = await componentController.create({
       vehicleId: vehicle.id,
       componentType: ComponentTypeEnum.BALANCE,
-      dateLastExchange: new Date(),
+      dateLastExchange: '2023-10-10',
       maintenanceFrequency: 2,
       kilometersLastExchange: 50
     })
@@ -86,7 +87,7 @@ describe('ComponentController', () => {
       const component = await componentController.create({
         vehicleId: vehicle.id,
         componentType: ComponentTypeEnum.BALANCE,
-        dateLastExchange: new Date(),
+        dateLastExchange: '2023-10-10',
         maintenanceFrequency: 2,
         kilometersLastExchange: 5000
       })
@@ -96,30 +97,36 @@ describe('ComponentController', () => {
   })
   it('Date greater than the current', async () => {
     try {
+      
       const component = await componentController.create({
         vehicleId: vehicle.id,
         componentType: ComponentTypeEnum.BALANCE,
-        dateLastExchange: new Date('2025-10-10'),
+        dateLastExchange: '2025-10-10',
         maintenanceFrequency: 2,
         kilometersLastExchange: 50
       })
-    } catch (error) {
-      expect(error.message).toEqual('Data da última troca não pode ser maior do que a atual')
+      await validateOrReject(component)
+    } catch ([err]) {
+      if (err instanceof ValidationError && err.constraints) {
+        expect(err.constraints.isValidDate).toBe('Data da última troca não pode ser maior do que a atual')
+        return
+      }
     }
+    throw new Error()
   })
   it('type of existing component', async () => {
     try {
       const component = await componentController.create({
         vehicleId: vehicle.id,
         componentType: ComponentTypeEnum.BALANCE,
-        dateLastExchange: new Date(),
+        dateLastExchange: '2023-10-10',
         maintenanceFrequency: 2,
         kilometersLastExchange: 50
       })
       const componentEqual = await componentController.create({
         vehicleId: vehicle.id,
         componentType: ComponentTypeEnum.BALANCE,
-        dateLastExchange: new Date('2023-10-10'),
+        dateLastExchange: '2023-10-10',
         maintenanceFrequency: 2,
         kilometersLastExchange: 50
       })
