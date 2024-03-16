@@ -1,4 +1,4 @@
-import {ValidationArguments, ValidationOptions, registerDecorator} from 'class-validator'
+import { ValidationArguments, ValidationOptions, registerDecorator } from 'class-validator'
 
 export function isValidYear(validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string): void {
@@ -13,6 +13,7 @@ export function isValidYear(validationOptions?: ValidationOptions) {
           if (typeof value !== 'number') {
             return false
           }
+
           if (value <= currentYear + 1) {
             return true
           }
