@@ -17,8 +17,8 @@ export class Component {
   @Column({type: 'integer'})
   kilometersLastExnchange: number
 
-  @Column({type: 'date'})
-  maintenanceFrequency: Date
+  @Column({type: 'integer'})
+  maintenanceFrequency: number
 
   @ManyToOne(() => Vehicle, (vehicle) => vehicle.components)
   vehicle: Vehicle

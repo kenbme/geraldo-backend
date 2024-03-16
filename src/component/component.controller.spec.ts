@@ -23,6 +23,7 @@ describe('ComponentController', () => {
   let componentController: ComponentController
   let componentService: ComponentService
   let driver: Driver
+  let driver2 : Driver
   let vehicle: Vehicle
 
   beforeEach(async () => {
@@ -59,6 +60,12 @@ describe('ComponentController', () => {
       email: 'joao@gmail.com',
       username: '09400830009'
     })
+    driver2 = await driverService.create({
+      name: 'Jo',
+      birthday: '2001-12-12',
+      email: 'jo@gmail.com',
+      username: '19400830009'
+    })
     const vehicleService = module.get(VehicleService)
     vehicle = await vehicleService.create({
       driverId: driver.id,
@@ -75,23 +82,24 @@ describe('ComponentController', () => {
   })
 
   it('should create a component', async () => {
-    const component = await componentController.create({
+    const component = await componentService.create({
       vehicleId: vehicle.id,
       componentType: ComponentTypeEnum.BALANCE,
       dateLastExchange: '2023-10-10',
       maintenanceFrequency: 2,
       kilometersLastExchange: 50
-    })
+    },driver.id)
   })
   it('Killometers greater than the current', async () => {
     try {
-      const component = await componentController.create({
+      const component = await componentService.create({
         vehicleId: vehicle.id,
         componentType: ComponentTypeEnum.BALANCE,
         dateLastExchange: '2023-10-10',
         maintenanceFrequency: 2,
         kilometersLastExchange: 5000
-      })
+      },driver.id)
+      console.log(driver2.id)
     } catch (error) {
       expect(error.message).toEqual('Quilometragem da última troca não pode ser maior do que a atual')
     }
@@ -115,23 +123,36 @@ describe('ComponentController', () => {
   })
   it('type of existing component', async () => {
     try {
-      const component = await componentController.create({
+      const component = await componentService.create({
         vehicleId: vehicle.id,
         componentType: ComponentTypeEnum.BALANCE,
         dateLastExchange: '2023-10-10',
         maintenanceFrequency: 2,
         kilometersLastExchange: 50
-      })
-      const componentEqual = await componentController.create({
+      },driver.id)
+      const componentEqual = await componentService.create({
         vehicleId: vehicle.id,
         componentType: ComponentTypeEnum.BALANCE,
         dateLastExchange: '2023-10-10',
         maintenanceFrequency: 2,
         kilometersLastExchange: 50
-      })
+      },driver.id)
     } catch (error) {
       expect(error.message).toEqual('Já existe esse componente cadastrado no veículo')
     }
   })
+   /* it('Driver not is owner', async () => {
+    try {
+      const component = await componentService.create({
+        vehicleId: vehicle.id,
+        componentType: ComponentTypeEnum.BALANCE,
+        dateLastExchange: '2023-10-10',
+        maintenanceFrequency: 2,
+        kilometersLastExchange: 500
+      },driver2.id)
+    } catch (error) {
+      expect(error.message).toEqual('Veículo informado não pertence ao motorist')
+    }
+  })  */
 
 })

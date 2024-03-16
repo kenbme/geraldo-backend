@@ -3,6 +3,6 @@ export class ComponentResponseDTO {
   componentType: string
   dateLastExchange: Date
   kilometersLastExnchange: number
-  maintenanceFrequency: Date
+  maintenanceFrequency: number
   vehicleId: string
 }

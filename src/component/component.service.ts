@@ -1,4 +1,4 @@
-import {BadRequestException, Injectable} from '@nestjs/common'
+import {BadRequestException, Injectable, UnauthorizedException} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {Component} from './entities/component.entity'
 import {Repository} from 'typeorm'
@@ -6,9 +6,12 @@ import {ComponentType} from './entities/component.type.entity'
 import {CreateComponentDto} from '../shared/component/dto/request/create-component.dto'
 import {VehicleService} from '../vehicle/vehicle.service'
 import {UUID} from 'crypto'
+import { Vehicle } from 'src/vehicle/entities/vehicle.entity'
+import { DriverService } from 'src/driver/driver.service'
 
 @Injectable()
 export class ComponentService {
+  driverService: DriverService
   constructor(
     @InjectRepository(Component)
     private readonly componentRepository: Repository<Component>,
@@ -17,12 +20,15 @@ export class ComponentService {
     private readonly vehicleService: VehicleService
   ) {}
 
-  async create(dto: CreateComponentDto): Promise<Component> {
-    // TODO deve verificar se user é dono desse carro
+  async create(dto: CreateComponentDto,idDriver:UUID): Promise<Component> {
+    const vehicle = await this.vehicleService.findById(dto.vehicleId)
     const componentType = await this.componentTypeRepository.findOneByOrFail({
       name: dto.componentType
     })
-    const vehicle = await this.vehicleService.findById(dto.vehicleId)
+   //todo: necessario revisaão
+   /* if (await !(this.isOwner(vehicle, idDriver))) {
+      throw new UnauthorizedException({message:"Veículo informado não pertence ao motorista"})
+    } */
     if (await this.componentExistsInVehicle(componentType, vehicle.id)) {
       throw new BadRequestException({message: 'Já existe esse componente cadastrado no veículo'})
     }
@@ -34,13 +40,11 @@ export class ComponentService {
         message: 'Quilometragem da última troca não pode ser maior do que a atual'
       })
     }
-    const maintenanceFrequency = new Date()
-    maintenanceFrequency.setMonth(maintenanceFrequency.getMonth() + dto.maintenanceFrequency)
     const component = new Component()
     component.componentType = componentType
     component.kilometersLastExnchange = dto.kilometersLastExchange
     component.dateLastExchange = new Date(dto.dateLastExchange)
-    component.maintenanceFrequency =  maintenanceFrequency //todo: revisão de lógica
+    component.maintenanceFrequency =  dto.maintenanceFrequency
     component.vehicle = vehicle
     return await this.componentRepository.create(component)
   }
@@ -61,4 +65,15 @@ export class ComponentService {
   async componentNotExists(ComponentType: ComponentType): Promise<boolean> {
     return await !(this.componentTypeRepository.existsBy({name: ComponentType.name}))
   }
+
+  /* async isOwner(vehicle: Vehicle, driverId: UUID): Promise<boolean> {
+    const driver = await this.driverService.findById(driverId)
+    console.log(driver)
+    if (vehicle !== null) {
+      if (vehicle.owners.includes(driver)) {
+        return true
+      }
+    }
+    return false
+  }*/
 }
