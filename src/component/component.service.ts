@@ -65,4 +65,5 @@ export class ComponentService {
   async componentNotExists(ComponentType: ComponentType): Promise<boolean> {
     return await !(this.componentTypeRepository.existsBy({name: ComponentType.name}))
   }
+
 }

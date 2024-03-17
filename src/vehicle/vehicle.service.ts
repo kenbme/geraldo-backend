@@ -5,6 +5,7 @@ import {DriverService} from '../driver/driver.service'
 import {CreateVehicleDto} from '../shared/vehicle/dto/request/create-vehicle.dto'
 import {EntityNotFoundError, Repository} from 'typeorm'
 import {Vehicle} from './entities/vehicle.entity'
+import { Component } from 'src/component/entities/component.entity'
 
 @Injectable()
 export class VehicleService {
@@ -74,6 +75,11 @@ export class VehicleService {
       throw new NotFoundException('Nenhum veículo')
     }
     return vehicle
+  }
+
+  async listComponentsByVehicleId(vehicleId: UUID): Promise<Component[]>{
+    const vehicle = await this.findById(vehicleId)
+    return vehicle.components;
   }
   
 }
