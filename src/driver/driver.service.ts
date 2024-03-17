@@ -6,6 +6,7 @@ import {Repository} from 'typeorm'
 import {CreateDriverDto} from '../shared/driver/dto/request/create-driver.dto'
 import {Driver} from './entities/driver.entity'
 import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
+import { Vehicle } from 'src/vehicle/entities/vehicle.entity'
 
 @Injectable()
 export class DriverService {
@@ -30,5 +31,9 @@ export class DriverService {
 
   async findById(driverId: UUID): Promise<Driver> {
     return await this.driverRepository.findOneByOrFail({id: driverId})
+  }
+
+  async getAllVehicles(driver:Driver): Promise<Vehicle[]>{
+    return driver.vehicles;
   }
 }

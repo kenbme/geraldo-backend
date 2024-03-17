@@ -1,4 +1,4 @@
-import {BadRequestException, Injectable} from '@nestjs/common'
+import {BadRequestException, Injectable, NotFoundException} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {Component} from './entities/component.entity'
 import {Repository} from 'typeorm'
@@ -66,4 +66,12 @@ export class ComponentService {
     return await !(this.componentTypeRepository.existsBy({name: ComponentType.name}))
   }
 
+
+  async deleteComponent(id: UUID): Promise<void>{
+    const component = await this.componentRepository.findOneBy({id: id})
+    if (!component) {
+      throw new BadRequestException(`Componente veicular não existe`);
+  }
+    await this.componentRepository.remove(component)
+  }
 }

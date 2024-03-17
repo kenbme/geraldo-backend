@@ -6,6 +6,7 @@ import { ComponentService } from './component.service'
 import { VehicleService } from 'src/vehicle/vehicle.service'
 import { Component } from './entities/component.entity'
 import { UUID } from 'crypto'
+import { DeleteComponentDto } from './dto/delete-component.dto'
 
 
 @Controller('components')
@@ -30,6 +31,15 @@ export class ComponentController {
   ): Promise<Component[]> {
     return await this.vehicleService.listComponentsByVehicleId(vehicleId);
   }
- 
 
-    }
+  @Delete('/vehicle_components/:identificador-componente')
+  async delete(
+    @Param('identificador-componente') componentId : UUID,
+    @Body() deleteComponentDto: DeleteComponentDto
+  ){
+    return await this.vehicleService.deleteComponentFromVehicle(deleteComponentDto.driverId,
+      componentId,
+      deleteComponentDto.vehicleId);
+  }
+
+}
