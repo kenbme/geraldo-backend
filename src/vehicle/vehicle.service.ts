@@ -28,8 +28,6 @@ export class VehicleService {
     vehicle.year = createVehicleDto.year
     const owner = await this.driverService.findById(createVehicleDto.driverId)
     vehicle.owners = [owner]
-    console.log(vehicle)
-    //quando salvamos um veiculo, salvamos com os donos
     return await this.vehicleRepository.save(vehicle)
   }
 
@@ -43,8 +41,6 @@ export class VehicleService {
 
   async isOwner(targetPlate: string, driverId: UUID): Promise<boolean> {
     const vehicleUsed = await this.vehicleRepository.findOneBy({plate: targetPlate})
-    console.log(vehicleUsed)
-    //quando busca-se esse dado do veiculo, não está vindo os donos
     const driver = await this.driverService.findById(driverId)
     if (vehicleUsed !== null && driver !== null) {
       if (vehicleUsed.owners.includes(driver)) {
