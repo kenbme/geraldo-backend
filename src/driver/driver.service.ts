@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common'
+import {Injectable, NotFoundException} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {UUID} from 'crypto'
 import {UserService} from '../user/user.service'
@@ -29,13 +29,17 @@ export class DriverService {
   }
 
   async findById(driverId: UUID): Promise<Driver> {
-    return await this.driverRepository.findOneByOrFail({id: driverId})
+    const driver = await this.driverRepository.findOne({where:{id: driverId}})
+    if (!driver) {
+      throw new NotFoundException("Motorista não encontrado")
+    }
+    return driver;
   }
 
   async findByUserName(username: string): Promise<Driver> {
     const driver = await this.driverRepository.findOne({ where: { user: { username: username } } });
     if (!driver) {
-      throw new Error('Driver not found');
+      throw new NotFoundException("Motorista não encontrado")
     }
     return driver;
   }  

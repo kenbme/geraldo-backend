@@ -21,6 +21,4 @@ export class CreateVehicleDto {
   @isValidYear({message: 'Ano inválido'})
   year: number
 
-  @IsUUID()
-  driverId: UUID
 }

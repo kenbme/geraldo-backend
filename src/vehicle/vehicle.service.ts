@@ -17,50 +17,27 @@ export class VehicleService {
     private readonly vehicleRepository: Repository<Vehicle>
   ) {}
 
-  async create(createVehicleDto: CreateVehicleDto): Promise<Vehicle> {
-    if (await this.existsPlate(createVehicleDto.plate)) {
-      if (await this.isOwner(createVehicleDto.plate, createVehicleDto.driverId)) {
+  async create(driverId: UUID, dto: CreateVehicleDto): Promise<Vehicle> {
+    const vehicle = await this.vehicleRepository.findOne({where: {plate: dto.plate}})
+    if (vehicle) {
+      const isOwner = vehicle.owners.some((it) => it.id === driverId)
+      if (isOwner) {
         throw new ConflictException('Veículo já encontra-se cadastrado')
       }
       throw new ConflictException('Veículo pertence a outro motorista')
     }
-    const vehicle = new Vehicle()
-    vehicle.model = createVehicleDto.model
-    vehicle.plate = createVehicleDto.plate
-    vehicle.kilometers = createVehicleDto.kilometers
-    vehicle.year = createVehicleDto.year
-    const owner = await this.driverService.findById(createVehicleDto.driverId)
-    vehicle.owners = [owner]
-    return await this.vehicleRepository.save(vehicle)
-  }
-
-  async existsPlate(targetPlate: string): Promise<Boolean> {
-    const vehicle = await this.vehicleRepository.findOneBy({plate: targetPlate})
-    if (vehicle !== null) {
-      return true
-    }
-    return false
-  }
-
-  async isOwner(targetPlate: string, driverId: UUID): Promise<boolean> {
-    const vehicleUsed = await this.vehicleRepository.findOneBy({plate: targetPlate})
-    const driver = await this.driverService.findById(driverId)
-    if (vehicleUsed !== null && driver !== null) {
-      for(let a =0;a < vehicleUsed.owners.length;a++){
-        if(vehicleUsed.owners[a].id === driverId){
-          return true
-        }
-      }
-    }
-    return false
+    const newVehicle = new Vehicle()
+    newVehicle.model = dto.model
+    newVehicle.plate = dto.plate
+    newVehicle.kilometers = dto.kilometers
+    newVehicle.year = dto.year
+    const owner = await this.driverService.findById(driverId)
+    newVehicle.owners = [owner]
+    return await this.vehicleRepository.save(newVehicle)
   }
 
   async getVehicles(driverId: UUID): Promise<Vehicle[]> {
-    try {
-      await this.driverService.findById(driverId)
-    } catch (error) {
-      throw new NotFoundException('Motorista não encontrado')
-    }
+    await this.driverService.findById(driverId)
     const vehicles = await this.vehicleRepository
       .createQueryBuilder('vehicle')
       .leftJoinAndSelect('vehicle.owners', 'driver')
@@ -75,34 +52,30 @@ export class VehicleService {
       relations: {components: true, owners: true}
     })
     if (!vehicle) {
-      throw new NotFoundException('Nenhum veículo')
+      throw new NotFoundException('Veículo não encontrado')
     }
     return vehicle
   }
 
-  async shareVehicle(vehicleId: UUID, vehicleOwnerId: UUID, shareVehicleDto: ShareVehicleDto): Promise<Vehicle>{
-    const vehicle = this.vehicleRepository.findOneByOrFail({id: vehicleId})
+  async shareVehicle(vehicleId: UUID, driverId: UUID, shareVehicleDto: ShareVehicleDto): Promise<Vehicle>{
+    const vehicle = await this.vehicleRepository.findOne({where: {id: vehicleId}})
     if (!vehicle) {
       throw new NotFoundException('Veículo não encontrado');
     }
 
-    const plate = (await vehicle).plate
-    if(!this.isOwner(plate, vehicleOwnerId)){
+    const isOwner = vehicle.owners.some((it) => it.id === driverId)
+    if(!isOwner){
       throw new NotFoundException('Motorista não encontrado');
     }
 
-    const newOwner = this.driverService.findByUserName(shareVehicleDto.cpf)
-    if (!newOwner) {
-      throw new NotFoundException('Motorista não encontrado');
-    }
+    const newOwner = await this.driverService.findByUserName(shareVehicleDto.cpf)
 
-    const alreadyAssociated = (await vehicle).owners.some(owner => owner.user.username === shareVehicleDto.cpf);
+    const alreadyAssociated = vehicle.owners.some(owner => owner.user.username === shareVehicleDto.cpf);
     if (alreadyAssociated) {
       throw new ConflictException('Motorista já está associado ao veículo');
     }
     
-    (await vehicle).owners.push(await newOwner)
-
-    return vehicle;
+    vehicle.owners.push(newOwner)
+    return await this.vehicleRepository.save(vehicle)
   }
 }

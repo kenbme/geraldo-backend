@@ -7,7 +7,7 @@ import {Entity, JoinColumn, ManyToMany, OneToOne, PrimaryGeneratedColumn} from '
 export class Driver {
   @PrimaryGeneratedColumn('uuid')
   id: UUID
-  @OneToOne(() => User)
+  @OneToOne(() => User, {eager: true})
   @JoinColumn()
   user: User
   @ManyToMany(() => Vehicle, (vehicle) => vehicle.owners)

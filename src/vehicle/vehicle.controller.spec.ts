@@ -13,7 +13,6 @@ import {UserType} from 'src/user/entities/user.type.entity'
 import {DriverService} from 'src/driver/driver.service'
 import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
 import { ShareVehicleDto } from 'src/shared/vehicle/dto/request/share-vehicle.dto'
-import * as jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
 import { NotFoundException } from '@nestjs/common'
 
@@ -25,18 +24,6 @@ describe('VehicleController', () => {
   let driver2: Driver
 
   dotenv.config({ path: '.development.env' });
-  
-  const generateJwtToken = (userId: string): string => {
-    const secretKey = process.env.JWT_SECRET_KEY;
-  
-    if (!secretKey) {
-      throw new Error('jwp token não definida na variável de ambiente');
-    }
-  
-    const token = jwt.sign({ userId }, secretKey as jwt.Secret, { expiresIn: '1h' });
-    return token;
-  };
-
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -81,8 +68,7 @@ describe('VehicleController', () => {
   })
 
   it('should create a vehicle', async () => {
-    await vehicleService.create({
-      driverId: driver.id,
+    await vehicleService.create(driver.id, {
       kilometers: 502,
       year: 2023,
       model: 'Civic',
@@ -91,21 +77,20 @@ describe('VehicleController', () => {
   })
   
   it('result get lists', async () => {
-    const veiculo1 = await vehicleController.create({
-      driverId: driver.id,
+    const request: any = {"user": {"id": driver.id}}
+    const veiculo1 = await vehicleController.create(request, {
       kilometers: 500,
       year: 2022,
       model: 'Civic',
       plate: 'NET3818'
     })
-    const veiculo2 = await vehicleController.create({
-      driverId: driver.id,
+    const veiculo2 = await vehicleController.create(request, {
       kilometers: 502,
       year: 2023,
       model: 'Civic',
       plate: 'NEV3118'
     })
-    const vehicles = await vehicleController.getVehicles(driver.id)
+    const vehicles = await vehicleController.getVehicles(request)
     expect(vehicles).toEqual({"data": [{"id": veiculo1.data.id, "kilometers": 500, "model": "Civic", "plate": "NET3818", "year": 2022},
      {"id": veiculo2.data.id, "kilometers": 502, "model": "Civic", "plate": "NEV3118", "year": 2023}], "message": "Veículos encontrados"})
   })
@@ -127,27 +112,17 @@ describe('VehicleController', () => {
   })
 
   it('should share a vehicle', async () => {
-    const token = generateJwtToken(driver.id);
-
-    const veiculo1 = await vehicleController.create({
-      driverId: driver.id,
+    const request: any = {"user": {"id": driver.id}}
+    const veiculo1 = await vehicleController.create(request, {
       kilometers: 500,
       year: 2022,
       model: 'Civic',
       plate: 'NET3818'
     })
-
-    const req = {
-      headers: {
-        get: () => `Bearer ${token}`
-      }
-    } as any;
-    
     const shareVehicleDto: ShareVehicleDto = {
       cpf: driver2.user.username
     }
-    const result = await vehicleController.shareVehicle(req, veiculo1.data.id, shareVehicleDto)
-
+    const result = await vehicleController.shareVehicle(request, veiculo1.data.id, shareVehicleDto)
     expect(result.message).toEqual('Veiculo compartilhado com sucesso')
   })
 })
