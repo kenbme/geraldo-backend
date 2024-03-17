@@ -22,7 +22,7 @@ export class ComponentService {
   async create(dto: CreateComponentDto, driverId: UUID): Promise<Component> {
     const vehicle = await this.vehicleService.findById(dto.vehicleId)
 
-    const isOwner = vehicle.owners.some((it) => (it.id === driverId))
+    const isOwner = vehicle.owners.some((it) => it.id === driverId)
     if (!isOwner) {
       throw new UnauthorizedException({message: 'Veículo informado não pertence ao motorista'})
     }
@@ -41,7 +41,7 @@ export class ComponentService {
     }
 
     const componentExistsInVehicle = vehicle.components.some(
-      (it) => (it.componentType.name === componentType.name)
+      (it) => it.componentType.name === componentType.name
     )
     if (componentExistsInVehicle) {
       throw new BadRequestException({message: 'Já existe esse componente cadastrado no veículo'})
