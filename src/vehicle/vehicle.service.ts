@@ -1,10 +1,10 @@
-import {ConflictException, Injectable, NotFoundException} from '@nestjs/common'
-import {InjectRepository} from '@nestjs/typeorm'
-import {UUID} from 'crypto'
-import {DriverService} from '../driver/driver.service'
-import {CreateVehicleDto} from '../shared/vehicle/dto/request/create-vehicle.dto'
-import {Repository} from 'typeorm'
-import {Vehicle} from './entities/vehicle.entity'
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { UUID } from 'crypto'
+import { Repository } from 'typeorm'
+import { DriverService } from '../driver/driver.service'
+import { CreateVehicleDto } from '../shared/vehicle/dto/request/create-vehicle.dto'
+import { Vehicle } from './entities/vehicle.entity'
 
 @Injectable()
 export class VehicleService {
@@ -28,6 +28,8 @@ export class VehicleService {
     vehicle.year = createVehicleDto.year
     const owner = await this.driverService.findById(createVehicleDto.driverId)
     vehicle.owners = [owner]
+    console.log(vehicle)
+    //quando salvamos um veiculo, salvamos com os donos
     return await this.vehicleRepository.save(vehicle)
   }
 
@@ -41,8 +43,10 @@ export class VehicleService {
 
   async isOwner(targetPlate: string, driverId: UUID): Promise<boolean> {
     const vehicleUsed = await this.vehicleRepository.findOneBy({plate: targetPlate})
+    console.log(vehicleUsed)
+    //quando busca-se esse dado do veiculo, não está vindo os donos
     const driver = await this.driverService.findById(driverId)
-    if (vehicleUsed !== null) {
+    if (vehicleUsed !== null && driver !== null) {
       if (vehicleUsed.owners.includes(driver)) {
         return true
       }

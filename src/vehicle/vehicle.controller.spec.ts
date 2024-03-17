@@ -63,7 +63,7 @@ describe('VehicleController', () => {
     dto.kilometers = 500,
     dto.year = 2022,
     dto.model ='Civic',
-    dto.plate ='NET3818'
+    dto.plate ='NET3898'
     await validateOrReject(dto)
     vehicleService.create(dto)
   })
@@ -75,7 +75,7 @@ describe('VehicleController', () => {
       dto.kilometers = 500
       dto.year = 2032
       dto.model = 'Civic'
-      dto.plate = 'NET3818'
+      dto.plate = 'NET3118'
       await validateOrReject(dto)
       await vehicleService.create(dto)
     } catch (err) {
@@ -138,5 +138,24 @@ describe('VehicleController', () => {
         return;
       }
     }
+  })
+  it('The year need to be a integer', async () => {
+    
+    const dto = new CreateVehicleDto();
+    dto.driverId = driver.id
+    dto.kilometers = 500
+    dto.year = 2022
+    dto.model = 'Onix'
+    dto.plate = 'NET3818'
+    await validateOrReject(dto)
+    await vehicleService.create(dto)
+    const dto2 = new CreateVehicleDto();
+    dto2.driverId = driver.id;
+    dto2.kilometers = 500;
+    dto2.year = 2022;
+    dto2.model = 'Civic';
+    dto2.plate = 'NET3818';
+    await validateOrReject(dto2)
+    await vehicleService.create(dto2)
   })
 })
