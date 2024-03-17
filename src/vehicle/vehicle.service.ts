@@ -53,6 +53,11 @@ export class VehicleService {
   }
 
   async getVehicles(driverId: UUID): Promise<Vehicle[]> {
+    try {
+      await this.driverService.findById(driverId)
+    } catch (error) {
+      throw new NotFoundException('Motorista não encontrado')
+    }
     const vehicles = await this.vehicleRepository
       .createQueryBuilder('vehicle')
       .leftJoinAndSelect('vehicle.owners', 'driver')
@@ -65,6 +70,13 @@ export class VehicleService {
   }
 
   async findById(id: UUID): Promise<Vehicle> {
-    return await this.vehicleRepository.findOneByOrFail({id: id})
+    const vehicle = await this.vehicleRepository.findOne({
+      where: {id: id},
+      relations: {components: true, owners: true}
+    })
+    if (!vehicle) {
+      throw new NotFoundException('Nenhum veículo')
+    }
+    return vehicle
   }
 }

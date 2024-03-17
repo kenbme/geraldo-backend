@@ -1,20 +1,21 @@
 import {Vehicle} from '../../vehicle/entities/vehicle.entity'
-import {Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {ComponentType} from './component.type.entity'
+import {UUID} from 'crypto'
 
 @Entity()
 export class Component {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+  id: UUID
 
-  @OneToOne(() => ComponentType)
+  @ManyToOne(() => ComponentType, {eager: true})
   componentType: ComponentType
 
-  @Column({type: 'datetime'})
+  @Column({type: 'date'})
   dateLastExchange: Date
 
   @Column({type: 'integer'})
-  kilometersLastExnchange: number
+  kilometersLastExchange: number
 
   @Column({type: 'integer'})
   maintenanceFrequency: number

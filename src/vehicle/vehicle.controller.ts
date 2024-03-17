@@ -27,7 +27,7 @@ export class VehicleController {
     @Body() driverId: UUID
   ): Promise<{data: VehicleResponseDTO[]; message: string}> {
     const vehicles = await this.vehicleService.getVehicles(driverId)
-    const vehicleResponseDTO = vehicles.map((vehicle) => createVehicleResponseDTO(vehicle))
-    return {data: vehicleResponseDTO, message: 'Veículos encontrados'}
+    const vehiclesResponseDTO = vehicles.map((vehicle) => createVehicleResponseDTO(vehicle))
+    return {data: vehiclesResponseDTO, message: 'Veículos encontrados'}
   }
 }

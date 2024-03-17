@@ -46,6 +46,7 @@ export const createLoginPayload = (user: User): LoginPayload => {
   const payload = new LoginPayload()
   payload.id = user.id
   payload.userType = (UserTypeEnum as any)[user.userType.name]
+  payload.resetPassword = user.resetPassword
   return payload
 }
 
@@ -55,7 +56,7 @@ export const createComponentResponseDTO = (component: Component): ComponentRespo
   dto.componentType = component.componentType.name
   dto.dateLastExchange = component.dateLastExchange
   dto.maintenanceFrequency = component.maintenanceFrequency
-  dto.kilometersLastExnchange = component.kilometersLastExnchange
+  dto.kilometersLastExnchange = component.kilometersLastExchange
   dto.vehicleId = component.vehicle.id
   return dto
 }
