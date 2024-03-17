@@ -1,6 +1,8 @@
+import { ConflictException } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ValidationError, validateOrReject } from 'class-validator'
+import { randomUUID } from 'crypto'
 import { Component } from 'src/component/entities/component.entity'
 import { ComponentType } from 'src/component/entities/component.type.entity'
 import { DriverModule } from 'src/driver/driver.module'
@@ -139,23 +141,55 @@ describe('VehicleController', () => {
       }
     }
   })
-  it('The year need to be a integer', async () => {
-    
-    const dto = new CreateVehicleDto();
-    dto.driverId = driver.id
-    dto.kilometers = 500
-    dto.year = 2022
-    dto.model = 'Onix'
-    dto.plate = 'NET3818'
-    await validateOrReject(dto)
-    await vehicleService.create(dto)
-    const dto2 = new CreateVehicleDto();
-    dto2.driverId = driver.id;
-    dto2.kilometers = 500;
-    dto2.year = 2022;
-    dto2.model = 'Civic';
-    dto2.plate = 'NET3818';
-    await validateOrReject(dto2)
-    await vehicleService.create(dto2)
+  it('The vehicle is already created', async () => {
+    try{
+      const dto = new CreateVehicleDto();
+      dto.driverId = driver.id
+      dto.kilometers = 500
+      dto.year = 2022
+      dto.model = 'Onix'
+      dto.plate = 'NET3818'
+      await validateOrReject(dto)
+      await vehicleService.create(dto)
+      const dto2 = new CreateVehicleDto()
+      dto2.driverId = driver.id;
+      dto2.kilometers = 500;
+      dto2.year = 2022;
+      dto2.model = 'Civic';
+      dto2.plate = 'NET3818';
+      await validateOrReject(dto2)
+      await vehicleService.create(dto2)
+    }catch (err) {
+      if (err instanceof ConflictException) {
+        expect(err.message).toBe('Veículo já encontra-se cadastrado')
+        return;
+      }
+    }
+  })
+
+  it('The vehicle is already created by annother driver', async () => {
+    try{
+      const dto = new CreateVehicleDto();
+      dto.driverId = driver.id
+      dto.kilometers = 500
+      dto.year = 2022
+      dto.model = 'Onix'
+      dto.plate = 'NET3818'
+      await validateOrReject(dto)
+      await vehicleService.create(dto)
+      const dto2 = new CreateVehicleDto()
+      dto2.driverId = randomUUID()
+      dto2.kilometers = 500;
+      dto2.year = 2022;
+      dto2.model = 'Civic';
+      dto2.plate = 'NET3818';
+      await validateOrReject(dto2)
+      await vehicleService.create(dto2)
+    }catch (err) {
+      if (err instanceof ConflictException) {
+        expect(err.message).toBe('Veículo pertence a outro motorista')
+        return;
+      }
+    }
   })
 })

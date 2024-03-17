@@ -15,7 +15,7 @@ export class Vehicle {
   kilometers: number
   @Column({type: 'integer'})
   year: number
-  @ManyToMany(() => Driver, (driver) => driver.vehicles)
+  @ManyToMany(() => Driver, (driver) => driver.vehicles, {eager: true})
   @JoinTable()
   owners: Driver[]
   @OneToMany(() => Component, (component) => component.vehicle)

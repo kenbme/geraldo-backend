@@ -43,8 +43,10 @@ export class VehicleService {
     const vehicleUsed = await this.vehicleRepository.findOneBy({plate: targetPlate})
     const driver = await this.driverService.findById(driverId)
     if (vehicleUsed !== null && driver !== null) {
-      if (vehicleUsed.owners.includes(driver)) {
-        return true
+      for(let a =0;a < vehicleUsed.owners.length;a++){
+        if(vehicleUsed.owners[a].id === driverId){
+          return true
+        }
       }
     }
     return false
