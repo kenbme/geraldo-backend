@@ -66,6 +66,7 @@ describe('VehicleController', () => {
       plate: 'NEV3118'
     })
   })
+  
   it('result get lists', async () => {
     const veiculo1 = await vehicleController.create({
       driverId: driver.id,
@@ -85,16 +86,12 @@ describe('VehicleController', () => {
     expect(vehicles).toEqual({"data": [{"id": veiculo1.data.id, "kilometers": 500, "model": "Civic", "plate": "NET3818", "year": 2022},
      {"id": veiculo2.data.id, "kilometers": 502, "model": "Civic", "plate": "NEV3118", "year": 2023}], "message": "Veículos encontrados"})
   })
+
   it('result get lists empty', async () => {
-    try {
-      await vehicleService.getVehicles(driver.id)
-    } catch (error) {
-      expect(error).toBeInstanceOf(NotFoundException)
-      expect(error.message).toEqual('Nenhum veículo encontrado para este motorista.')
-      return
-    }
-    throw new Error()
+    const vehicles = await vehicleService.getVehicles(driver.id)
+    expect(vehicles).toStrictEqual([])
   })
+
   it('result get lists driver not found', async () => {
     try {
       await vehicleService.getVehicles('606e374a-ca2f-4676-9adc-f31ef238288e')

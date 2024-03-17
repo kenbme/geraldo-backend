@@ -63,9 +63,6 @@ export class VehicleService {
       .leftJoinAndSelect('vehicle.owners', 'driver')
       .where('driver.id = :driverId', {driverId: driverId})
       .getMany()
-    if (!vehicles || vehicles.length === 0) {
-      throw new NotFoundException('Nenhum veículo encontrado para este motorista.')
-    }
     return vehicles
   }
 
