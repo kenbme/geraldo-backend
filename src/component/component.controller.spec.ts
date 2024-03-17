@@ -102,7 +102,9 @@ describe('ComponentController', () => {
       console.log(driver2.id)
     } catch (error) {
       expect(error.message).toEqual('Quilometragem da última troca não pode ser maior do que a atual')
+      return
     }
+    throw new Error()
   })
   it('Date greater than the current', async () => {
     try {
@@ -139,7 +141,9 @@ describe('ComponentController', () => {
       },driver.id)
     } catch (error) {
       expect(error.message).toEqual('Já existe esse componente cadastrado no veículo')
+      return
     }
+    throw new Error()
   })
    /* it('Driver not is owner', async () => {
     try {
