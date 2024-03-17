@@ -31,4 +31,13 @@ export class DriverService {
   async findById(driverId: UUID): Promise<Driver> {
     return await this.driverRepository.findOneByOrFail({id: driverId})
   }
+
+  async findByUserName(username: string): Promise<Driver> {
+    const driver = await this.driverRepository.findOne({ where: { user: { username: username } } });
+    if (!driver) {
+      throw new Error('Driver not found');
+    }
+    return driver;
+  }  
+  
 }

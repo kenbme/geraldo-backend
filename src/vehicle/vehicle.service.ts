@@ -1,15 +1,18 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { UUID } from 'crypto'
-import { Repository } from 'typeorm'
-import { DriverService } from '../driver/driver.service'
-import { CreateVehicleDto } from '../shared/vehicle/dto/request/create-vehicle.dto'
-import { Vehicle } from './entities/vehicle.entity'
+import {ConflictException, Injectable, NotFoundException} from '@nestjs/common'
+import {InjectRepository} from '@nestjs/typeorm'
+import {UUID} from 'crypto'
+import {DriverService} from '../driver/driver.service'
+import {CreateVehicleDto} from '../shared/vehicle/dto/request/create-vehicle.dto'
+import {Repository} from 'typeorm'
+import {Vehicle} from './entities/vehicle.entity'
+import { UserService } from 'src/user/user.service'
+import { ShareVehicleDto } from 'src/shared/vehicle/dto/request/share-vehicle.dto'
 
 @Injectable()
 export class VehicleService {
   constructor(
     private readonly driverService: DriverService,
+    private readonly userService: UserService,
     @InjectRepository(Vehicle)
     private readonly vehicleRepository: Repository<Vehicle>
   ) {}
@@ -75,5 +78,31 @@ export class VehicleService {
       throw new NotFoundException('Nenhum veículo')
     }
     return vehicle
+  }
+
+  async shareVehicle(vehicleId: UUID, vehicleOwnerId: UUID, shareVehicleDto: ShareVehicleDto): Promise<Vehicle>{
+    const vehicle = this.vehicleRepository.findOneByOrFail({id: vehicleId})
+    if (!vehicle) {
+      throw new NotFoundException('Veículo não encontrado');
+    }
+
+    const plate = (await vehicle).plate
+    if(!this.isOwner(plate, vehicleOwnerId)){
+      throw new NotFoundException('Motorista não encontrado');
+    }
+
+    const newOwner = this.driverService.findByUserName(shareVehicleDto.cpf)
+    if (!newOwner) {
+      throw new NotFoundException('Motorista não encontrado');
+    }
+
+    const alreadyAssociated = (await vehicle).owners.some(owner => owner.user.username === shareVehicleDto.cpf);
+    if (alreadyAssociated) {
+      throw new ConflictException('Motorista já está associado ao veículo');
+    }
+    
+    (await vehicle).owners.push(await newOwner)
+
+    return vehicle;
   }
 }
