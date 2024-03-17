@@ -4,10 +4,10 @@ import { UUID } from 'crypto';
 
 export class DeleteComponentDto {
   @IsUUID()
-  readonly driverId: UUID;
+    driverId: UUID;
 
   @IsUUID()
-  readonly vehicleId: UUID;
+   vehicleId: UUID;
 
-  // O identificador do componente não precisa estar aqui, pois ele é passado como parte da URL
+  // O id componente não eh necessario, pois eh passado na URL
 }
