@@ -1,29 +1,29 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import { ComponentController } from './component.controller'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { User } from 'src/user/entities/user.entity'
-import { UserType } from 'src/user/entities/user.type.entity'
-import { Driver } from 'src/driver/entities/driver.entity'
-import { Component } from './entities/component.entity'
-import { Vehicle } from 'src/vehicle/entities/vehicle.entity'
-import { ComponentService } from './component.service'
-import { ComponentType } from './entities/component.type.entity'
-import { VehicleModule } from 'src/vehicle/vehicle.module'
-import { DriverModule } from 'src/driver/driver.module'
-import { UserModule } from 'src/user/user.module'
-import { ComponentTypeSeeder } from './seeders/component.type.seeder'
-import { UserTypeSeeder } from 'src/user/seeders/user.type.seeder'
-import { DriverService } from 'src/driver/driver.service'
-import { VehicleService } from 'src/vehicle/vehicle.service'
-import { ComponentTypeEnum } from 'src/shared/component/enums/component-type.enum'
-import { ValidationError, validateOrReject } from 'class-validator'
-import { CreateComponentDto } from 'src/shared/component/dto/request/create-component.dto'
+import {Test, TestingModule} from '@nestjs/testing'
+import {ComponentController} from './component.controller'
+import {TypeOrmModule} from '@nestjs/typeorm'
+import {User} from 'src/user/entities/user.entity'
+import {UserType} from 'src/user/entities/user.type.entity'
+import {Driver} from 'src/driver/entities/driver.entity'
+import {Component} from './entities/component.entity'
+import {Vehicle} from 'src/vehicle/entities/vehicle.entity'
+import {ComponentService} from './component.service'
+import {ComponentType} from './entities/component.type.entity'
+import {VehicleModule} from 'src/vehicle/vehicle.module'
+import {DriverModule} from 'src/driver/driver.module'
+import {UserModule} from 'src/user/user.module'
+import {ComponentTypeSeeder} from './seeders/component.type.seeder'
+import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
+import {DriverService} from 'src/driver/driver.service'
+import {VehicleService} from 'src/vehicle/vehicle.service'
+import {ComponentTypeEnum} from 'src/shared/component/enums/component-type.enum'
+import {ValidationError, validateOrReject} from 'class-validator'
+import {CreateComponentDto} from 'src/shared/component/dto/request/create-component.dto'
 
 describe('ComponentController', () => {
   let componentController: ComponentController
   let componentService: ComponentService
   let driver: Driver
-  let driver2 : Driver
+  let driver2: Driver
   let vehicle: Vehicle
 
   beforeEach(async () => {
@@ -82,26 +82,34 @@ describe('ComponentController', () => {
   })
 
   it('should create a component', async () => {
-    const component = await componentService.create({
-      vehicleId: vehicle.id,
-      componentType: ComponentTypeEnum.BALANCE,
-      dateLastExchange: '2023-10-10',
-      maintenanceFrequency: 2,
-      kilometersLastExchange: 50
-    },driver.id)
-  })
-  it('Killometers greater than the current', async () => {
-    try {
-      const component = await componentService.create({
+    await componentService.create(
+      {
         vehicleId: vehicle.id,
         componentType: ComponentTypeEnum.BALANCE,
         dateLastExchange: '2023-10-10',
         maintenanceFrequency: 2,
-        kilometersLastExchange: 5000
-      },driver.id)
+        kilometersLastExchange: 50
+      },
+      driver.id
+    )
+  })
+  it('Killometers greater than the current', async () => {
+    try {
+      await componentService.create(
+        {
+          vehicleId: vehicle.id,
+          componentType: ComponentTypeEnum.BALANCE,
+          dateLastExchange: '2023-10-10',
+          maintenanceFrequency: 2,
+          kilometersLastExchange: 5000
+        },
+        driver.id
+      )
       console.log(driver2.id)
     } catch (error) {
-      expect(error.message).toEqual('Quilometragem da última troca não pode ser maior do que a atual')
+      expect(error.message).toEqual(
+        'Quilometragem da última troca não pode ser maior do que a atual'
+      )
       return
     }
     throw new Error()
@@ -117,7 +125,9 @@ describe('ComponentController', () => {
       await validateOrReject(dto)
     } catch ([err]) {
       if (err instanceof ValidationError && err.constraints) {
-        expect(err.constraints.isDateValid).toBe('Data da última troca não pode ser maior do que a atual')
+        expect(err.constraints.isDateValid).toBe(
+          'Data da última troca não pode ser maior do que a atual'
+        )
         return
       }
     }
@@ -125,38 +135,48 @@ describe('ComponentController', () => {
   })
   it('type of existing component', async () => {
     try {
-      const component = await componentService.create({
-        vehicleId: vehicle.id,
-        componentType: ComponentTypeEnum.BALANCE,
-        dateLastExchange: '2023-10-10',
-        maintenanceFrequency: 2,
-        kilometersLastExchange: 50
-      },driver.id)
-      const componentEqual = await componentService.create({
-        vehicleId: vehicle.id,
-        componentType: ComponentTypeEnum.BALANCE,
-        dateLastExchange: '2023-10-10',
-        maintenanceFrequency: 2,
-        kilometersLastExchange: 50
-      },driver.id)
+      await componentService.create(
+        {
+          vehicleId: vehicle.id,
+          componentType: ComponentTypeEnum.BALANCE,
+          dateLastExchange: '2023-10-10',
+          maintenanceFrequency: 2,
+          kilometersLastExchange: 50
+        },
+        driver.id
+      )
+      await componentService.create(
+        {
+          vehicleId: vehicle.id,
+          componentType: ComponentTypeEnum.BALANCE,
+          dateLastExchange: '2023-10-10',
+          maintenanceFrequency: 2,
+          kilometersLastExchange: 50
+        },
+        driver.id
+      )
     } catch (error) {
       expect(error.message).toEqual('Já existe esse componente cadastrado no veículo')
       return
     }
     throw new Error()
   })
-   /* it('Driver not is owner', async () => {
+  it('Driver not is owner', async () => {
     try {
-      const component = await componentService.create({
-        vehicleId: vehicle.id,
-        componentType: ComponentTypeEnum.BALANCE,
-        dateLastExchange: '2023-10-10',
-        maintenanceFrequency: 2,
-        kilometersLastExchange: 500
-      },driver2.id)
+      await componentService.create(
+        {
+          vehicleId: vehicle.id,
+          componentType: ComponentTypeEnum.BALANCE,
+          dateLastExchange: '2023-10-10',
+          maintenanceFrequency: 2,
+          kilometersLastExchange: 500
+        },
+        driver2.id
+      )
     } catch (error) {
-      expect(error.message).toEqual('Veículo informado não pertence ao motorist')
+      expect(error.message).toEqual('Veículo informado não pertence ao motorista')
+      return
     }
-  })  */
-
+    throw new Error()
+  })
 })

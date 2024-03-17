@@ -56,7 +56,7 @@ export const createComponentResponseDTO = (component: Component): ComponentRespo
   dto.componentType = component.componentType.name
   dto.dateLastExchange = component.dateLastExchange
   dto.maintenanceFrequency = component.maintenanceFrequency
-  dto.kilometersLastExnchange = component.kilometersLastExnchange
+  dto.kilometersLastExnchange = component.kilometersLastExchange
   dto.vehicleId = component.vehicle.id
   return dto
 }
