@@ -20,6 +20,7 @@ describe('VehicleController', () => {
   let driverService: DriverService
   let driver: Driver
 
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -66,22 +67,23 @@ describe('VehicleController', () => {
     })
   })
   it('result get lists', async () => {
-    const veiculo1 = await vehicleService.create({
+    const veiculo1 = await vehicleController.create({
       driverId: driver.id,
       kilometers: 500,
       year: 2022,
       model: 'Civic',
       plate: 'NET3818'
     })
-    const veiculo2 = await vehicleService.create({
+    const veiculo2 = await vehicleController.create({
       driverId: driver.id,
       kilometers: 502,
       year: 2023,
       model: 'Civic',
       plate: 'NEV3118'
     })
-    const vehicles = await vehicleService.getVehicles(driver.id)
-    expect(vehicles).toEqual([veiculo1, veiculo2])
+    const vehicles = await vehicleController.getVehicles(driver.id)
+    expect(vehicles).toEqual({"data": [{"id": veiculo1.data.id, "kilometers": 500, "model": "Civic", "plate": "NET3818", "year": 2022},
+     {"id": veiculo2.data.id, "kilometers": 502, "model": "Civic", "plate": "NEV3118", "year": 2023}], "message": "Veículos encontrados"})
   })
   it('result get lists empty', async () => {
     try {
