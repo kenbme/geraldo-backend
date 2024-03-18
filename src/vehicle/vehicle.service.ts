@@ -1,4 +1,4 @@
-import {ConflictException, Injectable, NotFoundException} from '@nestjs/common'
+import {BadRequestException, ConflictException, Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {UUID} from 'crypto'
 import {DriverService} from '../driver/driver.service'
@@ -7,6 +7,7 @@ import {Repository} from 'typeorm'
 import {Vehicle} from './entities/vehicle.entity'
 import { UserService } from 'src/user/user.service'
 import { ShareVehicleDto } from 'src/shared/vehicle/dto/request/share-vehicle.dto'
+import { UpdateKilometersDto } from 'src/shared/vehicle/dto/request/update-kilometers.dto'
 
 @Injectable()
 export class VehicleService {
@@ -77,5 +78,28 @@ export class VehicleService {
     
     vehicle.owners.push(newOwner)
     return await this.vehicleRepository.save(vehicle)
+  }
+
+  async updateKilometers(driverId: UUID, updateKilometers: UpdateKilometersDto): Promise<Vehicle> {
+    
+    const vehicleId = updateKilometers.vehicleId
+    const kilometers = updateKilometers.kilometers
+
+    const vehicle = await this.vehicleRepository.findOne({where: {id: vehicleId}})
+    if (!vehicle) {
+      throw new NotFoundException('Veículo não encontrado');
+    }
+
+    const isOwner = vehicle.owners.some((it) => it.id === driverId)
+    if(!isOwner){
+      throw new NotFoundException('Veículo informado não pertence ao motorista');
+    }
+
+    if (kilometers < vehicle.kilometers) {
+      throw new BadRequestException('A quilometragem atual não pode ser menor do que a quilometragem anterior');
+    }
+
+    vehicle.kilometers = kilometers;
+    return await this.vehicleRepository.save(vehicle);
   }
 }
