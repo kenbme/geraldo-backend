@@ -54,7 +54,7 @@ describe('ComponentController', () => {
     const userTypeSeeder = module.get(UserTypeSeeder)
     await userTypeSeeder.seed()
     const driverService = module.get(DriverService)
-    user = await driverService.create( {
+    user = await driverService.create({
       name: 'João',
       birthday: '2002-12-12',
       email: 'joao@gmail.com',

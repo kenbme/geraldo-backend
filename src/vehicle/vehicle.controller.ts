@@ -6,7 +6,7 @@ import {createVehicleResponseDTO} from '../util/mapper'
 import {VehicleResponseDTO} from '../shared/vehicle/dto/response/vahicle.response.dto'
 import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
 import {Roles} from '../config/decorator'
-import { ShareVehicleDto } from 'src/shared/vehicle/dto/request/share-vehicle.dto'
+import {ShareVehicleDto} from 'src/shared/vehicle/dto/request/share-vehicle.dto'
 
 @Controller('')
 export class VehicleController {
@@ -28,7 +28,7 @@ export class VehicleController {
   @Roles(UserTypeEnum.DRIVER)
   @Get('/vehicles')
   async getVehicles(
-    @Request() request: Request,
+    @Request() request: Request
   ): Promise<{data: VehicleResponseDTO[]; message: string}> {
     const userId: UUID = await (request as any).user.id
     const vehicles = await this.vehicleService.getVehicles(userId)
@@ -40,12 +40,12 @@ export class VehicleController {
   @Post('/share_vehicle/{vehicleId}')
   async shareVehicle(
     @Request() request: Request,
-    @Param('vehicleId') vehicleId: UUID, 
+    @Param('vehicleId') vehicleId: UUID,
     @Body() shareVehicleDto: ShareVehicleDto
-  ): Promise<{ data: VehicleResponseDTO; message: string }> {
+  ): Promise<{data: VehicleResponseDTO; message: string}> {
     const userId: UUID = await (request as any).user.id
-    const vehicle = await this.vehicleService.shareVehicle(vehicleId, userId, shareVehicleDto);
-    const data = createVehicleResponseDTO(vehicle);
+    const vehicle = await this.vehicleService.shareVehicle(vehicleId, userId, shareVehicleDto)
+    const data = createVehicleResponseDTO(vehicle)
     return {data, message: 'Veiculo compartilhado com sucesso'}
   }
 }

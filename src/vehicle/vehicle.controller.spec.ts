@@ -12,9 +12,9 @@ import {DriverModule} from 'src/driver/driver.module'
 import {UserType} from 'src/user/entities/user.type.entity'
 import {DriverService} from 'src/driver/driver.service'
 import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
-import { ShareVehicleDto } from 'src/shared/vehicle/dto/request/share-vehicle.dto'
-import * as dotenv from 'dotenv';
-import { NotFoundException } from '@nestjs/common'
+import {ShareVehicleDto} from 'src/shared/vehicle/dto/request/share-vehicle.dto'
+import * as dotenv from 'dotenv'
+import {NotFoundException} from '@nestjs/common'
 
 describe('VehicleController', () => {
   let vehicleController: VehicleController
@@ -23,7 +23,7 @@ describe('VehicleController', () => {
   let user1: User
   let user2: User
 
-  dotenv.config({ path: '.development.env' });
+  dotenv.config({path: '.development.env'})
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -59,7 +59,7 @@ describe('VehicleController', () => {
       birthday: '2001-10-10',
       email: 'pedro@gmail.com',
       username: '81779020082'
-  })
+    })
 
     await vehicleService.create(user1.id, {
       kilometers: 502,
@@ -67,7 +67,7 @@ describe('VehicleController', () => {
       model: 'Civic',
       plate: 'JZD4058'
     })
-})
+  })
 
   it('should controller to be defined', () => {
     expect(vehicleController).toBeDefined()
@@ -82,9 +82,9 @@ describe('VehicleController', () => {
       plate: 'NEV3118'
     })
   })
-  
+
   it('result get lists 1', async () => {
-    const request: any = {"user": {"id": user2.id}}
+    const request: any = {user: {id: user2.id}}
     const veiculo1 = await vehicleController.create(request, {
       kilometers: 500,
       year: 2022,
@@ -98,8 +98,13 @@ describe('VehicleController', () => {
       plate: 'NEV3118'
     })
     const vehicles = await vehicleController.getVehicles(request)
-    expect(vehicles).toEqual({"data": [{"id": veiculo1.data.id, "kilometers": 500, "model": "Civic", "plate": "NET3818", "year": 2022},
-     {"id": veiculo2.data.id, "kilometers": 502, "model": "Civic", "plate": "NEV3118", "year": 2023}], "message": "Veículos encontrados"})
+    expect(vehicles).toEqual({
+      data: [
+        {id: veiculo1.data.id, kilometers: 500, model: 'Civic', plate: 'NET3818', year: 2022},
+        {id: veiculo2.data.id, kilometers: 502, model: 'Civic', plate: 'NEV3118', year: 2023}
+      ],
+      message: 'Veículos encontrados'
+    })
   })
 
   it('result get lists empty', async () => {
@@ -119,7 +124,7 @@ describe('VehicleController', () => {
   })
 
   it('should share a vehicle', async () => {
-    const request: any = {"user": {"id": user1.id}}
+    const request: any = {user: {id: user1.id}}
     const veiculo1 = await vehicleController.create(request, {
       kilometers: 500,
       year: 2022,

@@ -1,4 +1,4 @@
-import { UserResponseDTO } from 'src/shared/user/dto/response/user.response.dto'
+import {UserResponseDTO} from 'src/shared/user/dto/response/user.response.dto'
 import {Component} from '../component/entities/component.entity'
 import {Driver} from '../driver/entities/driver.entity'
 import {Establishment} from '../establishment/entities/establishment.entity'

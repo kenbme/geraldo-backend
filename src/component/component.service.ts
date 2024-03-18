@@ -1,4 +1,9 @@
-import {BadRequestException, Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException
+} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {Component} from './entities/component.entity'
 import {Repository} from 'typeorm'
@@ -7,7 +12,7 @@ import {CreateComponentDto} from '../shared/component/dto/request/create-compone
 import {VehicleService} from '../vehicle/vehicle.service'
 import {UUID} from 'crypto'
 import {DriverService} from 'src/driver/driver.service'
-import { UpdateComponentDto } from 'src/shared/component/dto/request/update-component.dto'
+import {UpdateComponentDto} from 'src/shared/component/dto/request/update-component.dto'
 
 @Injectable()
 export class ComponentService {
@@ -60,15 +65,13 @@ export class ComponentService {
 
   async update(userId: UUID, componentId: UUID, dto: UpdateComponentDto): Promise<Component> {
     const vehicle = await this.vehicleService.findById(dto.vehicleId)
-    
+
     const isOwner = vehicle.drivers.some((it) => it.user.id === userId && it.isOwner)
     if (!isOwner) {
       throw new UnauthorizedException({message: 'Veículo informado não pertence ao motorista'})
     }
 
-    const component = vehicle.components.find(
-      (it) => it.componentType.id === componentId
-    )
+    const component = vehicle.components.find((it) => it.componentType.id === componentId)
     if (!component) {
       throw new NotFoundException('Componente veicular não existe')
     }

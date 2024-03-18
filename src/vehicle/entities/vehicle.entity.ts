@@ -1,7 +1,7 @@
-import { UUID } from 'crypto'
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { Component } from '../../component/entities/component.entity'
-import { Driver } from '../../driver/entities/driver.entity'
+import {UUID} from 'crypto'
+import {Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
+import {Component} from '../../component/entities/component.entity'
+import {Driver} from '../../driver/entities/driver.entity'
 
 @Entity()
 export class Vehicle {

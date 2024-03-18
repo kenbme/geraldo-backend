@@ -1,6 +1,5 @@
-import { IsInt, IsNotEmpty, IsString, IsUUID, Min } from 'class-validator'
-import { UUID } from 'crypto'
-import { isValidYear } from '../../validators/isValidYear'
+import {IsInt, IsNotEmpty, IsString, Min} from 'class-validator'
+import {isValidYear} from '../../validators/isValidYear'
 
 export class CreateVehicleDto {
   @IsString()
@@ -16,9 +15,8 @@ export class CreateVehicleDto {
   @Min(0)
   kilometers: number
 
-  @IsInt({message: "O ano precisa ser um inteiro"})
+  @IsInt({message: 'O ano precisa ser um inteiro'})
   @IsNotEmpty({message: 'Ano não pode ser vazio'})
   @isValidYear({message: 'Ano inválido'})
   year: number
-
 }

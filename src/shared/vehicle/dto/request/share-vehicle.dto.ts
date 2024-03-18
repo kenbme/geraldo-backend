@@ -1,7 +1,6 @@
-import { IsCPF } from "src/shared/user/validators/IsCPF";
+import {IsCPF} from 'src/shared/user/validators/IsCPF'
 
 export class ShareVehicleDto {
-    @IsCPF()
-    cpf: string;
-  }
-  
+  @IsCPF()
+  cpf: string
+}

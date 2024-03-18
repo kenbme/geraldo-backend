@@ -14,7 +14,7 @@ export class UserTypeSeeder {
   async seed(): Promise<void> {
     const data = [
       {name: UserTypeEnum.DRIVER, description: 'descricao de driver'},
-      {name: UserTypeEnum.ESTABLISHMENT, description: 'descricao de establishment'},
+      {name: UserTypeEnum.ESTABLISHMENT, description: 'descricao de establishment'}
     ]
     await this.userTypeRepository.upsert(data, {conflictPaths: ['name']})
   }

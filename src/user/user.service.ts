@@ -6,7 +6,7 @@ import {CreateUserDto} from '../shared/user/dto/request/create-user.dto'
 import {User} from './entities/user.entity'
 import {UserTypeService} from './user.type.service'
 import {RecoverPasswordDto} from '../shared/user/dto/request/recover-password.dto'
-import { UUID } from 'crypto'
+import {UUID} from 'crypto'
 
 @Injectable()
 export class UserService {
@@ -74,7 +74,7 @@ export class UserService {
   async findById(userId: UUID): Promise<User> {
     const user = await this.userRepository.findOneBy({id: userId})
     if (!user) {
-      throw new NotFoundException("Usuário não encontrado")
+      throw new NotFoundException('Usuário não encontrado')
     }
     return user
   }
