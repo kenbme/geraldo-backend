@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
+import { ConflictException, ForbiddenException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UUID } from 'crypto'
 import { DriverService } from '../driver/driver.service'
@@ -97,6 +97,9 @@ export class VehicleService {
     }
 
     const user = await this.userService.findByUsername(shareVehicleDto.cpf)
+    if (user.userType.name !== UserTypeEnum.USER && user.userType.name !== UserTypeEnum.DRIVER) {
+      throw new ForbiddenException('Você não pode associar esse usuário')
+    }
 
     const driver = new Driver()
     driver.user = user
