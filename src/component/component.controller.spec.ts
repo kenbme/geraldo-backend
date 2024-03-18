@@ -67,8 +67,7 @@ describe('ComponentController', () => {
       username: '19400830009'
     })
     const vehicleService = module.get(VehicleService)
-    vehicle = await vehicleService.create({
-      driverId: driver.id,
+    vehicle = await vehicleService.create(driver.id, {
       kilometers: 500,
       year: 2022,
       model: 'Civic',
@@ -105,7 +104,6 @@ describe('ComponentController', () => {
         },
         driver.id
       )
-      console.log(driver2.id)
     } catch (error) {
       expect(error.message).toEqual(
         'Quilometragem da última troca não pode ser maior do que a atual'
