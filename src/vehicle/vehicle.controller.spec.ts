@@ -12,9 +12,10 @@ import {DriverModule} from 'src/driver/driver.module'
 import {UserType} from 'src/user/entities/user.type.entity'
 import {DriverService} from 'src/driver/driver.service'
 import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
-import {ShareVehicleDto} from 'src/shared/vehicle/dto/request/share-vehicle.dto'
-import * as dotenv from 'dotenv'
-import {NotFoundException} from '@nestjs/common'
+import { ShareVehicleDto } from 'src/shared/vehicle/dto/request/share-vehicle.dto'
+import * as dotenv from 'dotenv';
+import { NotFoundException } from '@nestjs/common'
+import { UpdateKilometersDto } from 'src/shared/vehicle/dto/request/update-kilometers.dto'
 
 describe('VehicleController', () => {
   let vehicleController: VehicleController
@@ -136,5 +137,21 @@ describe('VehicleController', () => {
     }
     const result = await vehicleController.shareVehicle(request, veiculo1.data.id, shareVehicleDto)
     expect(result.message).toEqual('Veiculo compartilhado com sucesso')
+  })
+
+  it('should update the vehicle kilometers', async () => {
+    const request: any = {"user": {"id": user1.id}}
+    const veiculo = await vehicleController.create(request, {
+      kilometers: 500,
+      year: 2022,
+      model: 'Civic',
+      plate: 'NET3818'
+    })
+    const updateKilometersDto: UpdateKilometersDto = {
+      vehicleId: veiculo.data.id,
+      kilometers: 1000
+    }
+    const result = await vehicleController.updateKilometers(request, updateKilometersDto)
+    expect(result.message).toEqual('Quilometragem do veículo atualizada com sucesso')
   })
 })
