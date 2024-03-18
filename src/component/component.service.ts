@@ -12,6 +12,7 @@ import {CreateComponentDto} from '../shared/component/dto/request/create-compone
 import {VehicleService} from '../vehicle/vehicle.service'
 import {DriverService} from 'src/driver/driver.service'
 import {UpdateComponentDto} from 'src/shared/component/dto/request/update-component.dto'
+import { Vehicle } from 'src/vehicle/entities/vehicle.entity'
 
 @Injectable()
 export class ComponentService {
@@ -65,8 +66,8 @@ export class ComponentService {
   async update(userId: number, componentId: number, dto: UpdateComponentDto): Promise<Component> {
     const vehicle = await this.vehicleService.findById(dto.vehicleId)
 
-    const isOwner = vehicle.drivers.some((it) => it.user.id === userId && it.isOwner)
-    if (!isOwner) {
+    const isDriver = vehicle.drivers.some((it) => it.user.id === userId)
+    if (!isDriver) {
       throw new UnauthorizedException({message: 'Veículo informado não pertence ao motorista'})
     }
 
@@ -92,5 +93,14 @@ export class ComponentService {
       throw new UnauthorizedException('Veículo informado não pertence ao motorista')
     }
     await this.componentRepository.remove(component)
+  }
+
+  async getVehicleComponents(userId: number, vehicleId: number): Promise<Component[]> {
+    const vehicle = await this.vehicleService.findById(vehicleId)
+    const isDriver = vehicle.drivers.some((it) => it.user.id === userId)
+    if (!isDriver) {
+      throw new UnauthorizedException('Veículo informado não pertence ao motorista')
+    }
+    return vehicle.components
   }
 }

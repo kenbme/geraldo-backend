@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Param, Post, Put, Request} from '@nestjs/common'
+import {Body, Controller, Delete, Get, Param, Post, Put, Request} from '@nestjs/common'
 import {CreateComponentDto} from '../shared/component/dto/request/create-component.dto'
 import {ComponentResponseDTO} from '../shared/component/dto/response/component.response.dto'
 import {createComponentResponseDTO} from '../util/mapper'
@@ -45,5 +45,17 @@ export class ComponentController {
     const userId = await (request as any).user.id
     await this.componentsService.deleteComponent(userId, componentId)
     return {data: {}, message: 'Componente deletado com sucesso'}
+  }
+
+  @Roles(UserTypeEnum.DRIVER)
+  @Get('/components/:vehicleId')
+  async getVehicleComponents(
+    @Request() request: Request,
+    @Param('vehicleId') vehicleId: number
+  ): Promise<{data: ComponentResponseDTO[]; message: string}> {
+    const userId = await (request as any).user.id
+    const components = await this.componentsService.getVehicleComponents(userId, vehicleId)
+    const data = components.map((component) => createComponentResponseDTO(component))
+    return {data, message: 'Componentes encontrados'}
   }
 }
