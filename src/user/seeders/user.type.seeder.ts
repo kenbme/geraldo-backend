@@ -15,7 +15,6 @@ export class UserTypeSeeder {
     const data = [
       {name: UserTypeEnum.DRIVER, description: 'descricao de driver'},
       {name: UserTypeEnum.ESTABLISHMENT, description: 'descricao de establishment'},
-      {name: UserTypeEnum.USER, description: 'descricao de user genérico'}
     ]
     await this.userTypeRepository.upsert(data, {conflictPaths: ['name']})
   }

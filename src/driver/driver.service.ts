@@ -22,7 +22,7 @@ export class DriverService {
       email: createDriverDto.email,
       name: createDriverDto.name,
       username: createDriverDto.username,
-      userType: UserTypeEnum.USER
+      userType: UserTypeEnum.DRIVER
     })
     return createdUser
   }

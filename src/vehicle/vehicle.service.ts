@@ -24,6 +24,9 @@ export class VehicleService {
 
   async create(userId: UUID, dto: CreateVehicleDto): Promise<Vehicle> {
     const user = await this.userService.findById(userId)
+    if (user.userType.name !== UserTypeEnum.DRIVER) {
+      throw new ForbiddenException('Você não pode associar esse usuário')
+    }
     const vehicle = await this.vehicleRepository.findOne({ where: { plate: dto.plate }, relations: { drivers: true } })
     if (vehicle) {
       const isOwner = vehicle.drivers.some((it) => it.user.id === userId && it.isOwner)
@@ -36,7 +39,6 @@ export class VehicleService {
     const driver = new Driver()
     driver.isOwner = true
     driver.user = user
-    user.userType = await this.userTypeService.findByName(UserTypeEnum.DRIVER)
 
     const newVehicle = new Vehicle()
     newVehicle.model = dto.model
@@ -56,17 +58,13 @@ export class VehicleService {
     let user
     try {
       user = await this.userService.findById(userId)
-    } catch (err) {
-      if (err instanceof NotFoundException) {
+    } catch(err) {
+      if (err instanceof NotFoundException || (user && user.userType.name !== UserTypeEnum.DRIVER)) {
         throw new NotFoundException("Motorista não encontrado")
-      } else {
-        throw new InternalServerErrorException()
       }
+      throw new InternalServerErrorException()
     }
-    if (user.userType.name === UserTypeEnum.DRIVER) {
-      throw new NotFoundException("Motorista não encontrado")
-    }
-    return await this.vehicleRepository.find({ where: { drivers: { user: { id: userId } } } })
+    return await this.vehicleRepository.find({ where: { drivers: { user: user } } })
   }
 
   async findById(id: UUID): Promise<Vehicle> {
@@ -81,7 +79,7 @@ export class VehicleService {
   }
 
   async shareVehicle(vehicleId: UUID, userId: UUID, shareVehicleDto: ShareVehicleDto): Promise<Vehicle> {
-    const vehicle = await this.vehicleRepository.findOne({ where: { id: vehicleId }, relations: {drivers: true} })
+    const vehicle = await this.vehicleRepository.findOne({ where: { id: vehicleId }, relations: { drivers: true } })
     if (!vehicle) {
       throw new NotFoundException('Veículo não encontrado');
     }
@@ -97,7 +95,7 @@ export class VehicleService {
     }
 
     const user = await this.userService.findByUsername(shareVehicleDto.cpf)
-    if (user.userType.name !== UserTypeEnum.USER && user.userType.name !== UserTypeEnum.DRIVER) {
+    if (user.userType.name !== UserTypeEnum.DRIVER) {
       throw new ForbiddenException('Você não pode associar esse usuário')
     }
 
