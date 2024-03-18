@@ -1,12 +1,11 @@
 import {Vehicle} from '../../vehicle/entities/vehicle.entity'
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {ComponentType} from './component.type.entity'
-import {UUID} from 'crypto'
 
 @Entity()
 export class Component {
-  @PrimaryGeneratedColumn('uuid')
-  id: UUID
+  @PrimaryGeneratedColumn()
+  id: number
 
   @ManyToOne(() => ComponentType, {eager: true})
   componentType: ComponentType

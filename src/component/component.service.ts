@@ -10,7 +10,6 @@ import {Repository} from 'typeorm'
 import {ComponentType} from './entities/component.type.entity'
 import {CreateComponentDto} from '../shared/component/dto/request/create-component.dto'
 import {VehicleService} from '../vehicle/vehicle.service'
-import {UUID} from 'crypto'
 import {DriverService} from 'src/driver/driver.service'
 import {UpdateComponentDto} from 'src/shared/component/dto/request/update-component.dto'
 
@@ -25,7 +24,7 @@ export class ComponentService {
     private readonly vehicleService: VehicleService
   ) {}
 
-  async create(dto: CreateComponentDto, userId: UUID): Promise<Component> {
+  async create(dto: CreateComponentDto, userId: number): Promise<Component> {
     const vehicle = await this.vehicleService.findById(dto.vehicleId)
 
     const isOwner = vehicle.drivers.some((it) => it.user.id === userId && it.isOwner)
@@ -63,7 +62,7 @@ export class ComponentService {
     return await this.componentRepository.save(component)
   }
 
-  async update(userId: UUID, componentId: UUID, dto: UpdateComponentDto): Promise<Component> {
+  async update(userId: number, componentId: number, dto: UpdateComponentDto): Promise<Component> {
     const vehicle = await this.vehicleService.findById(dto.vehicleId)
 
     const isOwner = vehicle.drivers.some((it) => it.user.id === userId && it.isOwner)

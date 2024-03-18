@@ -1,4 +1,3 @@
-import {UUID} from 'crypto'
 import {User} from '../../user/entities/user.entity'
 import {Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {EstablishmentType} from './establishment.type.entity'
@@ -6,8 +5,8 @@ import {Address} from '../../address/entities/address.entity'
 
 @Entity()
 export class Establishment {
-  @PrimaryGeneratedColumn('uuid')
-  id: UUID
+  @PrimaryGeneratedColumn()
+  id: number
   @OneToOne(() => User)
   @JoinColumn()
   user: User

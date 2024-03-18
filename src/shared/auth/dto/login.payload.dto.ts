@@ -1,8 +1,7 @@
-import {UUID} from 'crypto'
 import {UserTypeEnum} from '../../../shared/user/enums/user-type.enum'
 
 export class LoginPayload {
-  id: UUID
+  id: number
   userType: UserTypeEnum
   resetPassword: boolean
 }

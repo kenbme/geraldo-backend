@@ -1,7 +1,5 @@
-import {UUID} from 'crypto'
-
 export class VehicleResponseDTO {
-  id: UUID
+  id: number
   model: string
   plate: string
   year: number

@@ -1,6 +1,5 @@
-import {IsInt, IsUUID} from 'class-validator'
+import {IsInt} from 'class-validator'
 import {IsDateValid} from '../../validators/IsDateValid'
-import {UUID} from 'crypto'
 
 export class UpdateComponentDto {
   @IsDateValid()
@@ -12,6 +11,6 @@ export class UpdateComponentDto {
   @IsInt()
   maintenanceFrequency: number
 
-  @IsUUID()
-  vehicleId: UUID
+  @IsInt()
+  vehicleId: number
 }

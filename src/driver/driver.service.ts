@@ -1,6 +1,5 @@
 import {Injectable} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
-import {UUID} from 'crypto'
 import {UserService} from '../user/user.service'
 import {Repository} from 'typeorm'
 import {CreateDriverDto} from '../shared/driver/dto/request/create-driver.dto'
@@ -27,7 +26,7 @@ export class DriverService {
     return createdUser
   }
 
-  async findByUserId(userId: UUID): Promise<Driver[]> {
+  async findByUserId(userId: number): Promise<Driver[]> {
     return await this.driverRepository.find({where: {user: {id: userId}}})
   }
 

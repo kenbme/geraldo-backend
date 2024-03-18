@@ -1,12 +1,11 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
 import {Establishment} from './establishment.entity'
-import {UUID} from 'crypto'
 import {EstablishmentTypeEnum} from '../../shared/establishment/enums/establishment-type.enum'
 
 @Entity()
 export class EstablishmentType {
-  @PrimaryGeneratedColumn('uuid')
-  uuid: UUID
+  @PrimaryGeneratedColumn()
+  id: number
   @Column({type: 'varchar', unique: true})
   name: EstablishmentTypeEnum
   @Column({type: 'varchar'})

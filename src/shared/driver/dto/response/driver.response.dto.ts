@@ -1,7 +1,5 @@
-import {UUID} from 'crypto'
-
 export class DriverResponseDTO {
-  id: UUID
+  id: number
   username: string
   name: string
   email: string

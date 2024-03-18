@@ -6,7 +6,6 @@ import {
   NotFoundException
 } from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
-import {UUID} from 'crypto'
 import {DriverService} from '../driver/driver.service'
 import {CreateVehicleDto} from '../shared/vehicle/dto/request/create-vehicle.dto'
 import {DataSource, Repository} from 'typeorm'
@@ -28,7 +27,7 @@ export class VehicleService {
     private readonly userTypeService: UserTypeService
   ) {}
 
-  async create(userId: UUID, dto: CreateVehicleDto): Promise<Vehicle> {
+  async create(userId: number, dto: CreateVehicleDto): Promise<Vehicle> {
     const user = await this.userService.findById(userId)
     if (user.userType.name !== UserTypeEnum.DRIVER) {
       throw new ForbiddenException('Você não pode associar esse usuário')
@@ -63,7 +62,7 @@ export class VehicleService {
     return createdVehicle
   }
 
-  async getVehicles(userId: UUID): Promise<Vehicle[]> {
+  async getVehicles(userId: number): Promise<Vehicle[]> {
     let user
     try {
       user = await this.userService.findById(userId)
@@ -79,7 +78,7 @@ export class VehicleService {
     return await this.vehicleRepository.find({where: {drivers: {user: user}}})
   }
 
-  async findById(id: UUID): Promise<Vehicle> {
+  async findById(id: number): Promise<Vehicle> {
     const vehicle = await this.vehicleRepository.findOne({
       where: {id: id},
       relations: {components: true, drivers: true}
@@ -91,8 +90,8 @@ export class VehicleService {
   }
 
   async shareVehicle(
-    vehicleId: UUID,
-    userId: UUID,
+    vehicleId: number,
+    userId: number,
     shareVehicleDto: ShareVehicleDto
   ): Promise<Vehicle> {
     const vehicle = await this.vehicleRepository.findOne({

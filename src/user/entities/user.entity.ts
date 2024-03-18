@@ -1,12 +1,11 @@
 import {Exclude} from 'class-transformer'
-import {UUID} from 'node:crypto'
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {UserType} from './user.type.entity'
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: UUID
+  @PrimaryGeneratedColumn()
+  id: number
   @Column({type: 'varchar', unique: true})
   username: string
   @Column({type: 'varchar'})

@@ -1,8 +1,10 @@
+import { ComponentTypeEnum } from "../../enums/component-type.enum"
+
 export class ComponentResponseDTO {
-  id: string
-  componentType: string
+  id: number
+  componentType: ComponentTypeEnum
   dateLastExchange: Date
   kilometersLastExnchange: number
   maintenanceFrequency: number
-  vehicleId: string
+  vehicleId: number
 }

@@ -1,5 +1,4 @@
-import {IsEnum, IsInt, IsUUID} from 'class-validator'
-import {UUID} from 'crypto'
+import {IsEnum, IsInt} from 'class-validator'
 import {IsDateValid} from '../../validators/IsDateValid'
 import {ComponentTypeEnum} from '../../enums/component-type.enum'
 
@@ -16,6 +15,6 @@ export class CreateComponentDto {
   @IsInt()
   maintenanceFrequency: number
 
-  @IsUUID()
-  vehicleId: UUID
+  @IsInt()
+  vehicleId: number
 }

@@ -1,5 +1,4 @@
 import {Body, Controller, Get, HttpCode, Param, Post, Request} from '@nestjs/common'
-import {UUID} from 'crypto'
 import {CreateVehicleDto} from '../shared/vehicle/dto/request/create-vehicle.dto'
 import {VehicleService} from './vehicle.service'
 import {createVehicleResponseDTO} from '../util/mapper'
@@ -19,7 +18,7 @@ export class VehicleController {
     @Request() request: Request,
     @Body() createVehicleDto: CreateVehicleDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
-    const userId: UUID = await (request as any).user.id
+    const userId: number = await (request as any).user.id
     const vehicle = await this.vehicleService.create(userId, createVehicleDto)
     const data = createVehicleResponseDTO(vehicle)
     return {data, message: 'Veiculo cadastrado com sucesso'}
@@ -30,7 +29,7 @@ export class VehicleController {
   async getVehicles(
     @Request() request: Request
   ): Promise<{data: VehicleResponseDTO[]; message: string}> {
-    const userId: UUID = await (request as any).user.id
+    const userId: number = await (request as any).user.id
     const vehicles = await this.vehicleService.getVehicles(userId)
     const vehiclesResponseDTO = vehicles.map((vehicle) => createVehicleResponseDTO(vehicle))
     return {data: vehiclesResponseDTO, message: 'Veículos encontrados'}
@@ -40,10 +39,10 @@ export class VehicleController {
   @Post('/share_vehicle/{vehicleId}')
   async shareVehicle(
     @Request() request: Request,
-    @Param('vehicleId') vehicleId: UUID,
+    @Param('vehicleId') vehicleId: number,
     @Body() shareVehicleDto: ShareVehicleDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
-    const userId: UUID = await (request as any).user.id
+    const userId: number = await (request as any).user.id
     const vehicle = await this.vehicleService.shareVehicle(vehicleId, userId, shareVehicleDto)
     const data = createVehicleResponseDTO(vehicle)
     return {data, message: 'Veiculo compartilhado com sucesso'}

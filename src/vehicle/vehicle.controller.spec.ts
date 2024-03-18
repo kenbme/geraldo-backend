@@ -114,7 +114,7 @@ describe('VehicleController', () => {
 
   it('result get lists driver not found', async () => {
     try {
-      await vehicleService.getVehicles('606e374a-ca2f-4676-9adc-f31ef238288e')
+      await vehicleService.getVehicles(53214214)
     } catch (error) {
       expect(error).toBeInstanceOf(NotFoundException)
       expect(error.message).toEqual('Motorista não encontrado')

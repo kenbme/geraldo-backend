@@ -6,7 +6,6 @@ import {ComponentService} from './component.service'
 import {UpdateComponentDto} from 'src/shared/component/dto/request/update-component.dto'
 import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
 import {Roles} from 'src/config/decorator'
-import {UUID} from 'crypto'
 
 @Controller('components')
 export class ComponentController {
@@ -28,7 +27,7 @@ export class ComponentController {
   @Put('/vehicle_components/{componentId}')
   async update(
     @Request() request: Request,
-    @Param() componentId: UUID,
+    @Param() componentId: number,
     updateComponentDTO: UpdateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
     const driverId = await (request as any).user.id
