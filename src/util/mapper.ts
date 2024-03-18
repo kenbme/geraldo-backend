@@ -1,3 +1,4 @@
+import { UserResponseDTO } from 'src/shared/user/dto/response/user.response.dto'
 import {Component} from '../component/entities/component.entity'
 import {Driver} from '../driver/entities/driver.entity'
 import {Establishment} from '../establishment/entities/establishment.entity'
@@ -9,6 +10,15 @@ import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
 import {VehicleResponseDTO} from '../shared/vehicle/dto/response/vahicle.response.dto'
 import {User} from '../user/entities/user.entity'
 import {Vehicle} from '../vehicle/entities/vehicle.entity'
+
+export const createUserResponseDTO = (user: User): UserResponseDTO => {
+  const dto = new UserResponseDTO()
+  dto.id = user.id
+  dto.username = user.username
+  dto.email = user.email
+  dto.name = user.name
+  return dto
+}
 
 export const createDriverResponseDTO = (driver: Driver): DriverResponseDTO => {
   const dto = new DriverResponseDTO()

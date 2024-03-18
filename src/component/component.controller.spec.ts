@@ -22,8 +22,8 @@ import {CreateComponentDto} from 'src/shared/component/dto/request/create-compon
 describe('ComponentController', () => {
   let componentController: ComponentController
   let componentService: ComponentService
-  let driver: Driver
-  let driver2: Driver
+  let user: User
+  let user2: User
   let vehicle: Vehicle
 
   beforeEach(async () => {
@@ -54,20 +54,20 @@ describe('ComponentController', () => {
     const userTypeSeeder = module.get(UserTypeSeeder)
     await userTypeSeeder.seed()
     const driverService = module.get(DriverService)
-    driver = await driverService.create({
+    user = await driverService.create( {
       name: 'João',
       birthday: '2002-12-12',
       email: 'joao@gmail.com',
       username: '09400830009'
     })
-    driver2 = await driverService.create({
+    user2 = await driverService.create({
       name: 'Jo',
       birthday: '2001-12-12',
       email: 'jo@gmail.com',
       username: '19400830009'
     })
     const vehicleService = module.get(VehicleService)
-    vehicle = await vehicleService.create(driver.id, {
+    vehicle = await vehicleService.create(user.id, {
       kilometers: 500,
       year: 2022,
       model: 'Civic',
@@ -89,7 +89,7 @@ describe('ComponentController', () => {
         maintenanceFrequency: 2,
         kilometersLastExchange: 50
       },
-      driver.id
+      user.id
     )
   })
   it('Killometers greater than the current', async () => {
@@ -102,7 +102,7 @@ describe('ComponentController', () => {
           maintenanceFrequency: 2,
           kilometersLastExchange: 5000
         },
-        driver.id
+        user.id
       )
     } catch (error) {
       expect(error.message).toEqual(
@@ -141,7 +141,7 @@ describe('ComponentController', () => {
           maintenanceFrequency: 2,
           kilometersLastExchange: 50
         },
-        driver.id
+        user.id
       )
       await componentService.create(
         {
@@ -151,7 +151,7 @@ describe('ComponentController', () => {
           maintenanceFrequency: 2,
           kilometersLastExchange: 50
         },
-        driver.id
+        user.id
       )
     } catch (error) {
       expect(error.message).toEqual('Já existe esse componente cadastrado no veículo')
@@ -169,7 +169,7 @@ describe('ComponentController', () => {
           maintenanceFrequency: 2,
           kilometersLastExchange: 500
         },
-        driver2.id
+        user2.id
       )
     } catch (error) {
       expect(error.message).toEqual('Veículo informado não pertence ao motorista')

@@ -20,10 +20,10 @@ export class ComponentService {
     private readonly vehicleService: VehicleService
   ) {}
 
-  async create(dto: CreateComponentDto, driverId: UUID): Promise<Component> {
+  async create(dto: CreateComponentDto, userId: UUID): Promise<Component> {
     const vehicle = await this.vehicleService.findById(dto.vehicleId)
 
-    const isOwner = vehicle.owners.some((it) => it.id === driverId)
+    const isOwner = vehicle.drivers.some((it) => it.user.id === userId && it.isOwner)
     if (!isOwner) {
       throw new UnauthorizedException({message: 'Veículo informado não pertence ao motorista'})
     }
@@ -58,10 +58,10 @@ export class ComponentService {
     return await this.componentRepository.save(component)
   }
 
-  async update(driverId: UUID, componentId: UUID, dto: UpdateComponentDto): Promise<Component> {
+  async update(userId: UUID, componentId: UUID, dto: UpdateComponentDto): Promise<Component> {
     const vehicle = await this.vehicleService.findById(dto.vehicleId)
-
-    const isOwner = vehicle.owners.some((it) => it.id === driverId)
+    
+    const isOwner = vehicle.drivers.some((it) => it.user.id === userId && it.isOwner)
     if (!isOwner) {
       throw new UnauthorizedException({message: 'Veículo informado não pertence ao motorista'})
     }

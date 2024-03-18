@@ -20,8 +20,8 @@ describe('VehicleController', () => {
   let vehicleController: VehicleController
   let vehicleService: VehicleService
   let driverService: DriverService
-  let driver: Driver
-  let driver2: Driver
+  let user1: User
+  let user2: User
 
   dotenv.config({ path: '.development.env' });
 
@@ -48,18 +48,25 @@ describe('VehicleController', () => {
     driverService = module.get(DriverService)
     const userTypeSeeder = module.get(UserTypeSeeder)
     await userTypeSeeder.seed()
-    driver = await driverService.create({
+    user1 = await driverService.create({
       name: 'João',
       birthday: '2002-12-12',
       email: 'joao@gmail.com',
       username: '09400830009'
     })
-    driver2 = await driverService.create({
+    user2 = await driverService.create({
       name: 'Pedro',
       birthday: '2001-10-10',
       email: 'pedro@gmail.com',
       username: '81779020082'
   })
+
+    await vehicleService.create(user1.id, {
+      kilometers: 502,
+      year: 2023,
+      model: 'Civic',
+      plate: 'JZD4058'
+    })
 })
 
   it('should controller to be defined', () => {
@@ -68,7 +75,7 @@ describe('VehicleController', () => {
   })
 
   it('should create a vehicle', async () => {
-    await vehicleService.create(driver.id, {
+    await vehicleService.create(user1.id, {
       kilometers: 502,
       year: 2023,
       model: 'Civic',
@@ -76,8 +83,8 @@ describe('VehicleController', () => {
     })
   })
   
-  it('result get lists', async () => {
-    const request: any = {"user": {"id": driver.id}}
+  it('result get lists 1', async () => {
+    const request: any = {"user": {"id": user2.id}}
     const veiculo1 = await vehicleController.create(request, {
       kilometers: 500,
       year: 2022,
@@ -96,7 +103,7 @@ describe('VehicleController', () => {
   })
 
   it('result get lists empty', async () => {
-    const vehicles = await vehicleService.getVehicles(driver.id)
+    const vehicles = await vehicleService.getVehicles(user2.id)
     expect(vehicles).toStrictEqual([])
   })
 
@@ -112,7 +119,7 @@ describe('VehicleController', () => {
   })
 
   it('should share a vehicle', async () => {
-    const request: any = {"user": {"id": driver.id}}
+    const request: any = {"user": {"id": user1.id}}
     const veiculo1 = await vehicleController.create(request, {
       kilometers: 500,
       year: 2022,
@@ -120,7 +127,7 @@ describe('VehicleController', () => {
       plate: 'NET3818'
     })
     const shareVehicleDto: ShareVehicleDto = {
-      cpf: driver2.user.username
+      cpf: user2.username
     }
     const result = await vehicleController.shareVehicle(request, veiculo1.data.id, shareVehicleDto)
     expect(result.message).toEqual('Veiculo compartilhado com sucesso')

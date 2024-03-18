@@ -1,5 +1,5 @@
 import { UUID } from 'crypto'
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Component } from '../../component/entities/component.entity'
 import { Driver } from '../../driver/entities/driver.entity'
 
@@ -15,9 +15,9 @@ export class Vehicle {
   kilometers: number
   @Column({type: 'integer'})
   year: number
-  @ManyToMany(() => Driver, (driver) => driver.vehicles, {eager: true})
-  @JoinTable()
-  owners: Driver[]
+  @OneToMany(() => Driver, (driver) => driver.vehicle)
+  @JoinColumn()
+  drivers: Driver[]
   @OneToMany(() => Component, (component) => component.vehicle)
   components: Component[]
 }
