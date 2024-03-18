@@ -33,4 +33,5 @@ export class DriverService {
   async findByUserName(username: string): Promise<Driver[]> {
     return await this.driverRepository.find({where: {user: {username: username}}})
   }
+
 }

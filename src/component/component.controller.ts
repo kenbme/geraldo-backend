@@ -1,4 +1,4 @@
-import {Body, Controller, Param, Post, Put, Request} from '@nestjs/common'
+import {Body, Controller, Delete, Param, Post, Put, Request} from '@nestjs/common'
 import {CreateComponentDto} from '../shared/component/dto/request/create-component.dto'
 import {ComponentResponseDTO} from '../shared/component/dto/response/component.response.dto'
 import {createComponentResponseDTO} from '../util/mapper'
@@ -7,9 +7,9 @@ import {UpdateComponentDto} from 'src/shared/component/dto/request/update-compon
 import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
 import {Roles} from 'src/config/decorator'
 
-@Controller('components')
+@Controller('')
 export class ComponentController {
-  constructor(private readonly componentsService: ComponentService) {}
+  constructor(private readonly componentsService: ComponentService) { }
 
   @Post('/vehicle_components')
   @Roles(UserTypeEnum.DRIVER)
@@ -20,7 +20,7 @@ export class ComponentController {
     const driverId = await (request as any).user.id
     const component = await this.componentsService.create(createComponentsDTO, driverId)
     const data = createComponentResponseDTO(component)
-    return {data, message: 'Componente cadastrado com sucesso'}
+    return { data, message: 'Componente cadastrado com sucesso' }
   }
 
   @Roles(UserTypeEnum.DRIVER)
@@ -34,5 +34,16 @@ export class ComponentController {
     const component = await this.componentsService.update(driverId, componentId, updateComponentDTO)
     const data = createComponentResponseDTO(component)
     return {data, message: 'Componente atualizado com sucesso'}
+  }
+
+  @Roles(UserTypeEnum.DRIVER)
+  @Delete('/vehicle_components/:componentId')
+  async delete(
+    @Request() request: Request,
+    @Param('componentId') componentId : number
+  ): Promise<{data: Object; message: string}> {
+    const userId = await (request as any).user.id
+    await this.componentsService.deleteComponent(userId, componentId)
+    return {data: {}, message: 'Componente deletado com sucesso'}
   }
 }
