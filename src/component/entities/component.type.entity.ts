@@ -1,6 +1,6 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
 import {Component} from './component.entity'
-import { ComponentTypeEnum } from 'src/shared/component/enums/component-type.enum'
+import {ComponentTypeEnum} from 'src/shared/component/enums/component-type.enum'
 
 @Entity()
 export class ComponentType {

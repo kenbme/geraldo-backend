@@ -16,7 +16,7 @@ import {ShareVehicleDto} from 'src/shared/vehicle/dto/request/share-vehicle.dto'
 import {Driver} from 'src/driver/entities/driver.entity'
 import {UserTypeService} from 'src/user/user.type.service'
 import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
-import { UpdateKilometersDto } from 'src/shared/vehicle/dto/request/update-kilometers.dto'
+import {UpdateKilometersDto} from 'src/shared/vehicle/dto/request/update-kilometers.dto'
 
 @Injectable()
 export class VehicleService {
@@ -134,25 +134,29 @@ export class VehicleService {
   }
 
   async updateKilometers(userId: number, updateKilometers: UpdateKilometersDto): Promise<Vehicle> {
-    
     const vehicleId = updateKilometers.vehicleId
     const kilometers = updateKilometers.kilometers
 
-    const vehicle = await this.vehicleRepository.findOne({where: {id: vehicleId}, relations: {drivers: true}})
+    const vehicle = await this.vehicleRepository.findOne({
+      where: {id: vehicleId},
+      relations: {drivers: true}
+    })
     if (!vehicle) {
-      throw new NotFoundException('Veículo não encontrado');
+      throw new NotFoundException('Veículo não encontrado')
     }
-    
+
     const isOwner = vehicle.drivers.some((it) => it.user.id === userId && it.isOwner)
-    if(!isOwner){
-      throw new NotFoundException('Veículo informado não pertence ao motorista');
+    if (!isOwner) {
+      throw new NotFoundException('Veículo informado não pertence ao motorista')
     }
 
     if (kilometers < vehicle.kilometers) {
-      throw new BadRequestException('A quilometragem atual não pode ser menor do que a quilometragem anterior');
+      throw new BadRequestException(
+        'A quilometragem atual não pode ser menor do que a quilometragem anterior'
+      )
     }
 
-    vehicle.kilometers = kilometers;
-    return await this.vehicleRepository.save(vehicle);
+    vehicle.kilometers = kilometers
+    return await this.vehicleRepository.save(vehicle)
   }
 }

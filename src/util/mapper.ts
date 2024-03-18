@@ -69,5 +69,4 @@ export const createComponentResponseDTO = (component: Component): ComponentRespo
   dto.kilometersLastExnchange = component.kilometersLastExchange
   dto.vehicleId = component.vehicle.id
   return dto
-
 }

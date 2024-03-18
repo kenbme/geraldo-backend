@@ -1,4 +1,4 @@
-import { ComponentTypeEnum } from "../../enums/component-type.enum"
+import {ComponentTypeEnum} from '../../enums/component-type.enum'
 
 export class ComponentResponseDTO {
   id: number

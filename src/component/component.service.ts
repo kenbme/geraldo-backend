@@ -82,11 +82,10 @@ export class ComponentService {
     return await this.componentRepository.save(component)
   }
 
-
-  async deleteComponent(userId: number, componentId: number): Promise<void>{
-    const component = await this.componentRepository.findOne({where: {id: componentId}, })
+  async deleteComponent(userId: number, componentId: number): Promise<void> {
+    const component = await this.componentRepository.findOne({where: {id: componentId}})
     if (!component) {
-      throw new NotFoundException(`Componente veicular não existe`);
+      throw new NotFoundException(`Componente veicular não existe`)
     }
     const isOwner = component.vehicle.drivers.some((it) => it.user.id === userId && it.isOwner)
     if (!isOwner) {
@@ -94,5 +93,4 @@ export class ComponentService {
     }
     await this.componentRepository.remove(component)
   }
-
 }

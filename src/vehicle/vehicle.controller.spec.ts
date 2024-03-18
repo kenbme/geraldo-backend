@@ -12,10 +12,10 @@ import {DriverModule} from 'src/driver/driver.module'
 import {UserType} from 'src/user/entities/user.type.entity'
 import {DriverService} from 'src/driver/driver.service'
 import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
-import { ShareVehicleDto } from 'src/shared/vehicle/dto/request/share-vehicle.dto'
-import * as dotenv from 'dotenv';
-import { NotFoundException } from '@nestjs/common'
-import { UpdateKilometersDto } from 'src/shared/vehicle/dto/request/update-kilometers.dto'
+import {ShareVehicleDto} from 'src/shared/vehicle/dto/request/share-vehicle.dto'
+import * as dotenv from 'dotenv'
+import {NotFoundException} from '@nestjs/common'
+import {UpdateKilometersDto} from 'src/shared/vehicle/dto/request/update-kilometers.dto'
 
 describe('VehicleController', () => {
   let vehicleController: VehicleController
@@ -140,7 +140,7 @@ describe('VehicleController', () => {
   })
 
   it('should update the vehicle kilometers', async () => {
-    const request: any = {"user": {"id": user1.id}}
+    const request: any = {user: {id: user1.id}}
     const veiculo = await vehicleController.create(request, {
       kilometers: 500,
       year: 2022,

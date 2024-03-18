@@ -9,7 +9,7 @@ import {Roles} from 'src/config/decorator'
 
 @Controller('')
 export class ComponentController {
-  constructor(private readonly componentsService: ComponentService) { }
+  constructor(private readonly componentsService: ComponentService) {}
 
   @Post('/vehicle_components')
   @Roles(UserTypeEnum.DRIVER)
@@ -20,7 +20,7 @@ export class ComponentController {
     const driverId = await (request as any).user.id
     const component = await this.componentsService.create(createComponentsDTO, driverId)
     const data = createComponentResponseDTO(component)
-    return { data, message: 'Componente cadastrado com sucesso' }
+    return {data, message: 'Componente cadastrado com sucesso'}
   }
 
   @Roles(UserTypeEnum.DRIVER)
@@ -40,7 +40,7 @@ export class ComponentController {
   @Delete('/vehicle_components/:componentId')
   async delete(
     @Request() request: Request,
-    @Param('componentId') componentId : number
+    @Param('componentId') componentId: number
   ): Promise<{data: Object; message: string}> {
     const userId = await (request as any).user.id
     await this.componentsService.deleteComponent(userId, componentId)
