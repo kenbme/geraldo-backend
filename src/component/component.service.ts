@@ -84,7 +84,7 @@ export class ComponentService {
   }
 
   async deleteComponent(userId: number, componentId: number): Promise<void> {
-    const component = await this.componentRepository.findOne({where: {id: componentId}})
+    const component = await this.componentRepository.findOne({where: {id: componentId}, relations : ["vehicle", "vehicle.drivers"]})
     if (!component) {
       throw new NotFoundException(`Componente veicular não existe`)
     }
