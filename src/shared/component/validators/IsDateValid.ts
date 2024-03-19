@@ -39,7 +39,7 @@ export const validerDate = (value: string): boolean => {
     }
     const currentDate = new Date()
     const userDate = new Date(year, month, day)
-    return currentDate > userDate
+    return currentDate >= userDate
   } catch (err) {}
   return false
 }
