@@ -4,7 +4,8 @@ import {
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException
+  NotFoundException,
+  UnauthorizedException
 } from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {DriverService} from '../driver/driver.service'
@@ -106,7 +107,7 @@ export class VehicleService {
 
     const isOwner = vehicle.drivers.some((it) => it.user.id === userId && it.isOwner)
     if (!isOwner) {
-      throw new NotFoundException('Motorista não encontrado')
+      throw new UnauthorizedException('Veículo informado não pertence ao motorista')
     }
 
     const alreadyAssociated = vehicle.drivers.some(
@@ -133,8 +134,7 @@ export class VehicleService {
     return updatedVeicule
   }
 
-  async updateKilometers(userId: number, updateKilometers: UpdateKilometersDto): Promise<Vehicle> {
-    const vehicleId = updateKilometers.vehicleId
+  async updateKilometers(userId: number, vehicleId: number, updateKilometers: UpdateKilometersDto): Promise<Vehicle> {
     const kilometers = updateKilometers.kilometers
 
     const vehicle = await this.vehicleRepository.findOne({
@@ -145,9 +145,9 @@ export class VehicleService {
       throw new NotFoundException('Veículo não encontrado')
     }
 
-    const isOwner = vehicle.drivers.some((it) => it.user.id === userId && it.isOwner)
-    if (!isOwner) {
-      throw new NotFoundException('Veículo informado não pertence ao motorista')
+    const canUseVehicle = vehicle.drivers.some((it) => it.user.id === userId)
+    if (!canUseVehicle) {
+      throw new UnauthorizedException('Veículo informado não pertence ao motorista')
     }
 
     if (kilometers < vehicle.kilometers) {

@@ -37,7 +37,7 @@ export class VehicleController {
   }
 
   @Roles(UserTypeEnum.DRIVER)
-  @Post('/share_vehicle/{vehicleId}')
+  @Post('/share_vehicle/:vehicleId')
   async shareVehicle(
     @Request() request: Request,
     @Param('vehicleId') vehicleId: number,
@@ -50,13 +50,14 @@ export class VehicleController {
   }
 
   @Roles(UserTypeEnum.DRIVER)
-  @Patch('/kilometers/vehicleId')
+  @Patch('/kilometers/:vehicleId')
   async updateKilometers(
     @Request() request: Request,
+    @Param('vehicleId') vehicleId: number,
     @Body() updateKilometersDto: UpdateKilometersDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
     const driverId: number = await (request as any).user.id
-    const vehicle = await this.vehicleService.updateKilometers(driverId, updateKilometersDto)
+    const vehicle = await this.vehicleService.updateKilometers(driverId, vehicleId, updateKilometersDto)
     const data = createVehicleResponseDTO(vehicle)
     return {data, message: 'Quilometragem do veículo atualizada com sucesso'}
   }
