@@ -11,6 +11,4 @@ export class UpdateComponentDto {
   @IsInt()
   maintenanceFrequency: number
 
-  @IsInt()
-  vehicleId: number
 }

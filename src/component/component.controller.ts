@@ -24,11 +24,11 @@ export class ComponentController {
   }
 
   @Roles(UserTypeEnum.DRIVER)
-  @Put('/vehicle_components/{componentId}')
+  @Put('/vehicle_components/:componentId')
   async update(
     @Request() request: Request,
-    @Param() componentId: number,
-    updateComponentDTO: UpdateComponentDto
+    @Param('componentId') componentId: number,
+    @Body() updateComponentDTO: UpdateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
     const driverId = await (request as any).user.id
     const component = await this.componentsService.update(driverId, componentId, updateComponentDTO)

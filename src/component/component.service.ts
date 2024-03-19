@@ -64,16 +64,14 @@ export class ComponentService {
   }
 
   async update(userId: number, componentId: number, dto: UpdateComponentDto): Promise<Component> {
-    const vehicle = await this.vehicleService.findById(dto.vehicleId)
-
-    const isDriver = vehicle.drivers.some((it) => it.user.id === userId)
-    if (!isDriver) {
-      throw new UnauthorizedException({message: 'Veículo informado não pertence ao motorista'})
-    }
-
-    const component = vehicle.components.find((it) => it.componentType.id === componentId)
+    const component = await this.componentRepository.findOne({where: {id: componentId}, relations : ["vehicle", "vehicle.drivers"]})
     if (!component) {
       throw new NotFoundException('Componente veicular não existe')
+    }
+
+    const isDriver = component.vehicle.drivers.some((it) => it.user.id === userId)
+    if (!isDriver) {
+      throw new UnauthorizedException({message: 'Veículo informado não pertence ao motorista'})
     }
 
     component.kilometersLastExchange = dto.kilometersLastExchange
