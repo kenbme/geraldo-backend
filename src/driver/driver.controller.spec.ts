@@ -9,6 +9,10 @@ import {UserModule} from 'src/user/user.module'
 import {ConflictException} from '@nestjs/common'
 import {ValidationError, validateOrReject} from 'class-validator'
 import {CreateDriverDto} from '../shared/driver/dto/request/create-driver.dto'
+import {Vehicle} from 'src/vehicle/entities/vehicle.entity'
+import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
+import {Component} from 'src/component/entities/component.entity'
+import {ComponentType} from 'src/component/entities/component.type.entity'
 
 describe('DriverController', () => {
   let driverController: DriverController
@@ -21,16 +25,18 @@ describe('DriverController', () => {
           database: 'db/testing_driver.sqlite3',
           synchronize: true,
           dropSchema: true,
-          entities: [User, UserType, Driver]
+          entities: [User, UserType, Driver, Vehicle, Component, ComponentType]
         }),
-        TypeOrmModule.forFeature([Driver]),
+        TypeOrmModule.forFeature([Driver, UserType]),
         UserModule
       ],
       controllers: [DriverController],
-      providers: [DriverService]
+      providers: [DriverService, UserTypeSeeder]
     }).compile()
 
     driverController = module.get<DriverController>(DriverController)
+    const userTypeSeeder = module.get(UserTypeSeeder)
+    await userTypeSeeder.seed()
   })
 
   it('should be defined', () => {
@@ -79,7 +85,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.isNotEmpty).toEqual('O email não pode ser vazio')
+          expect(err.constraints.isEmail).toBe('Email inválido')
           return
         }
       }
@@ -95,7 +101,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.isEmail).toEqual('O email deve ser um email válido')
+          expect(err.constraints.isEmail).toBe('Email inválido')
           return
         }
       }
@@ -111,7 +117,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.isEmail).toEqual('O email deve ser um email válido')
+          expect(err.constraints.isEmail).toBe('Email inválido')
           return
         }
       }
@@ -128,7 +134,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.isEmail).toEqual('O email deve ser um email válido')
+          expect(err.constraints.isEmail).toBe('Email inválido')
           return
         }
       }
@@ -167,7 +173,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.isNotEmpty).toEqual('o cpf não pode ser vazio')
+          expect(err.constraints.isCPF).toBe('CPF inválido')
           return
         }
       }
@@ -183,7 +189,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.maxLength).toEqual('o cpf não deve exceder 11 caracteres')
+          expect(err.constraints.isCPF).toBe('CPF inválido')
           return
         }
       }
@@ -199,7 +205,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.minLength).toEqual('o cpf deve ter 11 caracteres')
+          expect(err.constraints.isCPF).toBe('CPF inválido')
           return
         }
       }
@@ -217,7 +223,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.isNotEmpty).toEqual('O nome não pode ser vazio')
+          expect(err.constraints.noWhiteSpace).toBe('O nome não pode estar em branco')
           return
         }
       }
@@ -229,14 +235,12 @@ describe('DriverController', () => {
         const dto = new CreateDriverDto()
         dto.username = '10137419430'
         dto.email = 'teste@gmail.com'
-        dto.birthday = '2002-12-15'
+        dto.birthday = '1999-12-15'
         dto.name = '        '
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          console.log(err.constraints.minLength)
-
-          expect(err.constraints.isNotEmpty).toEqual('O nome não pode ser vazio')
+          expect(err.constraints.noWhiteSpace).toBe('O nome não pode estar em branco')
           return
         }
       }
@@ -252,7 +256,9 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.isString).toEqual('O nome deve ser válido')
+          expect(err.constraints.noContainsSpecialCharacter).toBe(
+            'O nome não pode ter caracteres especiais'
+          )
           return
         }
       }
@@ -268,7 +274,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.minLength).toEqual('o nome deve ter mais que 4 caracteres')
+          expect(err.constraints.minLength).toEqual('O nome deve ter pelo menos 4 caracteres')
           return
         }
       }
@@ -287,7 +293,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.isNotEmpty).toEqual('A data de nascimento não pode ser vazia')
+          expect(err.constraints.isValidDate).toBe('Data de nascimento inválida')
           return
         }
       }
@@ -303,7 +309,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.minDate).toEqual('Data de nascimento não permitida')
+          expect(err.constraints.isValidDate).toBe('Data de nascimento inválida')
           return
         }
       }
@@ -319,7 +325,7 @@ describe('DriverController', () => {
         await validateOrReject(dto)
       } catch ([err]) {
         if (err instanceof ValidationError && err.constraints) {
-          expect(err.constraints.maxDate).toEqual('Data de nascimento não permitida')
+          expect(err.constraints.isValidDate).toBe('Data de nascimento inválida')
           return
         }
       }

@@ -4,14 +4,17 @@ import {TypeOrmModule, getRepositoryToken} from '@nestjs/typeorm'
 import {validateOrReject} from 'class-validator'
 import {configDotenv} from 'dotenv'
 import {resolve} from 'path'
-import {User} from 'src/user/entities/user.entity'
-import {UserType} from 'src/user/entities/user.type.entity'
-import {UserModule} from 'src/user/user.module'
-import {UserService} from 'src/user/user.service'
+import {LoginRequestDTO} from '../shared/auth/dto/request/login.request.dto'
+import {User} from '../user/entities/user.entity'
+import {UserType} from '../user/entities/user.type.entity'
+import {UserModule} from '../user/user.module'
+import {UserService} from '../user/user.service'
 import {Repository} from 'typeorm'
 import {AuthController} from './auth.controller'
 import {AuthService} from './auth.service'
-import {LoginRequestDTO} from 'src/shared/auth/dto/request/login.request.dto'
+import {UserTypeSeeder} from '../user/seeders/user.type.seeder'
+import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
+import {VehicleModule} from 'src/vehicle/vehicle.module'
 
 configDotenv({path: resolve(process.cwd(), '.development.env')})
 
@@ -30,29 +33,36 @@ describe('AuthController', () => {
           dropSchema: true,
           entities: [User, UserType]
         }),
-        TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([User, UserType]),
         JwtModule.register({
           global: true,
           secret: process.env.JWT_SECRET_KEY,
           signOptions: {expiresIn: '60s'}
         }),
-        UserModule
+        UserModule,
+        VehicleModule
       ],
       controllers: [AuthController],
-      providers: [AuthService, {provide: getRepositoryToken(User), useClass: Repository}]
+      providers: [
+        AuthService,
+        {provide: getRepositoryToken(User), useClass: Repository},
+        UserTypeSeeder
+      ]
     }).compile()
 
     authController = module.get(AuthController)
     userService = module.get(UserService)
     userRepository = module.get(getRepositoryToken(User))
     await userRepository.clear()
+    const userTypeSeeder = module.get(UserTypeSeeder)
+    await userTypeSeeder.seed()
 
     await userService.create({
       username: '11111111111',
       email: 'teste22@gmail.com',
       birthday: '1999-12-25',
       name: 'Sicrano',
-      userType: 'DRIVER'
+      userType: UserTypeEnum.DRIVER
     })
   })
 
@@ -69,7 +79,7 @@ describe('AuthController', () => {
       email: 'teste@gmail.com',
       birthday: '2002-12-24',
       name: 'fulano',
-      userType: 'DRIVER'
+      userType: UserTypeEnum.DRIVER
     })
     const newCount = await userRepository.count()
     expect(newCount).toBe(count + 1)

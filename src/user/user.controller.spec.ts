@@ -2,13 +2,15 @@ import {Test, TestingModule} from '@nestjs/testing'
 import {TypeOrmModule, getRepositoryToken} from '@nestjs/typeorm'
 import {validateOrReject} from 'class-validator'
 import {Repository} from 'typeorm'
-import {RecoverPasswordDto} from 'src/shared/user/dto/request/recover-password.dto'
+import {RecoverPasswordDto} from '../shared/user/dto/request/recover-password.dto'
 import {User} from './entities/user.entity'
 import {UserType} from './entities/user.type.entity'
 import {UserController} from './user.controller'
 import {UserModule} from './user.module'
 import {UserService} from './user.service'
 import {UserTypeService} from './user.type.service'
+import {UserTypeSeeder} from './seeders/user.type.seeder'
+import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
 
 describe('UserController', () => {
   let userController: UserController
@@ -20,7 +22,7 @@ describe('UserController', () => {
       imports: [
         TypeOrmModule.forRoot({
           type: 'sqlite',
-          database: 'db/testing_establishment.sqlite3',
+          database: 'db/testing_user.sqlite3',
           synchronize: true,
           dropSchema: true,
           entities: [User, UserType]
@@ -32,7 +34,8 @@ describe('UserController', () => {
       providers: [
         UserService,
         UserTypeService,
-        {provide: getRepositoryToken(User), useClass: Repository}
+        {provide: getRepositoryToken(User), useClass: Repository},
+        UserTypeSeeder
       ]
     }).compile()
 
@@ -40,6 +43,8 @@ describe('UserController', () => {
     userService = module.get(UserService)
     userRepository = module.get(getRepositoryToken(User))
     await userRepository.clear()
+    const userTypeSeeder = module.get(UserTypeSeeder)
+    await userTypeSeeder.seed()
   })
 
   it('should be defined', () => {
@@ -52,7 +57,7 @@ describe('UserController', () => {
       email: 'teste@gmail.com',
       birthday: '2000-09-10',
       name: 'fulano',
-      userType: 'DRIVER'
+      userType: UserTypeEnum.DRIVER
     })
     expect(data).toBeDefined()
     const oldPassword = data.createdUser.password
@@ -67,7 +72,7 @@ describe('UserController', () => {
       dto.email = '       '
       await validateOrReject(dto)
     } catch ([err]) {
-      expect(err.constraints.isEmail).toEqual('Formato inválido')
+      expect(err.constraints.isEmail).toEqual('Email inválido')
       return
     }
     throw new Error()
@@ -79,7 +84,7 @@ describe('UserController', () => {
       dto.email = 'asdasd'
       await validateOrReject(dto)
     } catch ([err]) {
-      expect(err.constraints.isEmail).toEqual('Formato inválido')
+      expect(err.constraints.isEmail).toEqual('Email inválido')
       return
     }
     throw new Error()

@@ -1,12 +1,11 @@
-import {BadRequestException, ConflictException, Injectable, UnauthorizedException} from '@nestjs/common'
+import {BadRequestException, ConflictException, Injectable, NotFoundException} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {hash} from 'bcrypt'
-import {randomUUID} from 'crypto'
 import {Repository} from 'typeorm'
-import {CreateUserDto} from 'src/shared/user/dto/request/create-user.dto'
+import {CreateUserDto} from '../shared/user/dto/request/create-user.dto'
 import {User} from './entities/user.entity'
 import {UserTypeService} from './user.type.service'
-import {RecoverPasswordDto} from 'src/shared/user/dto/request/recover-password.dto'
+import {RecoverPasswordDto} from '../shared/user/dto/request/recover-password.dto'
 
 @Injectable()
 export class UserService {
@@ -38,7 +37,6 @@ export class UserService {
       throw new ConflictException('Email já cadastrado')
     }
     const newUser = new User()
-    newUser.uuid = randomUUID()
     newUser.username = createUserDto.username
     // TODO randomPassword deve ser enviada para email
     const randomPassword = Math.random().toString().split('0.')[1]
@@ -55,7 +53,11 @@ export class UserService {
   }
 
   async findByUsername(userUsername: string): Promise<User> {
-    return await this.userRepository.findOneByOrFail({username: userUsername})
+    const user = await this.userRepository.findOne({where: {username: userUsername}})
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado')
+    }
+    return user
   }
 
   async recoverPassword(recoverPasswordDto: RecoverPasswordDto): Promise<string> {
@@ -70,5 +72,13 @@ export class UserService {
     user.resetPassword = true
     await this.userRepository.save(user)
     return randomPassword
+  }
+
+  async findById(userId: number): Promise<User> {
+    const user = await this.userRepository.findOneBy({id: userId})
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado')
+    }
+    return user
   }
 }

@@ -3,7 +3,7 @@ import {ValidationOptions, registerDecorator} from 'class-validator'
 export function IsCPF(validationOptions?: ValidationOptions): PropertyDecorator {
   return function (object: Object, propertyName: string) {
     registerDecorator({
-      name: 'IsCPF',
+      name: 'isCPF',
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,

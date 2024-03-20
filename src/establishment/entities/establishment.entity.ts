@@ -1,14 +1,12 @@
-import {UUID} from 'crypto'
-import {User} from 'src/user/entities/user.entity'
+import {User} from '../../user/entities/user.entity'
 import {Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {EstablishmentType} from './establishment.type.entity'
+import {Address} from '../../address/entities/address.entity'
 
 @Entity()
 export class Establishment {
   @PrimaryGeneratedColumn()
   id: number
-  @Column({type: 'varchar', unique: true})
-  uuid: UUID
   @OneToOne(() => User)
   @JoinColumn()
   user: User
@@ -20,4 +18,6 @@ export class Establishment {
   alwaysOpen: number
   @ManyToOne(() => EstablishmentType, (establishmentType) => establishmentType.establishments)
   establishmentType: EstablishmentType
+  @ManyToOne(() => Address)
+  address: Address
 }

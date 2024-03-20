@@ -1,20 +1,36 @@
 import {Module} from '@nestjs/common'
-import {UserModule} from './user/user.module'
+import {APP_FILTER, APP_GUARD, APP_INTERCEPTOR} from '@nestjs/core'
 import {TypeOrmModule} from '@nestjs/typeorm'
-import {User} from './user/entities/user.entity'
 import {AuthModule} from './auth/auth.module'
-import {Driver} from './driver/entities/driver.entity'
-import {Establishment} from './establishment/entities/establishment.entity'
-import {UserType} from './user/entities/user.type.entity'
-import {EstablishmentType} from './establishment/entities/establishment.type.entity'
+import {BadRequestExceptionFilter} from './config/badrequest.filter'
 import {CepModule} from './cep/cep.module'
 import {DriverModule} from './driver/driver.module'
+import {Driver} from './driver/entities/driver.entity'
+import {Establishment} from './establishment/entities/establishment.entity'
+import {EstablishmentType} from './establishment/entities/establishment.type.entity'
 import {EstablishmentModule} from './establishment/establishment.module'
-import {APP_FILTER, APP_INTERCEPTOR} from '@nestjs/core'
-import {ResponseInterceptor} from './response.interceptor'
-import {BadRequestExceptionFilter} from './badrequest.filter'
-import {HttpExceptionExceptionFilter} from './httpexception.filter '
-import {TypeORMExceptionFilter} from './typeorm.filter '
+import {HttpExceptionExceptionFilter} from './config/httpexception.filter '
+import {ResponseInterceptor} from './config/response.interceptor'
+import {TypeORMExceptionFilter} from './config/typeorm.filter '
+import {User} from './user/entities/user.entity'
+import {UserType} from './user/entities/user.type.entity'
+import {UserModule} from './user/user.module'
+import {Vehicle} from './vehicle/entities/vehicle.entity'
+import {VehicleModule} from './vehicle/vehicle.module'
+import {AuthGuard} from './config/authguard'
+import {RolesGuard} from './config/roles.guard'
+import {State} from './address/entities/state.entity'
+import {City} from './address/entities/cities.entity'
+import {AddressModule} from './address/address.module'
+import {Address} from './address/entities/address.entity'
+import {SeederService} from './config/seeder.service'
+import {StateSeeder} from './address/seeders/state.seeder'
+import {UserTypeSeeder} from './user/seeders/user.type.seeder'
+import {EstablishmentTypeSeeder} from './establishment/seeders/establishment.type.seeder'
+import {Component} from './component/entities/component.entity'
+import {ComponentType} from './component/entities/component.type.entity'
+import {ComponentModule} from './component/component.module'
+import {ComponentTypeSeeder} from './component/seeders/component.type.seeder'
 
 @Module({
   imports: [
@@ -22,13 +38,29 @@ import {TypeORMExceptionFilter} from './typeorm.filter '
       type: 'sqlite',
       database: 'db/development.sqlite3',
       synchronize: true,
-      entities: [User, UserType, Driver, Establishment, EstablishmentType]
+      entities: [
+        User,
+        UserType,
+        Driver,
+        Establishment,
+        EstablishmentType,
+        Vehicle,
+        Address,
+        State,
+        City,
+        Component,
+        ComponentType
+      ]
     }),
+    TypeOrmModule.forFeature([EstablishmentType, UserType, State, ComponentType]),
     UserModule,
     AuthModule,
     CepModule,
     DriverModule,
-    EstablishmentModule
+    EstablishmentModule,
+    VehicleModule,
+    ComponentModule,
+    AddressModule
   ],
   providers: [
     {
@@ -46,7 +78,20 @@ import {TypeORMExceptionFilter} from './typeorm.filter '
     {
       provide: APP_FILTER,
       useClass: TypeORMExceptionFilter
-    }
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard
+    },
+    StateSeeder,
+    UserTypeSeeder,
+    EstablishmentTypeSeeder,
+    ComponentTypeSeeder,
+    SeederService
   ]
 })
 export class AppModule {}

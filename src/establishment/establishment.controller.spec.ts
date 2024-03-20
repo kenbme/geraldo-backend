@@ -9,6 +9,14 @@ import {UserModule} from 'src/user/user.module'
 import {EstablishmentType} from './entities/establishment.type.entity'
 import {EstablishmentTypeService} from './establishment.type.service'
 import {Repository} from 'typeorm'
+import {AddressModule} from 'src/address/address.module'
+import {Address} from 'src/address/entities/address.entity'
+import {State} from 'src/address/entities/state.entity'
+import {City} from 'src/address/entities/cities.entity'
+import {EstablishmentTypeSeeder} from './seeders/establishment.type.seeder'
+import {StateSeeder} from 'src/address/seeders/state.seeder'
+import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
+import {EstablishmentTypeEnum} from 'src/shared/establishment/enums/establishment-type.enum'
 
 describe('EstablishmentController', () => {
   let establishmentController: EstablishmentController
@@ -22,21 +30,31 @@ describe('EstablishmentController', () => {
           database: 'db/testing_establishment.sqlite3',
           synchronize: true,
           dropSchema: true,
-          entities: [User, UserType, Establishment, EstablishmentType]
+          entities: [User, UserType, Establishment, EstablishmentType, Address, State, City]
         }),
-        TypeOrmModule.forFeature([Establishment, EstablishmentType]),
-        UserModule
+        TypeOrmModule.forFeature([Establishment, EstablishmentType, State, UserType]),
+        UserModule,
+        AddressModule
       ],
       controllers: [EstablishmentController],
       providers: [
         EstablishmentService,
         EstablishmentTypeService,
-        {provide: getRepositoryToken(User), useClass: Repository}
+        {provide: getRepositoryToken(User), useClass: Repository},
+        EstablishmentTypeSeeder,
+        StateSeeder,
+        UserTypeSeeder
       ]
     }).compile()
     establishmentController = module.get(EstablishmentController)
     userRepository = module.get(getRepositoryToken(User))
     await userRepository.clear()
+    const establishmentTypeSeeder = module.get(EstablishmentTypeSeeder)
+    await establishmentTypeSeeder.seed()
+    const stateSeeder = module.get(StateSeeder)
+    await stateSeeder.seed()
+    const userTypeSeeder = module.get(UserTypeSeeder)
+    await userTypeSeeder.seed()
   })
 
   it('should be defined', () => {
@@ -50,9 +68,9 @@ describe('EstablishmentController', () => {
       name: 'fulano',
       areaCode: '83',
       phone: '83993333333',
-      establishmentType: 'GAS_STATION',
+      establishmentType: EstablishmentTypeEnum.GAS_STATION,
       houseNumber: '15',
-      postalCode: '58429-900'
+      postalCode: '58429900'
     })
     expect(establishment).toBeDefined()
   })
