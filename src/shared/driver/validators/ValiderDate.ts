@@ -19,22 +19,19 @@ export function IsValidDate(validationOptions?: ValidationOptions) {
   }
 }
 
-export const validateDate = (value: string): boolean => {
+export const validateDate = (value?: string): boolean => {
+  if (!value) {
+    return false
+  }
   if (value.length !== 10) {
     return false
   }
   try {
     const splited = value.split('-')
     const year = parseInt(splited[0])
-    if (year < 1) {
-      return false
-    }
     const month = parseInt(splited[1])
-    if (month < 1 && month > 12) {
-      return false
-    }
     const day = parseInt(splited[2])
-    if (day < 1 && day > 31) {
+    if (year < 1 || month < 1 || month > 12 || day < 1 || day > 31) {
       return false
     }
     const currentDate = new Date()
