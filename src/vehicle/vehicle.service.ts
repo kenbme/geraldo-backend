@@ -134,7 +134,11 @@ export class VehicleService {
     return updatedVeicule
   }
 
-  async updateKilometers(userId: number, vehicleId: number, updateKilometers: UpdateKilometersDto): Promise<Vehicle> {
+  async updateKilometers(
+    userId: number,
+    vehicleId: number,
+    updateKilometers: UpdateKilometersDto
+  ): Promise<Vehicle> {
     const kilometers = updateKilometers.kilometers
 
     const vehicle = await this.vehicleRepository.findOne({

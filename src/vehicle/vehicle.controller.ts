@@ -57,7 +57,11 @@ export class VehicleController {
     @Body() updateKilometersDto: UpdateKilometersDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
     const driverId: number = await (request as any).user.id
-    const vehicle = await this.vehicleService.updateKilometers(driverId, vehicleId, updateKilometersDto)
+    const vehicle = await this.vehicleService.updateKilometers(
+      driverId,
+      vehicleId,
+      updateKilometersDto
+    )
     const data = createVehicleResponseDTO(vehicle)
     return {data, message: 'Quilometragem do veículo atualizada com sucesso'}
   }

@@ -13,5 +13,4 @@ export class UpdateComponentDto {
   @IsNotEmpty()
   @IsInt()
   maintenanceFrequency: number
-
 }

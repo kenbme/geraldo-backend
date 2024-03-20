@@ -29,8 +29,8 @@ export const validerDate = (value: string): boolean => {
     const month = parseInt(splited[1])
     const day = parseInt(splited[2])
     if (year < 1 || month < 1 || month > 12 || day < 1 || day > 31) {
-      return false
-    }
+      return false
+    }
     const currentDate = new Date()
     const userDate = new Date(year, month, day)
     return currentDate >= userDate

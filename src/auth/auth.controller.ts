@@ -3,8 +3,8 @@ import {AuthService} from './auth.service'
 import {LoginResponseDTO} from '../shared/auth/dto/response/login.response.dto'
 import {LoginRequestDTO} from '../shared/auth/dto/request/login.request.dto'
 import {Public, Roles} from '../config/decorator'
-import { UserTypeEnum } from 'src/shared/user/enums/user-type.enum'
-import { SelectCarDTO } from 'src/shared/auth/dto/request/select-car.request.dto'
+import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
+import {SelectCarDTO} from 'src/shared/auth/dto/request/select-car.request.dto'
 
 @Controller('')
 export class AuthController {
@@ -25,8 +25,8 @@ export class AuthController {
   @Roles(UserTypeEnum.DRIVER)
   async selectCar(
     @Request() request: Request,
-    @Body() selectDarDto: SelectCarDTO)
-  : Promise<{data: LoginResponseDTO; message: string}> {
+    @Body() selectDarDto: SelectCarDTO
+  ): Promise<{data: LoginResponseDTO; message: string}> {
     const userId = (request as any).user.id
     const data = await this.authService.selectCar(userId, selectDarDto.vehicleId)
     return {data, message: 'Carro selecionado com sucesso'}
