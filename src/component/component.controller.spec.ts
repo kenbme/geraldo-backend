@@ -18,6 +18,7 @@ import {VehicleService} from 'src/vehicle/vehicle.service'
 import {ComponentTypeEnum} from 'src/shared/component/enums/component-type.enum'
 import {ValidationError, validateOrReject} from 'class-validator'
 import {CreateComponentDto} from 'src/shared/component/dto/request/create-component.dto'
+import { UpdateComponentDto } from 'src/shared/component/dto/request/update-component.dto'
 
 describe('ComponentController', () => {
   let componentController: ComponentController
@@ -73,6 +74,7 @@ describe('ComponentController', () => {
       model: 'Civic',
       plate: 'NET3818'
     })
+    
   })
 
   it('should be defined', () => {
@@ -94,7 +96,7 @@ describe('ComponentController', () => {
   })
   it('Killometers greater than the current', async () => {
     try {
-      await componentService.create(
+     const dto = await componentService.create(
         {
           vehicleId: vehicle.id,
           componentType: ComponentTypeEnum.BALANCE,
@@ -103,7 +105,9 @@ describe('ComponentController', () => {
           kilometersLastExchange: 5000
         },
         user.id
+        
       )
+      await validateOrReject(dto)
     } catch (error) {
       expect(error.message).toEqual(
         'Quilometragem da última troca não pode ser maior do que a atual'
@@ -177,4 +181,89 @@ describe('ComponentController', () => {
     }
     throw new Error()
   })
+  it('Driver not is owner for update', async () => {
+    try {
+      const componente = await componentService.create({
+        vehicleId: vehicle.id,
+        componentType: ComponentTypeEnum.AIR_FILTER,
+        dateLastExchange: '2023-10-10',
+        maintenanceFrequency: 2,
+        kilometersLastExchange: 50
+      },
+      user.id)
+      await componentService.update(user2.id,componente.id,
+        {
+          vehicleId: vehicle.id,
+          dateLastExchange: '2023-10-10',
+          maintenanceFrequency: 2,
+          kilometersLastExchange: 500
+        }
+      )
+    } catch (error) {
+      expect(error.message).toEqual('Veículo informado não pertence ao motorista')
+      return
+    }
+    throw new Error()
+  })
+  it('Component not exists', async () => {
+    try { 
+      await componentService.update(user.id,1234,
+        {
+          vehicleId: vehicle.id,
+          dateLastExchange: '2023-10-10',
+          maintenanceFrequency: 2,
+          kilometersLastExchange: 500
+        }
+      )
+    } catch (error) {
+      expect(error.message).toEqual('Componente veicular não existe')
+      return
+    }
+    throw new Error()
+  })
+  it('Date greater than the current in update', async () => {
+    try {
+      const dto = new UpdateComponentDto
+      dto.vehicleId = vehicle.id
+      dto.dateLastExchange = '2025-10-10'
+      dto.maintenanceFrequency = 2
+      dto.kilometersLastExchange = 50
+      await validateOrReject(dto)
+    } catch ([err]) {
+      if (err instanceof ValidationError && err.constraints) {
+        expect(err.constraints.isDateValid).toBe(
+          'Data da última troca não pode ser maior do que a atual'
+        )
+        return
+      }
+    }
+    throw new Error()
+  })
+  it('Killometers greater than the current in update', async () => {
+    try {
+        const componente = await componentService.create({
+          vehicleId: vehicle.id,
+          componentType: ComponentTypeEnum.AIR_FILTER,
+          dateLastExchange: '2023-10-10',
+          maintenanceFrequency: 2,
+          kilometersLastExchange: 5000
+        },
+        user.id)
+      await componentService.update(user.id,componente.id,
+        {
+          vehicleId: vehicle.id,
+          dateLastExchange: '2023-10-10',
+          maintenanceFrequency: 2,
+          kilometersLastExchange: 5000
+        },
+      )
+    } catch (error) {
+      expect(error.message).toEqual(
+        'Quilometragem da última troca não pode ser maior do que a atual'
+      )
+      return
+    }
+    throw new Error()
+  })
+
 })
