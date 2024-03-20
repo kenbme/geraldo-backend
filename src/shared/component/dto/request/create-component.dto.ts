@@ -15,6 +15,6 @@ export class CreateComponentDto {
   @IsInt({message: 'A frequencia de manuntenção deve ser um inteiro'})
   maintenanceFrequency: number
 
-  @IsInt()
+  @IsInt({message:' O id deve ser um inteiro'})
   vehicleId: number
 }
