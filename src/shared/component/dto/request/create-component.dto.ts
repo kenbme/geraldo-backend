@@ -4,7 +4,7 @@ import {ComponentTypeEnum} from '../../enums/component-type.enum'
 
 export class CreateComponentDto {
   @IsNotEmpty()
-  @IsEnum(ComponentTypeEnum)
+  @IsEnum(ComponentTypeEnum,{message: 'Componente veicular não encontrado'})
   componentType: ComponentTypeEnum
 
   @IsNotEmpty()
@@ -12,14 +12,11 @@ export class CreateComponentDto {
   dateLastExchange: string
   
   @IsNotEmpty()
-  @IsInt()  
+  @IsInt({message: 'A quilometragem da ultima troca deve ser um inteiro'})
   kilometersLastExchange: number
   
   @IsNotEmpty()
-  @IsInt()
+  @IsInt({message: 'A frequencia de manuntenção deve ser um inteiro'})
   maintenanceFrequency: number
-  
-  @IsNotEmpty()
-  @IsInt()
-  vehicleId: number
+
 }
