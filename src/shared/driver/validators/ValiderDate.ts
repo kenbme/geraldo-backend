@@ -19,7 +19,10 @@ export function IsValidDate(validationOptions?: ValidationOptions) {
   }
 }
 
-export const validateDate = (value: string): boolean => {
+export const validateDate = (value?: string): boolean => {
+  if (!value) {
+    return false
+  }
   if (value.length !== 10) {
     return false
   }
