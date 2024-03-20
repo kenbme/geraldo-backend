@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpCode, Param, Patch, Post, Request} from '@nestjs/common'
+import {Body, Controller, Get, HttpCode, Param, Patch, Post, Request, UnauthorizedException} from '@nestjs/common'
 import {CreateVehicleDto} from '../shared/vehicle/dto/request/create-vehicle.dto'
 import {VehicleService} from './vehicle.service'
 import {createVehicleResponseDTO} from '../util/mapper'
@@ -20,6 +20,9 @@ export class VehicleController {
     @Body() createVehicleDto: CreateVehicleDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
     const userId: number = await (request as any).user.id
+    if (!userId) {
+      throw new UnauthorizedException()
+    }
     const vehicle = await this.vehicleService.create(userId, createVehicleDto)
     const data = createVehicleResponseDTO(vehicle)
     return {data, message: 'Veiculo cadastrado com sucesso'}
@@ -31,6 +34,9 @@ export class VehicleController {
     @Request() request: Request
   ): Promise<{data: VehicleResponseDTO[]; message: string}> {
     const userId: number = await (request as any).user.id
+    if (!userId) {
+      throw new UnauthorizedException()
+    }
     const vehicles = await this.vehicleService.getVehicles(userId)
     const vehiclesResponseDTO = vehicles.map((vehicle) => createVehicleResponseDTO(vehicle))
     return {data: vehiclesResponseDTO, message: 'Veículos encontrados'}
@@ -44,6 +50,9 @@ export class VehicleController {
     @Body() shareVehicleDto: ShareVehicleDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
     const userId: number = await (request as any).user.id
+    if (!userId) {
+      throw new UnauthorizedException()
+    }
     const vehicle = await this.vehicleService.shareVehicle(vehicleId, userId, shareVehicleDto)
     const data = createVehicleResponseDTO(vehicle)
     return {data, message: 'Veiculo compartilhado com sucesso'}
@@ -56,9 +65,12 @@ export class VehicleController {
     @Param('vehicleId') vehicleId: number,
     @Body() updateKilometersDto: UpdateKilometersDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
-    const driverId: number = await (request as any).user.id
+    const userId: number = await (request as any).user.id
+    if (!userId) {
+      throw new UnauthorizedException()
+    }
     const vehicle = await this.vehicleService.updateKilometers(
-      driverId,
+      userId,
       vehicleId,
       updateKilometersDto
     )

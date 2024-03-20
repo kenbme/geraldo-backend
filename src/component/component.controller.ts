@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Request} from '@nestjs/common'
+import {Body, Controller, Delete, Get, Param, Post, Put, Request, UnauthorizedException} from '@nestjs/common'
 import {CreateComponentDto} from '../shared/component/dto/request/create-component.dto'
 import {ComponentResponseDTO} from '../shared/component/dto/response/component.response.dto'
 import {createComponentResponseDTO} from '../util/mapper'
@@ -17,9 +17,12 @@ export class ComponentController {
     @Request() request: Request,
     @Body() createComponentsDTO: CreateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
-    const driverId = await (request as any).user.id
+    const userId = await (request as any).user.id
     const vehicleId = await (request as any).user.vehicleId
-    const component = await this.componentsService.create(createComponentsDTO, driverId, vehicleId)
+    if (!userId || !vehicleId) {
+      throw new UnauthorizedException()
+    }
+    const component = await this.componentsService.create(createComponentsDTO, userId, vehicleId)
     const data = createComponentResponseDTO(component)
     return {data, message: 'Componente cadastrado com sucesso'}
   }
@@ -31,10 +34,13 @@ export class ComponentController {
     @Param('componentId') componentId: number,
     @Body() updateComponentDTO: UpdateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
-    const driverId = await (request as any).user.id
+    const userId = await (request as any).user.id
     const vehicleId = await (request as any).user.vehicleId
+    if (!userId || !vehicleId) {
+      throw new UnauthorizedException()
+    }
     const component = await this.componentsService.update(
-      driverId,
+      userId,
       vehicleId,
       componentId,
       updateComponentDTO
@@ -50,6 +56,9 @@ export class ComponentController {
     @Param('componentId') componentId: number
   ): Promise<{data: Object; message: string}> {
     const userId = await (request as any).user.id
+    if (!userId) {
+      throw new UnauthorizedException()
+    }
     await this.componentsService.deleteComponent(userId, componentId)
     return {data: {}, message: 'Componente deletado com sucesso'}
   }
@@ -61,6 +70,9 @@ export class ComponentController {
   ): Promise<{data: ComponentResponseDTO[]; message: string}> {
     const userId = await (request as any).user.id
     const vehicleId = await (request as any).user.vehicleId
+    if (!userId || !vehicleId) {
+      throw new UnauthorizedException()
+    }
     const components = await this.componentsService.getVehicleComponents(userId, vehicleId)
     const data = components.map((component) => createComponentResponseDTO(component))
     return {data, message: 'Componentes encontrados'}

@@ -1,4 +1,4 @@
-import {Body, Controller, HttpCode, HttpStatus, Post, Request} from '@nestjs/common'
+import {Body, Controller, HttpCode, HttpStatus, Post, Request, UnauthorizedException} from '@nestjs/common'
 import {AuthService} from './auth.service'
 import {LoginResponseDTO} from '../shared/auth/dto/response/login.response.dto'
 import {LoginRequestDTO} from '../shared/auth/dto/request/login.request.dto'
@@ -28,6 +28,9 @@ export class AuthController {
     @Body() selectDarDto: SelectCarDTO
   ): Promise<{data: LoginResponseDTO; message: string}> {
     const userId = (request as any).user.id
+    if (!userId) {
+      throw new UnauthorizedException()
+    }
     const data = await this.authService.selectCar(userId, selectDarDto.vehicleId)
     return {data, message: 'Carro selecionado com sucesso'}
   }
