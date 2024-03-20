@@ -2,7 +2,8 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  UnauthorizedException
+  UnauthorizedException,
+  UnprocessableEntityException
 } from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {Component} from './entities/component.entity'
@@ -65,17 +66,21 @@ export class ComponentService {
 
   async update(userId: number, componentId: number, dto: UpdateComponentDto): Promise<Component> {
     const vehicle = await this.vehicleService.findById(dto.vehicleId)
-
     const isDriver = vehicle.drivers.some((it) => it.user.id === userId)
     if (!isDriver) {
       throw new UnauthorizedException({message: 'Veículo informado não pertence ao motorista'})
     }
 
-    const component = vehicle.components.find((it) => it.componentType.id === componentId)
+    const component = vehicle.components.find((it) => it.id === componentId)
     if (!component) {
       throw new NotFoundException('Componente veicular não existe')
     }
-
+    if(dto.kilometersLastExchange > component.kilometersLastExchange){
+      throw new UnprocessableEntityException({message: 'Quilometragem da última troca não pode ser maior do que a atual'})
+    }
+    if (new Date(dto.dateLastExchange) < component.dateLastExchange) {
+      throw new UnprocessableEntityException({message:'Data da ultima troca não pode ser menor do que a atual'})
+    }
     component.kilometersLastExchange = dto.kilometersLastExchange
     component.dateLastExchange = new Date(dto.dateLastExchange)
     component.maintenanceFrequency = dto.maintenanceFrequency
