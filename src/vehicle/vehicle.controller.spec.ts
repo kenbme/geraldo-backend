@@ -148,10 +148,9 @@ describe('VehicleController', () => {
       plate: 'NET3818'
     })
     const updateKilometersDto: UpdateKilometersDto = {
-      vehicleId: veiculo.data.id,
       kilometers: 1000
     }
-    const result = await vehicleController.updateKilometers(request, updateKilometersDto)
+    const result = await vehicleController.updateKilometers(request, veiculo.data.id, updateKilometersDto)
     expect(result.message).toEqual('Quilometragem do veículo atualizada com sucesso')
   })
 })
