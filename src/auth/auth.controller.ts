@@ -3,8 +3,8 @@ import {AuthService} from './auth.service'
 import {LoginResponseDTO} from '../shared/auth/dto/response/login.response.dto'
 import {LoginRequestDTO} from '../shared/auth/dto/request/login.request.dto'
 import {Public, Roles} from '../config/decorator'
-import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
-import {SelectCarDTO} from 'src/shared/auth/dto/request/select-car.request.dto'
+import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
+import {SelectCarDTO} from '../shared/auth/dto/request/select-car.request.dto'
 
 @Controller('')
 export class AuthController {

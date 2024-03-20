@@ -3,9 +3,9 @@ import {CreateComponentDto} from '../shared/component/dto/request/create-compone
 import {ComponentResponseDTO} from '../shared/component/dto/response/component.response.dto'
 import {createComponentResponseDTO} from '../util/mapper'
 import {ComponentService} from './component.service'
-import {UpdateComponentDto} from 'src/shared/component/dto/request/update-component.dto'
-import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
-import {Roles} from 'src/config/decorator'
+import {UpdateComponentDto} from '../shared/component/dto/request/update-component.dto'
+import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
+import {Roles} from '../config/decorator'
 
 @Controller('')
 export class ComponentController {

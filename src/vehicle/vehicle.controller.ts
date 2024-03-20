@@ -5,8 +5,8 @@ import {createVehicleResponseDTO} from '../util/mapper'
 import {VehicleResponseDTO} from '../shared/vehicle/dto/response/vahicle.response.dto'
 import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
 import {Roles} from '../config/decorator'
-import {ShareVehicleDto} from 'src/shared/vehicle/dto/request/share-vehicle.dto'
-import {UpdateKilometersDto} from 'src/shared/vehicle/dto/request/update-kilometers.dto'
+import {ShareVehicleDto} from '../shared/vehicle/dto/request/share-vehicle.dto'
+import {UpdateKilometersDto} from '../shared/vehicle/dto/request/update-kilometers.dto'
 
 @Controller('')
 export class VehicleController {

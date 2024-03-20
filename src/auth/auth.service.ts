@@ -4,8 +4,8 @@ import * as bcrypt from 'bcrypt'
 import {UserService} from '../user/user.service'
 import {LoginResponseDTO} from '../shared/auth/dto/response/login.response.dto'
 import {createLoginPayload} from '../util/mapper'
-import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
-import {VehicleService} from 'src/vehicle/vehicle.service'
+import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
+import {VehicleService} from '../vehicle/vehicle.service'
 
 @Injectable()
 export class AuthService {

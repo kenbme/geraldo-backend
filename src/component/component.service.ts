@@ -11,8 +11,8 @@ import {Repository} from 'typeorm'
 import {ComponentType} from './entities/component.type.entity'
 import {CreateComponentDto} from '../shared/component/dto/request/create-component.dto'
 import {VehicleService} from '../vehicle/vehicle.service'
-import {DriverService} from 'src/driver/driver.service'
-import {UpdateComponentDto} from 'src/shared/component/dto/request/update-component.dto'
+import {DriverService} from '../driver/driver.service'
+import {UpdateComponentDto} from '../shared/component/dto/request/update-component.dto'
 
 @Injectable()
 export class ComponentService {

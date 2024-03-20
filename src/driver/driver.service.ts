@@ -5,7 +5,7 @@ import {Repository} from 'typeorm'
 import {CreateDriverDto} from '../shared/driver/dto/request/create-driver.dto'
 import {Driver} from './entities/driver.entity'
 import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
-import {User} from 'src/user/entities/user.entity'
+import {User} from '../user/entities/user.entity'
 
 @Injectable()
 export class DriverService {
