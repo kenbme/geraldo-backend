@@ -1,10 +1,19 @@
-import {Body, Controller, HttpCode, HttpStatus, Post, Request, UnauthorizedException} from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Request,
+  UnauthorizedException
+} from '@nestjs/common'
 import {AuthService} from './auth.service'
 import {LoginResponseDTO} from '../shared/auth/dto/response/login.response.dto'
 import {LoginRequestDTO} from '../shared/auth/dto/request/login.request.dto'
 import {Public, Roles} from '../config/decorator'
 import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
 import {SelectCarDTO} from '../shared/auth/dto/request/select-car.request.dto'
+import {UserRequest} from '../shared/auth/dto/user.request'
 
 @Controller('')
 export class AuthController {
@@ -24,10 +33,10 @@ export class AuthController {
   @Post('select_car')
   @Roles(UserTypeEnum.DRIVER)
   async selectCar(
-    @Request() request: Request,
+    @Request() request: UserRequest,
     @Body() selectDarDto: SelectCarDTO
   ): Promise<{data: LoginResponseDTO; message: string}> {
-    const userId = (request as any).user.id
+    const userId = request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }

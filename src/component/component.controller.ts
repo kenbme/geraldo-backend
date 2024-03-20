@@ -1,4 +1,14 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Request, UnauthorizedException} from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Request,
+  UnauthorizedException
+} from '@nestjs/common'
 import {CreateComponentDto} from '../shared/component/dto/request/create-component.dto'
 import {ComponentResponseDTO} from '../shared/component/dto/response/component.response.dto'
 import {createComponentResponseDTO} from '../util/mapper'
@@ -6,6 +16,7 @@ import {ComponentService} from './component.service'
 import {UpdateComponentDto} from '../shared/component/dto/request/update-component.dto'
 import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
 import {Roles} from '../config/decorator'
+import {UserRequest} from '../shared/auth/dto/user.request'
 
 @Controller('')
 export class ComponentController {
@@ -14,11 +25,11 @@ export class ComponentController {
   @Post('/vehicle_components')
   @Roles(UserTypeEnum.DRIVER)
   async create(
-    @Request() request: Request,
+    @Request() request: UserRequest,
     @Body() createComponentsDTO: CreateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
-    const userId = await (request as any).user.id
-    const vehicleId = await (request as any).user.vehicleId
+    const userId = await request.user.id
+    const vehicleId = await request.user.vehicleId
     if (!userId || !vehicleId) {
       throw new UnauthorizedException()
     }
@@ -30,12 +41,12 @@ export class ComponentController {
   @Roles(UserTypeEnum.DRIVER)
   @Put('/vehicle_components/:componentId')
   async update(
-    @Request() request: Request,
+    @Request() request: UserRequest,
     @Param('componentId') componentId: number,
     @Body() updateComponentDTO: UpdateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
-    const userId = await (request as any).user.id
-    const vehicleId = await (request as any).user.vehicleId
+    const userId = await request.user.id
+    const vehicleId = await request.user.vehicleId
     if (!userId || !vehicleId) {
       throw new UnauthorizedException()
     }
@@ -52,10 +63,10 @@ export class ComponentController {
   @Roles(UserTypeEnum.DRIVER)
   @Delete('/vehicle_components/:componentId')
   async delete(
-    @Request() request: Request,
+    @Request() request: UserRequest,
     @Param('componentId') componentId: number
   ): Promise<{data: Object; message: string}> {
-    const userId = await (request as any).user.id
+    const userId = await request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
@@ -66,10 +77,10 @@ export class ComponentController {
   @Roles(UserTypeEnum.DRIVER)
   @Get('/components')
   async getVehicleComponents(
-    @Request() request: Request
+    @Request() request: UserRequest
   ): Promise<{data: ComponentResponseDTO[]; message: string}> {
-    const userId = await (request as any).user.id
-    const vehicleId = await (request as any).user.vehicleId
+    const userId = await request.user.id
+    const vehicleId = await request.user.vehicleId
     if (!userId || !vehicleId) {
       throw new UnauthorizedException()
     }

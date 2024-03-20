@@ -1,4 +1,14 @@
-import {Body, Controller, Get, HttpCode, Param, Patch, Post, Request, UnauthorizedException} from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
+  Request,
+  UnauthorizedException
+} from '@nestjs/common'
 import {CreateVehicleDto} from '../shared/vehicle/dto/request/create-vehicle.dto'
 import {VehicleService} from './vehicle.service'
 import {createVehicleResponseDTO} from '../util/mapper'
@@ -7,6 +17,7 @@ import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
 import {Roles} from '../config/decorator'
 import {ShareVehicleDto} from '../shared/vehicle/dto/request/share-vehicle.dto'
 import {UpdateKilometersDto} from '../shared/vehicle/dto/request/update-kilometers.dto'
+import {UserRequest} from '../shared/auth/dto/user.request'
 
 @Controller('')
 export class VehicleController {
@@ -16,10 +27,10 @@ export class VehicleController {
   @Post('/vehicle')
   @HttpCode(200)
   async create(
-    @Request() request: Request,
+    @Request() request: UserRequest,
     @Body() createVehicleDto: CreateVehicleDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
-    const userId: number = await (request as any).user.id
+    const userId = await request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
@@ -31,9 +42,9 @@ export class VehicleController {
   @Roles(UserTypeEnum.DRIVER)
   @Get('/vehicles')
   async getVehicles(
-    @Request() request: Request
+    @Request() request: UserRequest
   ): Promise<{data: VehicleResponseDTO[]; message: string}> {
-    const userId: number = await (request as any).user.id
+    const userId = await request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
@@ -45,11 +56,11 @@ export class VehicleController {
   @Roles(UserTypeEnum.DRIVER)
   @Post('/share_vehicle/:vehicleId')
   async shareVehicle(
-    @Request() request: Request,
+    @Request() request: UserRequest,
     @Param('vehicleId') vehicleId: number,
     @Body() shareVehicleDto: ShareVehicleDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
-    const userId: number = await (request as any).user.id
+    const userId = await request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
@@ -61,11 +72,11 @@ export class VehicleController {
   @Roles(UserTypeEnum.DRIVER)
   @Patch('/kilometers/:vehicleId')
   async updateKilometers(
-    @Request() request: Request,
+    @Request() request: UserRequest,
     @Param('vehicleId') vehicleId: number,
     @Body() updateKilometersDto: UpdateKilometersDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
-    const userId: number = await (request as any).user.id
+    const userId = await request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
