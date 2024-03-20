@@ -18,7 +18,8 @@ export class ComponentController {
     @Body() createComponentsDTO: CreateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
     const driverId = await (request as any).user.id
-    const component = await this.componentsService.create(createComponentsDTO, driverId)
+    const vehicleId =  await (request as any).user.vehicleId
+    const component = await this.componentsService.create(createComponentsDTO, driverId, vehicleId)
     const data = createComponentResponseDTO(component)
     return {data, message: 'Componente cadastrado com sucesso'}
   }
@@ -31,7 +32,8 @@ export class ComponentController {
     @Body() updateComponentDTO: UpdateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
     const driverId = await (request as any).user.id
-    const component = await this.componentsService.update(driverId, componentId, updateComponentDTO)
+    const vehicleId =  await (request as any).user.vehicleId
+    const component = await this.componentsService.update(driverId, vehicleId, componentId, updateComponentDTO)
     const data = createComponentResponseDTO(component)
     return {data, message: 'Componente atualizado com sucesso'}
   }
@@ -48,12 +50,12 @@ export class ComponentController {
   }
 
   @Roles(UserTypeEnum.DRIVER)
-  @Get('/components/:vehicleId')
+  @Get('/components')
   async getVehicleComponents(
-    @Request() request: Request,
-    @Param('vehicleId') vehicleId: number
+    @Request() request: Request
   ): Promise<{data: ComponentResponseDTO[]; message: string}> {
     const userId = await (request as any).user.id
+    const vehicleId =  await (request as any).user.vehicleId
     const components = await this.componentsService.getVehicleComponents(userId, vehicleId)
     const data = components.map((component) => createComponentResponseDTO(component))
     return {data, message: 'Componentes encontrados'}
