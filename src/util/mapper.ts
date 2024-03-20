@@ -52,11 +52,12 @@ export const createEstablishmentResponseDTO = (
   return dto
 }
 
-export const createLoginPayload = (user: User): LoginPayload => {
+export const createLoginPayload = (user: User, vehicleId?: number): LoginPayload => {
   const payload = new LoginPayload()
   payload.id = user.id
   payload.userType = (UserTypeEnum as any)[user.userType.name]
   payload.resetPassword = user.resetPassword
+  payload.vehicleId = vehicleId
   return payload
 }
 

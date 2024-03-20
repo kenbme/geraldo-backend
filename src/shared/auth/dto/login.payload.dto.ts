@@ -4,4 +4,5 @@ export class LoginPayload {
   id: number
   userType: UserTypeEnum
   resetPassword: boolean
+  vehicleId?: number
 }

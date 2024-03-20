@@ -53,7 +53,11 @@ export class UserService {
   }
 
   async findByUsername(userUsername: string): Promise<User> {
-    return await this.userRepository.findOneByOrFail({username: userUsername})
+    const user = await this.userRepository.findOne({where: {username: userUsername}})
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado')
+    }
+    return user
   }
 
   async recoverPassword(recoverPasswordDto: RecoverPasswordDto): Promise<string> {
