@@ -21,7 +21,7 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @Post('select-car')
+  @Post('select_car')
   @Roles(UserTypeEnum.DRIVER)
   async selectCar(
     @Request() request: Request,
