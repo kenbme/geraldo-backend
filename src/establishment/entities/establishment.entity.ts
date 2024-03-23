@@ -1,7 +1,8 @@
 import {User} from '../../user/entities/user.entity'
-import {Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
+import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {EstablishmentType} from './establishment.type.entity'
 import {Address} from '../../address/entities/address.entity'
+import { Fuel } from 'src/fuel/entity/fuel.entity'
 
 @Entity()
 export class Establishment {
@@ -20,4 +21,6 @@ export class Establishment {
   establishmentType: EstablishmentType
   @ManyToOne(() => Address)
   address: Address
+  @OneToMany (() => Fuel, (fuel) => fuel.establishment)
+  fuels: Fuel[]
 }

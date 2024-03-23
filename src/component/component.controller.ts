@@ -31,6 +31,7 @@ export class ComponentController {
     @Body() updateComponentDTO: UpdateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
     const driverId = await (request as any).user.id
+    const vehicleId = await (request as any).vehicle.id
     const component = await this.componentsService.update(driverId, componentId, updateComponentDTO)
     const data = createComponentResponseDTO(component)
     return {data, message: 'Componente atualizado com sucesso'}

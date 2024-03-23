@@ -31,6 +31,12 @@ import {Component} from './component/entities/component.entity'
 import {ComponentType} from './component/entities/component.type.entity'
 import {ComponentModule} from './component/component.module'
 import {ComponentTypeSeeder} from './component/seeders/component.type.seeder'
+import { FuelController } from './fuel/fuel.controller';
+import { FuelService } from './fuel/fuel.service';
+import { FuelModule } from './fuel/fuel.module';
+import { FuelType } from './fuel/entity/fuel.type.entity'
+import { Fuel } from './fuel/entity/fuel.entity'
+import { FuelTypeSeeder } from './fuel/seeders/fuel.type.seeder'
 
 @Module({
   imports: [
@@ -49,10 +55,12 @@ import {ComponentTypeSeeder} from './component/seeders/component.type.seeder'
         State,
         City,
         Component,
-        ComponentType
+        ComponentType,
+        Fuel,
+        FuelType
       ]
     }),
-    TypeOrmModule.forFeature([EstablishmentType, UserType, State, ComponentType]),
+    TypeOrmModule.forFeature([EstablishmentType, UserType, State, ComponentType,FuelType]),
     UserModule,
     AuthModule,
     CepModule,
@@ -60,7 +68,8 @@ import {ComponentTypeSeeder} from './component/seeders/component.type.seeder'
     EstablishmentModule,
     VehicleModule,
     ComponentModule,
-    AddressModule
+    AddressModule,
+    FuelModule
   ],
   providers: [
     {
@@ -91,7 +100,8 @@ import {ComponentTypeSeeder} from './component/seeders/component.type.seeder'
     UserTypeSeeder,
     EstablishmentTypeSeeder,
     ComponentTypeSeeder,
-    SeederService
+    SeederService,
+    FuelTypeSeeder
   ]
 })
 export class AppModule {}

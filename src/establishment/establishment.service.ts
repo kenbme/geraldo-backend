@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common'
+import {Injectable, NotFoundException} from '@nestjs/common'
 import {CreateEstablishmentDto} from '../shared/establishment/dto/request/create-establishment.dto'
 import {InjectRepository} from '@nestjs/typeorm'
 import {UserService} from '../user/user.service'
@@ -35,5 +35,12 @@ export class EstablishmentService {
     establishment.address = address
     const createdEstablishment = this.establishmentRepository.save(establishment)
     return createdEstablishment
+  }
+  async findByEstablishment(establishmentId:number):Promise<Establishment>{
+    const establishment = await this.establishmentRepository.findOne({where: {user: {id:establishmentId}}})
+    if (!establishment) {
+      throw new NotFoundException('Estabelecimento não encontrado')
+    }
+    return establishment
   }
 }
