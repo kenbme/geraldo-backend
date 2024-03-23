@@ -12,12 +12,12 @@ import {DriverService} from '../driver/driver.service'
 import {CreateVehicleDto} from '../shared/vehicle/dto/request/create-vehicle.dto'
 import {DataSource, Repository} from 'typeorm'
 import {Vehicle} from './entities/vehicle.entity'
-import {UserService} from 'src/user/user.service'
-import {ShareVehicleDto} from 'src/shared/vehicle/dto/request/share-vehicle.dto'
-import {Driver} from 'src/driver/entities/driver.entity'
-import {UserTypeService} from 'src/user/user.type.service'
-import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
-import {UpdateKilometersDto} from 'src/shared/vehicle/dto/request/update-kilometers.dto'
+import {UserService} from '../user/user.service'
+import {ShareVehicleDto} from '../shared/vehicle/dto/request/share-vehicle.dto'
+import {Driver} from '../driver/entities/driver.entity'
+import {UserTypeService} from '../user/user.type.service'
+import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
+import {UpdateKilometersDto} from '../shared/vehicle/dto/request/update-kilometers.dto'
 
 @Injectable()
 export class VehicleService {
@@ -134,7 +134,11 @@ export class VehicleService {
     return updatedVeicule
   }
 
-  async updateKilometers(userId: number, vehicleId: number, updateKilometers: UpdateKilometersDto): Promise<Vehicle> {
+  async updateKilometers(
+    userId: number,
+    vehicleId: number,
+    updateKilometers: UpdateKilometersDto
+  ): Promise<Vehicle> {
     const kilometers = updateKilometers.kilometers
 
     const vehicle = await this.vehicleRepository.findOne({

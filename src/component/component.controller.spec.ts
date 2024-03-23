@@ -18,7 +18,7 @@ import {VehicleService} from 'src/vehicle/vehicle.service'
 import {ComponentTypeEnum} from 'src/shared/component/enums/component-type.enum'
 import {ValidationError, validateOrReject} from 'class-validator'
 import {CreateComponentDto} from 'src/shared/component/dto/request/create-component.dto'
-import { UpdateComponentDto } from 'src/shared/component/dto/request/update-component.dto'
+import {UpdateComponentDto} from 'src/shared/component/dto/request/update-component.dto'
 
 describe('ComponentController', () => {
   let componentController: ComponentController
@@ -74,7 +74,6 @@ describe('ComponentController', () => {
       model: 'Civic',
       plate: 'NET3818'
     })
-    
   })
 
   it('should be defined', () => {
@@ -85,27 +84,26 @@ describe('ComponentController', () => {
   it('should create a component', async () => {
     await componentService.create(
       {
-        vehicleId: vehicle.id,
         componentType: ComponentTypeEnum.BALANCE,
         dateLastExchange: '2023-10-10',
         maintenanceFrequency: 2,
         kilometersLastExchange: 50
       },
-      user.id
+      user.id,
+      vehicle.id
     )
   })
   it('Killometers greater than the current', async () => {
     try {
-     const dto = await componentService.create(
+      const dto = await componentService.create(
         {
-          vehicleId: vehicle.id,
           componentType: ComponentTypeEnum.BALANCE,
           dateLastExchange: '2023-10-10',
           maintenanceFrequency: 2,
           kilometersLastExchange: 5000
         },
-        user.id
-        
+        user.id,
+        vehicle.id
       )
       await validateOrReject(dto)
     } catch (error) {
@@ -119,7 +117,6 @@ describe('ComponentController', () => {
   it('Date greater than the current', async () => {
     try {
       const dto = new CreateComponentDto()
-      dto.vehicleId = vehicle.id
       dto.componentType = ComponentTypeEnum.BALANCE
       dto.dateLastExchange = '2025-10-10'
       dto.maintenanceFrequency = 2
@@ -139,23 +136,23 @@ describe('ComponentController', () => {
     try {
       await componentService.create(
         {
-          vehicleId: vehicle.id,
           componentType: ComponentTypeEnum.BALANCE,
           dateLastExchange: '2023-10-10',
           maintenanceFrequency: 2,
           kilometersLastExchange: 50
         },
-        user.id
+        user.id,
+        vehicle.id
       )
       await componentService.create(
         {
-          vehicleId: vehicle.id,
           componentType: ComponentTypeEnum.BALANCE,
           dateLastExchange: '2023-10-10',
           maintenanceFrequency: 2,
           kilometersLastExchange: 50
         },
-        user.id
+        user.id,
+        vehicle.id
       )
     } catch (error) {
       expect(error.message).toEqual('Já existe esse componente cadastrado no veículo')
@@ -167,13 +164,13 @@ describe('ComponentController', () => {
     try {
       await componentService.create(
         {
-          vehicleId: vehicle.id,
           componentType: ComponentTypeEnum.BALANCE,
           dateLastExchange: '2023-10-10',
           maintenanceFrequency: 2,
           kilometersLastExchange: 500
         },
-        user2.id
+        user2.id,
+        vehicle.id
       )
     } catch (error) {
       expect(error.message).toEqual('Veículo informado não pertence ao motorista')
@@ -183,22 +180,21 @@ describe('ComponentController', () => {
   })
   it('Driver not is owner for update', async () => {
     try {
-      const componente = await componentService.create({
-        vehicleId: vehicle.id,
-        componentType: ComponentTypeEnum.AIR_FILTER,
-        dateLastExchange: '2023-10-10',
-        maintenanceFrequency: 2,
-        kilometersLastExchange: 50
-      },
-      user.id)
-      await componentService.update(user2.id,componente.id,
+      const componente = await componentService.create(
         {
-          vehicleId: vehicle.id,
+          componentType: ComponentTypeEnum.AIR_FILTER,
           dateLastExchange: '2023-10-10',
           maintenanceFrequency: 2,
-          kilometersLastExchange: 500
-        }
+          kilometersLastExchange: 50
+        },
+        user.id,
+        vehicle.id
       )
+      await componentService.update(user2.id, vehicle.id, componente.id, {
+        dateLastExchange: '2023-10-10',
+        maintenanceFrequency: 2,
+        kilometersLastExchange: 500
+      })
     } catch (error) {
       expect(error.message).toEqual('Veículo informado não pertence ao motorista')
       return
@@ -206,15 +202,12 @@ describe('ComponentController', () => {
     throw new Error()
   })
   it('Component not exists', async () => {
-    try { 
-      await componentService.update(user.id,1234,
-        {
-          vehicleId: vehicle.id,
-          dateLastExchange: '2023-10-10',
-          maintenanceFrequency: 2,
-          kilometersLastExchange: 500
-        }
-      )
+    try {
+      await componentService.update(user.id, vehicle.id, 1234, {
+        dateLastExchange: '2023-10-10',
+        maintenanceFrequency: 2,
+        kilometersLastExchange: 500
+      })
     } catch (error) {
       expect(error.message).toEqual('Componente veicular não existe')
       return
@@ -223,8 +216,7 @@ describe('ComponentController', () => {
   })
   it('Date greater than the current in update', async () => {
     try {
-      const dto = new UpdateComponentDto
-      dto.vehicleId = vehicle.id
+      const dto = new UpdateComponentDto()
       dto.dateLastExchange = '2025-10-10'
       dto.maintenanceFrequency = 2
       dto.kilometersLastExchange = 50
@@ -241,22 +233,21 @@ describe('ComponentController', () => {
   })
   it('Killometers greater than the current in update', async () => {
     try {
-        const componente = await componentService.create({
-          vehicleId: vehicle.id,
+      const componente = await componentService.create(
+        {
           componentType: ComponentTypeEnum.AIR_FILTER,
           dateLastExchange: '2023-10-10',
           maintenanceFrequency: 2,
           kilometersLastExchange: 5000
         },
-        user.id)
-      await componentService.update(user.id,componente.id,
-        {
-          vehicleId: vehicle.id,
-          dateLastExchange: '2023-10-10',
-          maintenanceFrequency: 2,
-          kilometersLastExchange: 5000
-        },
+        user.id,
+        vehicle.id
       )
+      await componentService.update(user.id, vehicle.id, componente.id, {
+        dateLastExchange: '2023-10-10',
+        maintenanceFrequency: 2,
+        kilometersLastExchange: 5000
+      })
     } catch (error) {
       expect(error.message).toEqual(
         'Quilometragem da última troca não pode ser maior do que a atual'
@@ -265,5 +256,4 @@ describe('ComponentController', () => {
     }
     throw new Error()
   })
-
 })

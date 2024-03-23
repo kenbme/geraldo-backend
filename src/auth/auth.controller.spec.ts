@@ -14,6 +14,7 @@ import {AuthController} from './auth.controller'
 import {AuthService} from './auth.service'
 import {UserTypeSeeder} from '../user/seeders/user.type.seeder'
 import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
+import {VehicleModule} from 'src/vehicle/vehicle.module'
 
 configDotenv({path: resolve(process.cwd(), '.development.env')})
 
@@ -38,7 +39,8 @@ describe('AuthController', () => {
           secret: process.env.JWT_SECRET_KEY,
           signOptions: {expiresIn: '60s'}
         }),
-        UserModule
+        UserModule,
+        VehicleModule
       ],
       controllers: [AuthController],
       providers: [

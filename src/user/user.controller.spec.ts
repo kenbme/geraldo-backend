@@ -2,7 +2,7 @@ import {Test, TestingModule} from '@nestjs/testing'
 import {TypeOrmModule, getRepositoryToken} from '@nestjs/typeorm'
 import {validateOrReject} from 'class-validator'
 import {Repository} from 'typeorm'
-import {RecoverPasswordDto} from 'src/shared/user/dto/request/recover-password.dto'
+import {RecoverPasswordDto} from '../shared/user/dto/request/recover-password.dto'
 import {User} from './entities/user.entity'
 import {UserType} from './entities/user.type.entity'
 import {UserController} from './user.controller'
@@ -10,7 +10,7 @@ import {UserModule} from './user.module'
 import {UserService} from './user.service'
 import {UserTypeService} from './user.type.service'
 import {UserTypeSeeder} from './seeders/user.type.seeder'
-import {UserTypeEnum} from 'src/shared/user/enums/user-type.enum'
+import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
 
 describe('UserController', () => {
   let userController: UserController

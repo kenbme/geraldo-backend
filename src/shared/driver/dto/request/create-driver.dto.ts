@@ -19,7 +19,7 @@ export class CreateDriverDto {
   @IsNotEmpty()
   @IsEmail({}, {message: 'Email inválido'})
   email: string
-  
+
   @IsNotEmpty()
   @IsValidDate({message: 'Data de nascimento inválida'})
   birthday: string
