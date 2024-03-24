@@ -11,7 +11,7 @@ import {VehicleResponseDTO} from '../shared/vehicle/dto/response/vahicle.respons
 import {User} from '../user/entities/user.entity'
 import {Vehicle} from '../vehicle/entities/vehicle.entity'
 import { FuelResponseDTO } from 'src/shared/fuel/dto/response/fuel.response.dto'
-import { Fuel } from 'src/fuel/entity/fuel.entity'
+import { Fuel } from 'src/fuel/entities/fuel.entity'
 
 export const createUserResponseDTO = (user: User): UserResponseDTO => {
   const dto = new UserResponseDTO()

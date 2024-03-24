@@ -2,7 +2,7 @@ import {User} from '../../user/entities/user.entity'
 import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {EstablishmentType} from './establishment.type.entity'
 import {Address} from '../../address/entities/address.entity'
-import { Fuel } from 'src/fuel/entity/fuel.entity'
+import { Fuel } from 'src/fuel/entities/fuel.entity'
 
 @Entity()
 export class Establishment {

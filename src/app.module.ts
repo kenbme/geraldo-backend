@@ -34,8 +34,8 @@ import {ComponentTypeSeeder} from './component/seeders/component.type.seeder'
 import { FuelController } from './fuel/fuel.controller';
 import { FuelService } from './fuel/fuel.service';
 import { FuelModule } from './fuel/fuel.module';
-import { FuelType } from './fuel/entity/fuel.type.entity'
-import { Fuel } from './fuel/entity/fuel.entity'
+import { FuelType } from './fuel/entities/fuel.type.entity'
+import { Fuel } from './fuel/entities/fuel.entity'
 import { FuelTypeSeeder } from './fuel/seeders/fuel.type.seeder'
 
 @Module({

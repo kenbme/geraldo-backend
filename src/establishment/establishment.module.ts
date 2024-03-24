@@ -16,6 +16,7 @@ import {CepService} from '../cep/cep.service'
     AddressModule
   ],
   controllers: [EstablishmentController],
-  providers: [EstablishmentService, EstablishmentTypeService, CepService]
+  providers: [EstablishmentService, EstablishmentTypeService, CepService],
+  exports: [EstablishmentService]
 })
 export class EstablishmentModule {}

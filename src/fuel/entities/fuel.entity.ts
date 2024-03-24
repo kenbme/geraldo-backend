@@ -7,7 +7,7 @@ export class Fuel {
   @PrimaryGeneratedColumn()
   id: number
 
-  @ManyToOne(() => FuelType,(fuelType) => fuelType.fuels )
+  @ManyToOne(() => FuelType,{eager:true} )
   fuelType: FuelType
 
   @Column({type: 'varchar'})

@@ -1,4 +1,4 @@
-import { FuelTypeEnum } from "../../enum/fuelTypeEnum"
+import { FuelTypeEnum } from "../../enum/fuel.type.enum"
 
 export class FuelResponseDTO {
     id: number

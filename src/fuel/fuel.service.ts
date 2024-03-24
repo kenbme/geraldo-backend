@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Fuel } from './entity/fuel.entity';
+import { Fuel } from './entities/fuel.entity';
 import { Repository } from 'typeorm';
-import { FuelType } from './entity/fuel.type.entity';
+import { FuelType } from './entities/fuel.type.entity';
 import { EstablishmentService } from 'src/establishment/establishment.service';
 import { CreateFuelDTO } from 'src/shared/fuel/dto/request/create-fuel.dto';
 
@@ -16,47 +16,42 @@ export class FuelService {
         private readonly fuelTypeRepository: Repository<FuelType>,
         private readonly establishmentService: EstablishmentService
       ) {}
-      async create(dto:CreateFuelDTO,establishmentId:number,userID:number): Promise<Fuel>{
-        const establishment = await this.establishmentService.findByEstablishment(establishmentId)
+      async create(dto:CreateFuelDTO,userID:number): Promise<Fuel>{
+        const establishment = await this.establishmentService.findByEstablishment(userID)
         if (!establishment) {
             throw new NotFoundException("Estabelecimento não encontrado")
         }
-        if (establishment.user.id !== userID) {
-            throw new UnauthorizedException({message: 'Estabelecimento informado não pertence ao usuario'})
-        }
         const fuelType = await this.fuelTypeRepository.findOne({
-            where: {name: dto.fuelType.name}
+            where: {name: dto.fuelType}
         })
         if (!fuelType) {
             throw new  NotFoundException({message: 'Tipo de combustível não encontrado'})
         }
         const fuel = new Fuel()
-        fuel.fuelType = dto.fuelType
+        fuel.fuelType = fuelType
         fuel.fuelTitle = dto.fuelTitle
         fuel.value = dto.value
         fuel.productStatus = dto.productStatus
         fuel.establishment = establishment
-        
-        return await this.fuelRepository.save(fuel)
+        return  await this.fuelRepository.save(fuel)
       }
-      async update(userId: number, fuelId: number, establishmentId: number, dto: CreateFuelDTO):Promise<Fuel> {
-        const establishment =  await this.establishmentService.findByEstablishment(establishmentId)
+      async update(userId: number, fuelId: number, dto: CreateFuelDTO):Promise<Fuel> {
+        const establishment =  await this.establishmentService.findByEstablishment(userId)
         if (!establishment) {
             throw new NotFoundException("Estabelecimento não encontrado")
         }
         const fuelType =  this.fuelTypeRepository.findOne({
-            where: {name: dto.fuelType.name}
+            where: {name: dto.fuelType}
         })
         if (!fuelType) {
             throw new  NotFoundException({message: 'Tipo de combustível não encontrado'})
         }
-
-        if (establishment.user.id !== userId) {
-            throw new UnauthorizedException({message: 'Estabelecimento informado não pertence ao usuario'})
+        if (!establishment.fuels) {
+        throw new UnauthorizedException({ message: 'O estabelecimento não possui permissão para alterar esse combustível' });
         }
-        const fuel = establishment.fuels.find((it)=> it.id === fuelId)
+        const fuel = establishment.fuels.find((it) => it.id === fuelId);
         if (!fuel) {
-            throw new UnauthorizedException({message: 'O estabelecimento não possui permissão para alterar esse combustível'})
+            throw new UnauthorizedException({ message: 'O estabelecimento não possui permissão para alterar esse combustível' });
         }
         fuel.fuelTitle = dto.fuelTitle
         fuel.productStatus = dto.productStatus
