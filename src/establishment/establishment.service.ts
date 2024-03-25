@@ -36,7 +36,7 @@ export class EstablishmentService {
     const createdEstablishment = this.establishmentRepository.save(establishment)
     return createdEstablishment
   }
-  async findByEstablishment(userID:number):Promise<Establishment>{
+  async findByUserId(userID:number):Promise<Establishment>{
     const establishment = await this.establishmentRepository.findOne({
       where: { user: { id: userID } },
       relations: ['fuels']

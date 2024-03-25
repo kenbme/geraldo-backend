@@ -17,7 +17,7 @@ export class FuelService {
         private readonly establishmentService: EstablishmentService
       ) {}
       async create(dto:CreateFuelDTO,userID:number): Promise<Fuel>{
-        const establishment = await this.establishmentService.findByEstablishment(userID)
+        const establishment = await this.establishmentService.findByUserId(userID)
         if (!establishment) {
             throw new NotFoundException("Estabelecimento não encontrado")
         }
@@ -36,23 +36,21 @@ export class FuelService {
         return  await this.fuelRepository.save(fuel)
       }
       async update(userId: number, fuelId: number, dto: CreateFuelDTO):Promise<Fuel> {
-        const establishment =  await this.establishmentService.findByEstablishment(userId)
+        const establishment =  await this.establishmentService.findByUserId(userId)
         if (!establishment) {
             throw new NotFoundException("Estabelecimento não encontrado")
         }
-        const fuelType =  this.fuelTypeRepository.findOne({
+        const fuelType = await this.fuelTypeRepository.findOne({
             where: {name: dto.fuelType}
         })
         if (!fuelType) {
             throw new  NotFoundException({message: 'Tipo de combustível não encontrado'})
         }
-        if (!establishment.fuels) {
-        throw new UnauthorizedException({ message: 'O estabelecimento não possui permissão para alterar esse combustível' });
-        }
         const fuel = establishment.fuels.find((it) => it.id === fuelId);
         if (!fuel) {
             throw new UnauthorizedException({ message: 'O estabelecimento não possui permissão para alterar esse combustível' });
         }
+        fuel.fuelType = fuelType
         fuel.fuelTitle = dto.fuelTitle
         fuel.productStatus = dto.productStatus
         fuel.value = dto.value

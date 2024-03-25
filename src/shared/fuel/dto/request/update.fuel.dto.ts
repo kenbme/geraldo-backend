@@ -1,7 +1,7 @@
-import {IsString, IsEnum, IsNotEmpty, IsNumber, IsBoolean, Min} from 'class-validator'
+import {IsString, IsEnum, IsNotEmpty, IsNumber, IsBoolean, isNumber, IsInt, Min} from 'class-validator'
 import { FuelTypeEnum } from '../../enum/fuel.type.enum'
 
-export class CreateFuelDTO {
+export class UpdateFuelDTO {
   
   @IsNotEmpty({message: 'tipo de combustivel não pode ser vazio'})
   @IsEnum(FuelTypeEnum,{message: 'Tipo de combustível não encontrado'})

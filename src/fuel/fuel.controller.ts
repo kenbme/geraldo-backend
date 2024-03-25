@@ -6,8 +6,9 @@ import { CreateFuelDTO } from 'src/shared/fuel/dto/request/create-fuel.dto';
 import { FuelResponseDTO } from 'src/shared/fuel/dto/response/fuel.response.dto';
 import { createFuelResponseDTO } from 'src/util/mapper';
 import { UserRequest } from 'src/shared/auth/dto/user.request';
+import { UpdateFuelDTO } from 'src/shared/fuel/dto/request/update.fuel.dto';
 
-@Controller('fuel')
+@Controller('')
 export class FuelController {
     constructor(private readonly fuelService: FuelService) {}
 
@@ -17,28 +18,28 @@ export class FuelController {
     @Request() request: UserRequest,
     @Body() createFuelDto: CreateFuelDTO
   ): Promise<{data: FuelResponseDTO; message: string}> {
-    const userId: number = await (request as any).user.id
+    const userId =  request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
-    const fuel =  this.fuelService.create(createFuelDto,userId)
-    const data = createFuelResponseDTO(await fuel)
+    const fuel =  await this.fuelService.create(createFuelDto,userId)
+    const data = createFuelResponseDTO(fuel)
     return {data, message: 'Combustivel cadastrado com sucesso'}
   }
 
   @Put('/establishment/fuels/:fuelId')
   @Roles(UserTypeEnum.ESTABLISHMENT)
   async update(
-    @Request() request: Request,
-    @Param('fueltId') fuelId: number,
-    @Body() dto: CreateFuelDTO
+    @Request() request: UserRequest,
+    @Param('fuelId') fuelId: string,
+    @Body() dto: UpdateFuelDTO
   ): Promise<{data: FuelResponseDTO; message: string}> {
-    const userId = await (request as any).user.id
+    const userId = request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
-    const fuel = await this.fuelService.update(userId,fuelId, dto)
-    const data = createFuelResponseDTO(await fuel)
+    const fuel = await this.fuelService.update(userId,parseInt(fuelId), dto)
+    const data = createFuelResponseDTO(fuel)
     return {data, message: 'Combustível atualizado com sucesso'}
   }
   

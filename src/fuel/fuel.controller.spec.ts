@@ -32,7 +32,7 @@ describe('FuelController', () => {
       imports: [
         TypeOrmModule.forRoot({
           type: 'sqlite',
-          database: 'db/testing_component.sqlite3',
+          database: 'db/testing_fuel.sqlite3',
           synchronize: true,
           dropSchema: true,
           entities: [User, UserType, Establishment,EstablishmentType,Address,City,State, Fuel, FuelType]
