@@ -17,10 +17,18 @@ import {EstablishmentTypeSeeder} from './seeders/establishment.type.seeder'
 import {StateSeeder} from 'src/address/seeders/state.seeder'
 import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
 import {EstablishmentTypeEnum} from 'src/shared/establishment/enums/establishment-type.enum'
+import { UpdateEstablishmentDto } from 'src/shared/establishment/dto/request/update-establishment.dto'
+import { CreateEstablishmentDto } from 'src/shared/establishment/dto/request/create-establishment.dto'
+import { EstablishmentResponseDTO } from 'src/shared/establishment/dto/response/establishment.response.dto'
 
 describe('EstablishmentController', () => {
   let establishmentController: EstablishmentController
+  let establishmentService: EstablishmentService
   let userRepository: Repository<User>
+  let establishment: {
+    data: EstablishmentResponseDTO;
+    message: string;
+  }
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,7 +40,7 @@ describe('EstablishmentController', () => {
           dropSchema: true,
           entities: [User, UserType, Establishment, EstablishmentType, Address, State, City]
         }),
-        TypeOrmModule.forFeature([Establishment, EstablishmentType, State, UserType]),
+        TypeOrmModule.forFeature([Establishment, EstablishmentType, State, UserType, User]),
         UserModule,
         AddressModule
       ],
@@ -48,6 +56,7 @@ describe('EstablishmentController', () => {
     }).compile()
     establishmentController = module.get(EstablishmentController)
     userRepository = module.get(getRepositoryToken(User))
+    establishmentService = module.get(EstablishmentService)
     await userRepository.clear()
     const establishmentTypeSeeder = module.get(EstablishmentTypeSeeder)
     await establishmentTypeSeeder.seed()
@@ -55,14 +64,8 @@ describe('EstablishmentController', () => {
     await stateSeeder.seed()
     const userTypeSeeder = module.get(UserTypeSeeder)
     await userTypeSeeder.seed()
-  })
 
-  it('should be defined', () => {
-    expect(establishmentController).toBeDefined()
-  })
-
-  it('should create a establishment', async () => {
-    const establishment = await establishmentController.create({
+    establishment = await establishmentController.create({
       username: '222.222.222-22',
       email: 'teste@gmail.com',
       name: 'fulano',
@@ -72,6 +75,59 @@ describe('EstablishmentController', () => {
       houseNumber: '15',
       postalCode: '58429900'
     })
+  })
+
+  it('should be defined', () => {
+    expect(establishmentController).toBeDefined()
+  })
+
+  it('should create a establishment', async () => {
     expect(establishment).toBeDefined()
+  })
+
+  it('should update a establishment', async () => {
+    const establishmentFromService = await establishmentService.create({
+    username: '551.079.390-23',
+    email: 'teste2@gmail.com',
+    name: 'ciclano',
+    areaCode: '83',
+    phone: '83993333331',
+    establishmentType: EstablishmentTypeEnum.GAS_STATION,
+    houseNumber: '10',
+    postalCode: '29043180'
+    })
+    expect(establishmentFromService).toBeDefined(); 
+
+    const updateDto: UpdateEstablishmentDto = {
+      name: 'Beltrano',
+      email: 'beltrano@gmail.com',
+      phone: '83995554444',
+      postalCode: '73381092',
+      houseNumber: '20'
+    };
+    const updatedEstablishment = await establishmentService.updateEstablishment(establishmentFromService.id, updateDto)
+    
+    expect(updatedEstablishment).toBeDefined();  
+    expect(updatedEstablishment.user).toBeDefined();
+    expect(updatedEstablishment.address).toBeDefined();
+    expect(updatedEstablishment.phone).toBe(updateDto.phone);
+    expect(updatedEstablishment.address.houseNumber).toBe(updateDto.houseNumber);
+    expect(updatedEstablishment.address.postalCode).toBe(updateDto.postalCode);
+    expect(updatedEstablishment.user.email).toBe(updateDto.email);
+    expect(updatedEstablishment.user.name).toBe(updateDto.name);
+  });
+
+  it('should update a establishment by Controller', async () => {
+    const updateDto: UpdateEstablishmentDto = {
+      name: 'Beltrano',
+      email: 'beltrano@gmail.com',
+      phone: '83995554444',
+      postalCode: '73381092',
+      houseNumber: '20'
+    };
+    const updatedEstablishment = await establishmentController.updateEstablishment(establishment.data.id, updateDto)
+    expect(updatedEstablishment).toBeDefined();
+    expect(updatedEstablishment.message).toEqual('Estabelecimento atualizado com sucesso')
+
   })
 })
