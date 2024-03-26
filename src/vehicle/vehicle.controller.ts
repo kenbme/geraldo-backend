@@ -30,7 +30,7 @@ export class VehicleController {
     @Request() request: UserRequest,
     @Body() createVehicleDto: CreateVehicleDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
-    const userId = await request.user.id
+    const userId = request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
@@ -44,7 +44,7 @@ export class VehicleController {
   async getVehicles(
     @Request() request: UserRequest
   ): Promise<{data: VehicleResponseDTO[]; message: string}> {
-    const userId = await request.user.id
+    const userId = request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
@@ -60,7 +60,7 @@ export class VehicleController {
     @Param('vehicleId') vehicleId: string,
     @Body() shareVehicleDto: ShareVehicleDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
-    const userId = await request.user.id
+    const userId = request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
@@ -76,7 +76,7 @@ export class VehicleController {
     @Param('vehicleId') vehicleId: string,
     @Body() updateKilometersDto: UpdateKilometersDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
-    const userId = await request.user.id
+    const userId = request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }

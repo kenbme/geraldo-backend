@@ -28,8 +28,8 @@ export class ComponentController {
     @Request() request: UserRequest,
     @Body() createComponentsDTO: CreateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
-    const userId = await request.user.id
-    const vehicleId = await request.user.vehicleId
+    const userId = request.user.id
+    const vehicleId = request.user.vehicleId
     if (!userId || !vehicleId) {
       throw new UnauthorizedException()
     }
@@ -45,8 +45,8 @@ export class ComponentController {
     @Param('componentId') componentId: string,
     @Body() updateComponentDTO: UpdateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
-    const userId = await request.user.id
-    const vehicleId = await request.user.vehicleId
+    const userId = request.user.id
+    const vehicleId = request.user.vehicleId
     if (!userId || !vehicleId) {
       throw new UnauthorizedException()
     }
@@ -66,7 +66,7 @@ export class ComponentController {
     @Request() request: UserRequest,
     @Param('componentId') componentId: string
   ): Promise<{data: Object; message: string}> {
-    const userId = await request.user.id
+    const userId = request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
@@ -79,8 +79,8 @@ export class ComponentController {
   async getVehicleComponents(
     @Request() request: UserRequest
   ): Promise<{data: ComponentResponseDTO[]; message: string}> {
-    const userId = await request.user.id
-    const vehicleId = await request.user.vehicleId
+    const userId = request.user.id
+    const vehicleId = request.user.vehicleId
     if (!userId || !vehicleId) {
       throw new UnauthorizedException()
     }
