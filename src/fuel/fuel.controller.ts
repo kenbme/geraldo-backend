@@ -12,7 +12,7 @@ import { UpdateFuelDTO } from 'src/shared/fuel/dto/request/update.fuel.dto';
 export class FuelController {
     constructor(private readonly fuelService: FuelService) {}
 
-  @Post('/establishment/fuels')
+  @Post('/fuels')
   @Roles(UserTypeEnum.ESTABLISHMENT)
   async create(
     @Request() request: UserRequest,
@@ -27,7 +27,7 @@ export class FuelController {
     return {data, message: 'Combustivel cadastrado com sucesso'}
   }
 
-  @Put('/establishment/fuels/:fuelId')
+  @Put('/fuels/:fuelId')
   @Roles(UserTypeEnum.ESTABLISHMENT)
   async update(
     @Request() request: UserRequest,

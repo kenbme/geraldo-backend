@@ -6,6 +6,7 @@ export class CreateFuelDTO {
   @IsNotEmpty({message: 'tipo de combustivel não pode ser vazio'})
   @IsEnum(FuelTypeEnum,{message: 'Tipo de combustível não encontrado'})
   fuelType: FuelTypeEnum
+  
   @IsNotEmpty({message: 'O titulo do combustivel não pode ser vazio'})
   @IsString({message: 'O titulo deve ser uma string'})
   fuelTitle: string
