@@ -26,7 +26,7 @@ describe('FuelController', () => {
   let fuelController: FuelController
   let fuelService: FuelService
   let estabelecimento: Establishment
-  
+  let estabelecimento2: Establishment
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -64,8 +64,18 @@ describe('FuelController', () => {
         establishmentType: EstablishmentTypeEnum.GAS_STATION,
         areaCode: "11",
         phone: "987654321",
-        postalCode: "58429170",
+        postalCode: "01153000",
         houseNumber: "123"
+      })
+      estabelecimento2 = await establishmentService.create({
+        username: "12345678220123",
+        name: "Oficina do ze",
+        email: "oficinaz@example.com",
+        establishmentType: EstablishmentTypeEnum.WORKSHOP,
+        areaCode: "11",
+        phone: "987444321",
+        postalCode: "58429170",
+        houseNumber: "124"
       })
     })
     it('should be defined', () => {
@@ -159,7 +169,7 @@ it('update  not exists establishment', async () => {
   try {
     
    const updatedFuel = await fuelService.update(
-       2, 
+       55, 
        1,
        {
            fuelType: FuelTypeEnum.GASOLINE,
@@ -175,5 +185,41 @@ it('update  not exists establishment', async () => {
     )
   }
 })
-
+it('create Establishment type Unauthorized', async () => {
+  try {
+   const dto = await fuelService.create(
+      {
+        fuelType: FuelTypeEnum.GASOLINE,
+        fuelTitle: "Gasolina Comum",
+        value: 5.99,
+        productStatus: true
+      },estabelecimento2.user.id)
+  } catch (error) {
+    expect(error.message).toEqual(
+      'Funcionalidade indisponível para esse tipo de estabelecimento'
+    )
+    return
+  }
+  throw new Error()
+})
+it('update  not exists establishment', async () => {
+  try {
+    
+   const updatedFuel = await fuelService.update(
+       estabelecimento2.user.id, 
+       1,
+       {
+           fuelType: FuelTypeEnum.GASOLINE,
+           fuelTitle: "Gasolina Comum",
+           value: 7.11,
+           productStatus: true
+       }
+   );
+  
+  } catch (error) {
+    expect(error.message).toEqual(
+      'Funcionalidade indisponível para esse tipo de estabelecimento'
+    )
+  }
+})
 })
