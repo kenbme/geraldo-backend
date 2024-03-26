@@ -3,6 +3,7 @@ import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGener
 import {EstablishmentType} from './establishment.type.entity'
 import {Address} from '../../address/entities/address.entity'
 import { Fuel } from 'src/fuel/entities/fuel.entity'
+import { Length } from 'class-validator'
 
 @Entity()
 export class Establishment {
