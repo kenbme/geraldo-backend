@@ -135,7 +135,7 @@ describe('VehicleController', () => {
     const shareVehicleDto: ShareVehicleDto = {
       cpf: user2.username
     }
-    const result = await vehicleController.shareVehicle(request, veiculo1.data.id, shareVehicleDto)
+    const result = await vehicleController.shareVehicle(request, veiculo1.data.id.toString(), shareVehicleDto)
     expect(result.message).toEqual('Veiculo compartilhado com sucesso')
   })
 
@@ -152,7 +152,7 @@ describe('VehicleController', () => {
     }
     const result = await vehicleController.updateKilometers(
       request,
-      veiculo.data.id,
+      veiculo.data.id.toString(),
       updateKilometersDto
     )
     expect(result.message).toEqual('Quilometragem do veículo atualizada com sucesso')
