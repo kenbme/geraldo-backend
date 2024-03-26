@@ -20,6 +20,8 @@ import {EstablishmentTypeEnum} from 'src/shared/establishment/enums/establishmen
 import { UpdateEstablishmentDto } from 'src/shared/establishment/dto/request/update-establishment.dto'
 import { CreateEstablishmentDto } from 'src/shared/establishment/dto/request/create-establishment.dto'
 import { EstablishmentResponseDTO } from 'src/shared/establishment/dto/response/establishment.response.dto'
+import { Fuel } from 'src/fuel/entities/fuel.entity'
+import { FuelType } from 'src/fuel/entities/fuel.type.entity'
 
 describe('EstablishmentController', () => {
   let establishmentController: EstablishmentController
@@ -38,7 +40,7 @@ describe('EstablishmentController', () => {
           database: 'db/testing_establishment.sqlite3',
           synchronize: true,
           dropSchema: true,
-          entities: [User, UserType, Establishment, EstablishmentType, Address, State, City]
+          entities: [User, UserType, Establishment, EstablishmentType, Address, State, City, Fuel, FuelType]
         }),
         TypeOrmModule.forFeature([Establishment, EstablishmentType, State, UserType, User]),
         UserModule,
@@ -125,7 +127,7 @@ describe('EstablishmentController', () => {
       postalCode: '73381092',
       houseNumber: '20'
     };
-    const updatedEstablishment = await establishmentController.updateEstablishment(establishment.data.id, updateDto)
+    const updatedEstablishment = await establishmentController.updateEstablishment(establishment.data.id.toString(), updateDto)
     expect(updatedEstablishment).toBeDefined();
     expect(updatedEstablishment.message).toEqual('Estabelecimento atualizado com sucesso')
 
