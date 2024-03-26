@@ -26,7 +26,7 @@ describe('FuelController', () => {
   let fuelController: FuelController
   let fuelService: FuelService
   let estabelecimento: Establishment
-
+  
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -67,7 +67,6 @@ describe('FuelController', () => {
         postalCode: "58429170",
         houseNumber: "123"
       })
-      
     })
     it('should be defined', () => {
       expect(fuelController).toBeDefined()
@@ -140,7 +139,7 @@ describe('FuelController', () => {
   
    const updatedFuel = await fuelService.update(
        estabelecimento.user.id, 
-       2,
+       createdFuel.id,
        {
            fuelType: FuelTypeEnum.GASOLINE,
            fuelTitle: "Gasolina Comum",
@@ -175,7 +174,6 @@ it('update  not exists establishment', async () => {
       'Estabelecimento não encontrado'
     )
   }
-    
 })
-    
+
 })
