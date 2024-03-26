@@ -1,4 +1,6 @@
-import {Injectable, NotFoundException} from '@nestjs/common'
+
+import {Injectable, InternalServerErrorException, NotFoundException} from '@nestjs/common'
+
 import {CreateEstablishmentDto} from '../shared/establishment/dto/request/create-establishment.dto'
 import {InjectRepository} from '@nestjs/typeorm'
 import {UserService} from '../user/user.service'
@@ -38,6 +40,25 @@ export class EstablishmentService {
     return createdEstablishment
   }
 
+  async findByUserId(userID:number):Promise<Establishment>{
+    const establishment = await this.establishmentRepository.findOne({
+      where: { user: { id: userID } },
+      relations: ['fuels']
+  })
+    if (!establishment) {
+      throw new NotFoundException('Estabelecimento não encontrado')
+    }
+    return establishment
+  }
+  /*async getEstablishments(userID:number):Promise<Establishment>{
+    const user = this.userService.findById(userID)
+    if (!user) {
+      throw new InternalServerErrorException({mensage:'usuario não encontrado'})
+    }
+    
+  }*/
+
+
   async findById(establishmentId: number): Promise<Establishment> {
     const establishment = await this.establishmentRepository
       .createQueryBuilder('establishment')
@@ -68,4 +89,5 @@ export class EstablishmentService {
     
     return this.establishmentRepository.save(establishment);
  }
+
 }
