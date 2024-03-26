@@ -30,10 +30,10 @@ export class EstablishmentController {
   @Roles(UserTypeEnum.ESTABLISHMENT)
   @Post('/kilometers/:establishmentId')
   async updateEstablishment(
-    @Param('establishmentId') establishmentId: number,
+    @Param('establishmentId') establishmentId: string,
     @Body() updateEstablishmentDto: UpdateEstablishmentDto
   ): Promise<{data: EstablishmentResponseDTO; message: string}>{
-    const establishment = await this.establishmentService.updateEstablishment(establishmentId, updateEstablishmentDto)
+    const establishment = await this.establishmentService.updateEstablishment(parseInt(establishmentId), updateEstablishmentDto)
     const data = createEstablishmentResponseDTO(establishment)
     return {data, message: 'Estabelecimento atualizado com sucesso'}
   }

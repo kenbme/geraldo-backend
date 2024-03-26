@@ -42,7 +42,7 @@ export class ComponentController {
   @Put('/vehicle_components/:componentId')
   async update(
     @Request() request: UserRequest,
-    @Param('componentId') componentId: number,
+    @Param('componentId') componentId: string,
     @Body() updateComponentDTO: UpdateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
     const userId = await request.user.id
@@ -53,7 +53,7 @@ export class ComponentController {
     const component = await this.componentsService.update(
       userId,
       vehicleId,
-      componentId,
+      parseInt(componentId),
       updateComponentDTO
     )
     const data = createComponentResponseDTO(component)
@@ -64,13 +64,13 @@ export class ComponentController {
   @Delete('/vehicle_components/:componentId')
   async delete(
     @Request() request: UserRequest,
-    @Param('componentId') componentId: number
+    @Param('componentId') componentId: string
   ): Promise<{data: Object; message: string}> {
     const userId = await request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
-    await this.componentsService.deleteComponent(userId, componentId)
+    await this.componentsService.deleteComponent(userId, parseInt(componentId))
     return {data: {}, message: 'Componente deletado com sucesso'}
   }
 

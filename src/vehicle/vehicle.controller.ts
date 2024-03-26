@@ -57,14 +57,14 @@ export class VehicleController {
   @Post('/share_vehicle/:vehicleId')
   async shareVehicle(
     @Request() request: UserRequest,
-    @Param('vehicleId') vehicleId: number,
+    @Param('vehicleId') vehicleId: string,
     @Body() shareVehicleDto: ShareVehicleDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
     const userId = await request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
-    const vehicle = await this.vehicleService.shareVehicle(vehicleId, userId, shareVehicleDto)
+    const vehicle = await this.vehicleService.shareVehicle(parseInt(vehicleId), userId, shareVehicleDto)
     const data = createVehicleResponseDTO(vehicle)
     return {data, message: 'Veiculo compartilhado com sucesso'}
   }
@@ -73,7 +73,7 @@ export class VehicleController {
   @Patch('/kilometers/:vehicleId')
   async updateKilometers(
     @Request() request: UserRequest,
-    @Param('vehicleId') vehicleId: number,
+    @Param('vehicleId') vehicleId: string,
     @Body() updateKilometersDto: UpdateKilometersDto
   ): Promise<{data: VehicleResponseDTO; message: string}> {
     const userId = await request.user.id
@@ -82,7 +82,7 @@ export class VehicleController {
     }
     const vehicle = await this.vehicleService.updateKilometers(
       userId,
-      vehicleId,
+      parseInt(vehicleId),
       updateKilometersDto
     )
     const data = createVehicleResponseDTO(vehicle)
