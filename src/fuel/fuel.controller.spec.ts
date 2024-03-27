@@ -177,5 +177,16 @@ it('update  not exists establishment', async () => {
   }
     
 })
+it('should create a fuel', async () => {
+  const dto = await fuelService.create(
+     {
+       fuelType: FuelTypeEnum.GASOLINE,
+       fuelTitle: "Gasolina Comum",
+       value: 5.99,
+       productStatus: true
+     },estabelecimento.user.id)
+  const list = await fuelService.getFuels(estabelecimento.user.id)
+})
+
     
 })
