@@ -1,25 +1,17 @@
 import { Establishment } from "src/establishment/entities/establishment.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Shift } from "./shift.entity";
 
 @Entity()
 export class Schedule {
     @PrimaryGeneratedColumn()
     id: number
-    @Column({type: 'varchar'})
+    @Column({ type: 'varchar' })
     working_days: string
-    @Column({type: 'varchar'})
-    morning_opening: string
-    @Column({type: 'varchar'})
-    morning_closing:string
-    @Column({type: 'varchar'})
-    afternoon_opening:string
-    @Column({type: 'varchar'})
-    afternoon_closing:string
-    @Column({type: 'varchar'})
-    evening_opening:string
-    @Column({type: 'varchar'})
-    evening_closing:string
-    @OneToOne(() => Establishment, (establishment) => establishment.schedule)
+    @ManyToMany(() => Establishment, (establishment) => establishment.schedule)
     @JoinColumn()
-    establishment: Establishment
+    establishment: Establishment;
+    @ManyToOne(() => Shift, (shift: { schedule: any; }) => shift.schedule)
+    @JoinColumn()
+    shifts: Shift[];
 }

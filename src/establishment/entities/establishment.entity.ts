@@ -23,5 +23,5 @@ export class Establishment {
   address: Address
   @OneToOne(() => Schedule, (schedule) => schedule.establishment)
   @JoinColumn()
-  schedule: Schedule[]
+  schedule: Schedule
 }
