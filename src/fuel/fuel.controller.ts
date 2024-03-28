@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Put, Request, UnauthorizedException} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Request, UnauthorizedException} from '@nestjs/common';
 import { FuelService } from './fuel.service';
 import { Roles } from 'src/config/decorator';
 import { UserTypeEnum } from 'src/shared/user/enums/user-type.enum';
@@ -42,5 +42,15 @@ export class FuelController {
     const data = createFuelResponseDTO(fuel)
     return {data, message: 'Combustível atualizado com sucesso'}
   }
-  
+  @Get("/fuels")
+  @Roles(UserTypeEnum.ESTABLISHMENT)
+  async get(@Request() request: UserRequest):Promise<{data: FuelResponseDTO[]; message: string}>{
+    const userId = request.user.id
+    if (!userId) {
+      throw new UnauthorizedException()
+    }
+    const fuels = await this.fuelService.getFuels(userId)
+    const data = fuels.map(fuel => createFuelResponseDTO(fuel))
+    return {data, message: 'Combustíveis encontrados'}
+  }
 }
