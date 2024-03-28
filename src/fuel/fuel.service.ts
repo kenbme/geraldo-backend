@@ -68,6 +68,10 @@ export class FuelService {
         if (!establishment) {
             throw new NotFoundException("Estabelecimento não encontrado")
         }
+        if(establishment.establishmentType.name !== "GAS_STATION") {
+            throw new UnauthorizedException("Funcionalidade indisponível para esse tipo de estabelecimento")
+        }
         return await this.fuelRepository.find({where: {establishment: {user: {id: userId}}}})
     }
+    
 }

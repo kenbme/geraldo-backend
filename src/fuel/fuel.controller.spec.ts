@@ -185,20 +185,6 @@ it('update  not exists establishment', async () => {
     )
   }
 })
-<<<<<<< HEAD
-it('should create a fuel', async () => {
-  const dto = await fuelService.create(
-     {
-       fuelType: FuelTypeEnum.GASOLINE,
-       fuelTitle: "Gasolina Comum",
-       value: 5.99,
-       productStatus: true
-     },estabelecimento.user.id)
-  const list = await fuelService.getFuels(estabelecimento.user.id)
-})
-
-    
-=======
 it('create Establishment type Unauthorized', async () => {
   try {
    const dto = await fuelService.create(
@@ -216,19 +202,10 @@ it('create Establishment type Unauthorized', async () => {
   }
   throw new Error()
 })
-it('update  not exists establishment', async () => {
+it('get fuels Establishment type Unauthorized', async () => {
   try {
     
-   const updatedFuel = await fuelService.update(
-       estabelecimento2.user.id, 
-       1,
-       {
-           fuelType: FuelTypeEnum.GASOLINE,
-           fuelTitle: "Gasolina Comum",
-           value: 7.11,
-           productStatus: true
-       }
-   );
+   const updatedFuel = await fuelService.getFuels(estabelecimento2.user.id)
   
   } catch (error) {
     expect(error.message).toEqual(
@@ -236,5 +213,5 @@ it('update  not exists establishment', async () => {
     )
   }
 })
->>>>>>> sprint3/feat/RF19
+
 })
