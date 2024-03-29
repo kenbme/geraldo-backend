@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { Establishment } from "src/establishment/entities/establishment.entity";
 import { EstablishmentService } from "src/establishment/establishment.service";
 import { CreateScheduleDto } from "src/shared/schedule/request/create-schedule.dto";
 import { DataSource, Repository } from "typeorm";
@@ -30,10 +31,10 @@ export class ScheduleService{
         }
         newSchedule.working_days = schedule.working_days
         newSchedule.establishment = establishment
+        this.scheduleRepository.save(newSchedule)
         const createdSchedule = await this.dataSource.manager.save(Schedule, newSchedule)
         establishment.schedule = newSchedule
-        const createdSchedule = await this.dataSource.manager.save(Schedule, newSchedule)
-
+        const createdEstablishmentSchedule = await this.dataSource.manager.save(Establishment, establishment)
         return createdSchedule
     }
 
