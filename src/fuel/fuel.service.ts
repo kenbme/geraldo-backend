@@ -21,6 +21,9 @@ export class FuelService {
         if (!establishment) {
             throw new NotFoundException("Estabelecimento não encontrado")
         }
+        if (establishment.establishmentType.name !== "GAS_STATION") {
+            throw new UnauthorizedException("Funcionalidade indisponível para esse tipo de estabelecimento")
+        }
         const fuelType = await this.fuelTypeRepository.findOne({
             where: {name: dto.fuelType}
         })
@@ -40,6 +43,9 @@ export class FuelService {
         if (!establishment) {
             throw new NotFoundException("Estabelecimento não encontrado")
         }
+        if (establishment.establishmentType.name !== "GAS_STATION") {
+            throw new UnauthorizedException("Funcionalidade indisponível para esse tipo de estabelecimento")
+        }
         const fuelType = await this.fuelTypeRepository.findOne({
             where: {name: dto.fuelType}
         })
@@ -57,4 +63,15 @@ export class FuelService {
         return  this.fuelRepository.save(fuel)
 
     }
+    async getFuels(userId:number): Promise<Fuel[]>{
+        const establishment =  await this.establishmentService.findByUserId(userId)
+        if (!establishment) {
+            throw new NotFoundException("Estabelecimento não encontrado")
+        }
+        if(establishment.establishmentType.name !== "GAS_STATION") {
+            throw new UnauthorizedException("Funcionalidade indisponível para esse tipo de estabelecimento")
+        }
+        return await this.fuelRepository.find({where: {establishment: {user: {id: userId}}}})
+    }
+    
 }
