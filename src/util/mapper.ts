@@ -1,4 +1,6 @@
+import { Fuel } from 'src/fuel/entities/fuel.entity'
 import { Schedule } from 'src/schedule/entities/schedule.entity'
+import { FuelResponseDTO } from 'src/shared/fuel/dto/response/fuel.response.dto'
 import { ScheduleResponseDTO } from 'src/shared/schedule/response/schedule-response.dto'
 import { Component } from '../component/entities/component.entity'
 import { Driver } from '../driver/entities/driver.entity'
@@ -66,7 +68,7 @@ export const createEstablishmentResponseDTO = (
 export const createLoginPayload = (user: User, vehicleId?: number): LoginPayload => {
   const payload = new LoginPayload()
   payload.id = user.id
-  payload.userType = (UserTypeEnum as any)[user.userType.name]
+  payload.userType = UserTypeEnum[user.userType.name]
   payload.resetPassword = user.resetPassword
   payload.vehicleId = vehicleId
   return payload
@@ -79,5 +81,14 @@ export const createComponentResponseDTO = (component: Component): ComponentRespo
   dto.dateLastExchange = component.dateLastExchange
   dto.maintenanceFrequency = component.maintenanceFrequency
   dto.kilometersLastExnchange = component.kilometersLastExchange
+  return dto
+}
+export const createFuelResponseDTO = (fuel: Fuel): FuelResponseDTO => {
+  const dto = new FuelResponseDTO()
+  dto.id = fuel.id
+  dto.fuelType = fuel.fuelType.name
+  dto.fuelTitle = fuel.fuelTitle
+  dto.value = fuel.value
+  dto.productStatus= fuel.productStatus
   return dto
 }

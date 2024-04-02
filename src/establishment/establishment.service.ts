@@ -33,15 +33,35 @@ export class EstablishmentService {
     establishment.establishmentType = establishmentType
     establishment.user = createdUser
     establishment.address = address
-    const createdEstablishment = this.establishmentRepository.save(establishment)
+    const createdEstablishment = await this.establishmentRepository.save(establishment)
     return createdEstablishment
   }
 
   async findById(id: number): Promise<Establishment> {
     const establishment = await this.establishmentRepository.findOne({where: {id: id}})
+  }
+  async findByUserId(userID:number):Promise<Establishment>{
+    const establishment = await this.establishmentRepository.findOne({
+      where: { user: { id: userID } },
+      relations: ['fuels', 'address', 'user']
+  })
     if (!establishment) {
       throw new NotFoundException('Estabelecimento não encontrado')
     }
     return establishment
   }
+
+
+  async updateEstablishment(userId: number, dto: UpdateEstablishmentDto): Promise<Establishment> {
+    const establishment = await this.findByUserId(userId)
+    establishment.address = await this.addressService.createAddress(
+    dto.postalCode,
+    dto.houseNumber);
+    establishment.areaCode = dto.areaCode;
+    establishment.phone = dto.phone;
+    establishment.user.name = dto.name
+    establishment.user.email = dto.email
+    
+    return this.establishmentRepository.save(establishment);
+ }
 }
