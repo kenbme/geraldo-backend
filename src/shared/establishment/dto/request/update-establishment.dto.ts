@@ -9,6 +9,10 @@ export class UpdateEstablishmentDto{
   @IsNotEmpty({message: 'Campo obrigatório'})
   @IsEmail()
   email: string
+  
+  @IsNotEmpty({message: 'Campo obrigatório'})
+  @IsString()
+  areaCode: string
 
   @IsNotEmpty({message: 'Campo obrigatório'})
   @IsString()
