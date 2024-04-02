@@ -39,6 +39,9 @@ export class EstablishmentService {
 
   async findById(id: number): Promise<Establishment> {
     const establishment = await this.establishmentRepository.findOne({where: {id: id}})
+    if (!establishment) {
+      throw new NotFoundException('Estabelecimento não encontrado')
+    }
     return establishment
   }
   async findByUserId(userID:number):Promise<Establishment>{
