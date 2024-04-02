@@ -19,13 +19,20 @@ export class ScheduleService{
     async create(schedule:CreateScheduleDto,establishmentId:number): Promise<Schedule>{
         const establishment = await this.establishmentService.findById(establishmentId)
         const newSchedule = new Schedule
-        if(await this.checkShift(schedule.shifts)){
-            if(await this.checkValidTime(schedule.shifts)){
-                for(let b = 0;b<schedule.shifts.length;b++){
-                    const atualShift = new Shift
-                    atualShift.start = schedule.shifts[b][0]
-                    atualShift.finish = schedule.shifts[b][1]
-                    newSchedule.shifts.push(atualShift)
+        if(schedule.always_open){
+            const atualShift = new Shift
+            atualShift.start = "0:00:00"
+            atualShift.finish = "23:59:59"
+            newSchedule.shifts.push(atualShift)
+        }else{
+            if(await this.checkShift(schedule.shifts)){
+                if(await this.checkValidTime(schedule.shifts)){
+                    for(let b = 0;b<schedule.shifts.length;b++){
+                        const atualShift = new Shift
+                        atualShift.start = schedule.shifts[b][0]
+                        atualShift.finish = schedule.shifts[b][1]
+                        newSchedule.shifts.push(atualShift)
+                    }
                 }
             }
         }
@@ -34,7 +41,7 @@ export class ScheduleService{
         this.scheduleRepository.save(newSchedule)
         const createdSchedule = await this.dataSource.manager.save(Schedule, newSchedule)
         establishment.schedule = newSchedule
-        const createdEstablishmentSchedule = await this.dataSource.manager.save(Establishment, establishment)
+        this.dataSource.manager.save(Establishment, establishment)
         return createdSchedule
     }
 
