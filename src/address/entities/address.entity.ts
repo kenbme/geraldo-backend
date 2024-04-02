@@ -1,4 +1,4 @@
-import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
+import {Column, Entity, JoinColumn, OneToOne, ManyToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {State} from './state.entity'
 import {City} from './cities.entity'
 import {Establishment} from '../../establishment/entities/establishment.entity'
@@ -14,12 +14,10 @@ export class Address {
   @Column({type: 'varchar'})
   postalCode: string
 
-  @OneToOne(() => State)
-  @JoinColumn()
+  @ManyToOne(() => State, (state) => state.addresses)
   state: State
 
-  @OneToOne(() => City)
-  @JoinColumn()
+  @ManyToOne(() => City, (city) => city.addresses)
   city: City
 
   @Column({type: 'varchar'})

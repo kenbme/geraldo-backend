@@ -53,14 +53,13 @@ export class EstablishmentService {
 
   async updateEstablishment(userId: number, dto: UpdateEstablishmentDto): Promise<Establishment> {
     const establishment = await this.findByUserId(userId)
-    establishment.address = await this.addressService.createAddress(
-    dto.postalCode,
-    dto.houseNumber);
-    establishment.areaCode = dto.areaCode;
-    establishment.phone = dto.phone;
-    establishment.user.name = dto.name
-    establishment.user.email = dto.email
-    
-    return this.establishmentRepository.save(establishment);
+      establishment.address = await this.addressService.updateAddress(establishment.id,dto.postalCode,dto.houseNumber);
+
+      establishment.areaCode = dto.areaCode;
+      establishment.phone = dto.phone;
+      establishment.user.name = dto.name
+      establishment.user.email = dto.email
+      
+      return this.establishmentRepository.save(establishment);
  }
 }

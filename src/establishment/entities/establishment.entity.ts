@@ -20,7 +20,8 @@ export class Establishment {
   alwaysOpen: number
   @ManyToOne(() => EstablishmentType, (establishmentType) => establishmentType.establishments)
   establishmentType: EstablishmentType
-  @ManyToOne(() => Address)
+  @OneToOne(() => Address)
+  @JoinColumn()
   address: Address
   @OneToMany (() => Fuel, (fuel) => fuel.establishment)
   fuels: Fuel[]
