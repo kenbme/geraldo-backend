@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { UpdateEstablishmentDto } from 'src/shared/establishment/dto/request/update-establishment.dto'
 import { Repository } from 'typeorm'
 import { AddressService } from '../address/address.service'
 import { CreateEstablishmentDto } from '../shared/establishment/dto/request/create-establishment.dto'
