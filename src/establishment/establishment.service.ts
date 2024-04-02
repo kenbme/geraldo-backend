@@ -1,15 +1,13 @@
-
-import {Injectable, InternalServerErrorException, NotFoundException} from '@nestjs/common'
-
-import {CreateEstablishmentDto} from '../shared/establishment/dto/request/create-establishment.dto'
-import {InjectRepository} from '@nestjs/typeorm'
-import {UserService} from '../user/user.service'
-import {Repository} from 'typeorm'
-import {Establishment} from './entities/establishment.entity'
-import {EstablishmentTypeService} from './establishment.type.service'
-import {AddressService} from '../address/address.service'
-import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
 import { UpdateEstablishmentDto } from 'src/shared/establishment/dto/request/update-establishment.dto'
+import { Repository } from 'typeorm'
+import { AddressService } from '../address/address.service'
+import { CreateEstablishmentDto } from '../shared/establishment/dto/request/create-establishment.dto'
+import { UserTypeEnum } from '../shared/user/enums/user-type.enum'
+import { UserService } from '../user/user.service'
+import { Establishment } from './entities/establishment.entity'
+import { EstablishmentTypeService } from './establishment.type.service'
 
 @Injectable()
 export class EstablishmentService {
@@ -40,6 +38,13 @@ export class EstablishmentService {
     return createdEstablishment
   }
 
+  async findById(id: number): Promise<Establishment> {
+    const establishment = await this.establishmentRepository.findOne({where: {id: id}})
+    if (!establishment) {
+      throw new NotFoundException('Estabelecimento não encontrado')
+    }
+    return establishment
+  }
   async findByUserId(userID:number):Promise<Establishment>{
     const establishment = await this.establishmentRepository.findOne({
       where: { user: { id: userID } },
@@ -50,6 +55,7 @@ export class EstablishmentService {
     }
     return establishment
   }
+
 
   async updateEstablishment(userId: number, dto: UpdateEstablishmentDto): Promise<Establishment> {
     const establishment = await this.findByUserId(userId)
