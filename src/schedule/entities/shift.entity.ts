@@ -1,15 +1,14 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Schedule } from "./schedule.entity";
 
 @Entity()
-export class Shift{
+export class Shift {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
     @Column({ type: 'time' })
-    start:string
+    start: string;
     @Column({ type: 'time' })
-    finish:string
-    @OneToMany(() => Schedule, (schedule) => schedule.shifts)
-    @JoinColumn()
+    finish: string;
+    @ManyToOne(() => Schedule, (schedule) => schedule.shifts)
     schedule: Schedule;
 }
