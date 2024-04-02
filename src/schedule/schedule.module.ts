@@ -5,9 +5,10 @@ import { UserModule } from "src/user/user.module";
 import { Schedule } from "./entities/schedule.entity";
 import { ScheduleController } from "./schedule.controller";
 import { ScheduleService } from "./schedule.service";
+import { Shift } from "./entities/shift.entity";
 
 @Module({
-    imports: [EstablishmentModule, UserModule, TypeOrmModule.forFeature([Schedule])],
+    imports: [EstablishmentModule, UserModule, TypeOrmModule.forFeature([Schedule,Shift])],
     providers: [ScheduleService],
     exports: [ScheduleService],
     controllers: [ScheduleController]

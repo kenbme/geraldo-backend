@@ -6,8 +6,6 @@ import { Shift } from "./shift.entity";
 export class Schedule {
     @PrimaryGeneratedColumn()
     id: number
-    @Column({ type: 'varchar' })
-    working_days: string
     @OneToOne(() => Establishment, (establishment) => establishment.schedule)
     @JoinColumn()
     establishment: Establishment

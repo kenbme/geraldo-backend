@@ -68,4 +68,10 @@ export class EstablishmentService {
       
       return this.establishmentRepository.save(establishment);
  }
+
+  async updateAlwaysOpen(establishmentId: number, alwaysOpen: boolean): Promise<Establishment>{
+    let establishment = await this.findById(establishmentId)
+    establishment.alwaysOpen = alwaysOpen;
+    return this.establishmentRepository.save(establishment);
+ }
 }

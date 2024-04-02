@@ -38,7 +38,6 @@ export const createScheduleDTO= (schedule: Schedule): ScheduleResponseDTO => {
   const dto = new ScheduleResponseDTO()
   dto.id = schedule.id
   dto.shifts = schedule.shifts
-  dto.working_days = schedule.working_days
   dto.establishment = schedule.establishment
   return dto
 }

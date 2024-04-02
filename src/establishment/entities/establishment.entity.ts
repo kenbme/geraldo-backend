@@ -17,7 +17,7 @@ export class Establishment {
   @Column({type: 'varchar'})
   phone: string
   @Column({type: 'boolean', default: false})
-  alwaysOpen: number
+  alwaysOpen: boolean
   @ManyToOne(() => EstablishmentType, (establishmentType) => establishmentType.establishments)
   establishmentType: EstablishmentType
   @OneToOne(() => Address)
