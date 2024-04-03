@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Establishment } from "src/establishment/entities/establishment.entity";
 import { EstablishmentService } from "src/establishment/establishment.service";
@@ -33,7 +33,11 @@ export class ScheduleService{
                         atualShift.finish = schedule.shifts[b][1]
                         newSchedule.shifts.push(atualShift)
                     }
+                }else{
+                    throw new BadRequestException({message: 'O horario do inicio de um turno precisam ser maiores que o do final do anterior'})
                 }
+            }else{
+                throw new BadRequestException({message: 'O horario do inicio de um turno precisam ser maiores que o do final'})
             }
         }
         newSchedule.working_days = schedule.working_days
