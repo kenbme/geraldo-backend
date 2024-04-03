@@ -1,5 +1,5 @@
-import { Fuel } from 'src/fuel/entities/fuel.entity'
-import { Schedule } from 'src/schedule/entities/schedule.entity'
+import { Fuel } from '../../fuel/entities/fuel.entity'
+import { Schedule } from '../../schedule/entities/schedule.entity'
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Address } from '../../address/entities/address.entity'
 import { User } from '../../user/entities/user.entity'

@@ -1,12 +1,12 @@
 import { Body, Controller, Get, Param, Post, Put, Request, UnauthorizedException} from '@nestjs/common';
 import { FuelService } from './fuel.service';
-import { Roles } from 'src/config/decorator';
-import { UserTypeEnum } from 'src/shared/user/enums/user-type.enum';
-import { CreateFuelDTO } from 'src/shared/fuel/dto/request/create-fuel.dto';
-import { FuelResponseDTO } from 'src/shared/fuel/dto/response/fuel.response.dto';
-import { createFuelResponseDTO } from 'src/util/mapper';
-import { UserRequest } from 'src/shared/auth/dto/user.request';
-import { UpdateFuelDTO } from 'src/shared/fuel/dto/request/update.fuel.dto';
+import { Roles } from '../config/decorator';
+import { UserTypeEnum } from '../shared/user/enums/user-type.enum';
+import { CreateFuelDTO } from '../shared/fuel/dto/request/create-fuel.dto';
+import { FuelResponseDTO } from '../shared/fuel/dto/response/fuel.response.dto';
+import { createFuelResponseDTO } from '../util/mapper';
+import { UserRequest } from '../shared/auth/dto/user.request';
+import { UpdateFuelDTO } from '../shared/fuel/dto/request/update.fuel.dto';
 
 @Controller('')
 export class FuelController {

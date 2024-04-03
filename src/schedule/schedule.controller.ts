@@ -1,11 +1,11 @@
 import { Body, Controller, HttpCode, Param, Post, Request, UnauthorizedException } from "@nestjs/common";
-import { Roles } from "src/config/decorator";
-import { CreateScheduleDto } from "src/shared/schedule/request/create-schedule.dto";
-import { ScheduleResponseDTO } from "src/shared/schedule/response/schedule-response.dto";
-import { UserTypeEnum } from "src/shared/user/enums/user-type.enum";
-import { createScheduleDTO } from "src/util/mapper";
+import { Roles } from "../config/decorator";
+import { CreateScheduleDto } from "../shared/schedule/request/create-schedule.dto";
+import { ScheduleResponseDTO } from "../shared/schedule/response/schedule-response.dto";
+import { UserTypeEnum } from "../shared/user/enums/user-type.enum";
+import { createScheduleDTO } from "../util/mapper";
 import { ScheduleService } from "./schedule.service";
-import { UserRequest } from "src/shared/auth/dto/user.request";
+import { UserRequest } from "../shared/auth/dto/user.request";
 
 @Controller('')
 export class ScheduleController {

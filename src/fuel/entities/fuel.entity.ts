@@ -1,4 +1,4 @@
-import { Establishment } from 'src/establishment/entities/establishment.entity'
+import { Establishment } from '../../establishment/entities/establishment.entity'
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm'
 import { FuelType } from './fuel.type.entity'
 

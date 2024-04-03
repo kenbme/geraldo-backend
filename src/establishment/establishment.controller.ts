@@ -7,10 +7,10 @@ import {EstablishmentResponseDTO} from '../shared/establishment/dto/response/est
 import {createEstablishmentResponseDTO} from '../util/mapper'
 
 import {Public, Roles} from '../config/decorator'
-import { UpdateEstablishmentDto } from 'src/shared/establishment/dto/request/update-establishment.dto'
-import { UserTypeEnum } from 'src/shared/user/enums/user-type.enum'
+import { UpdateEstablishmentDto } from '../shared/establishment/dto/request/update-establishment.dto'
+import { UserTypeEnum } from '../shared/user/enums/user-type.enum'
 import { Establishment } from './entities/establishment.entity'
-import { UserRequest } from 'src/shared/auth/dto/user.request'
+import { UserRequest } from '../shared/auth/dto/user.request'
 
 
 @Controller('')

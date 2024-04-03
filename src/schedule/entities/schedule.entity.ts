@@ -1,4 +1,4 @@
-import { Establishment } from "src/establishment/entities/establishment.entity";
+import { Establishment } from "../../establishment/entities/establishment.entity";
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Shift } from "./shift.entity";
 

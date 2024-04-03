@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Fuel } from './entities/fuel.entity';
 import { Repository } from 'typeorm';
 import { FuelType } from './entities/fuel.type.entity';
-import { EstablishmentService } from 'src/establishment/establishment.service';
-import { CreateFuelDTO } from 'src/shared/fuel/dto/request/create-fuel.dto';
+import { EstablishmentService } from '../establishment/establishment.service';
+import { CreateFuelDTO } from '../shared/fuel/dto/request/create-fuel.dto';
 
 @Injectable()
 export class FuelService {
