@@ -22,6 +22,8 @@ import { CreateEstablishmentDto } from 'src/shared/establishment/dto/request/cre
 import { EstablishmentResponseDTO } from 'src/shared/establishment/dto/response/establishment.response.dto'
 import { Fuel } from 'src/fuel/entities/fuel.entity'
 import { FuelType } from 'src/fuel/entities/fuel.type.entity'
+import { Schedule } from 'src/schedule/entities/schedule.entity'
+import { Shift } from 'src/schedule/entities/shift.entity'
 
 describe('EstablishmentController', () => {
   let establishmentController: EstablishmentController
@@ -41,7 +43,7 @@ describe('EstablishmentController', () => {
           database: 'db/testing_establishment.sqlite3',
           synchronize: true,
           dropSchema: true,
-          entities: [User, UserType, Establishment, EstablishmentType, Address, State, City, Fuel, FuelType]
+          entities: [User, UserType, Establishment, EstablishmentType, Address, State, City, Fuel, FuelType, Schedule, Shift]
         }),
         TypeOrmModule.forFeature([Establishment, EstablishmentType, State, UserType, User]),
         UserModule,

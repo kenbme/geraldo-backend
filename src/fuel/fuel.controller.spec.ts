@@ -21,12 +21,16 @@ import { City } from 'src/address/entities/cities.entity';
 import { State } from 'src/address/entities/state.entity';
 import { EstablishmentTypeSeeder } from 'src/establishment/seeders/establishment.type.seeder';
 import { StateSeeder } from 'src/address/seeders/state.seeder';
+import { Schedule } from 'src/schedule/entities/schedule.entity';
+import { Shift } from 'src/schedule/entities/shift.entity';
 
 describe('FuelController', () => {
   let fuelController: FuelController
   let fuelService: FuelService
   let estabelecimento: Establishment
   let estabelecimento2: Establishment
+  let estabelecimento3: Establishment
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -35,7 +39,7 @@ describe('FuelController', () => {
           database: 'db/testing_fuel.sqlite3',
           synchronize: true,
           dropSchema: true,
-          entities: [User, UserType, Establishment,EstablishmentType,Address,City,State, Fuel, FuelType]
+          entities: [User, UserType, Establishment,EstablishmentType,Address,City,State, Fuel, FuelType, Schedule, Shift]
         }),
         UserModule,
         EstablishmentModule,
@@ -76,6 +80,16 @@ describe('FuelController', () => {
         phone: "987444321",
         postalCode: "58429170",
         houseNumber: "124"
+      })
+      estabelecimento3 = await establishmentService.create({
+        username: "21688336000169",
+        name: "Posto de Combustível 3",
+        email: "posto3@example.com",
+        establishmentType: EstablishmentTypeEnum.GAS_STATION,
+        areaCode: "11",
+        phone: "987654321",
+        postalCode: "01153000",
+        houseNumber: "123"
       })
     })
     it('should be defined', () => {
@@ -148,7 +162,7 @@ describe('FuelController', () => {
    );
   
    const updatedFuel = await fuelService.update(
-       estabelecimento.user.id, 
+       estabelecimento3.user.id, 
        createdFuel.id,
        {
            fuelType: FuelTypeEnum.GASOLINE,
@@ -162,8 +176,9 @@ describe('FuelController', () => {
     expect(error.message).toEqual(
       'O estabelecimento não possui permissão para alterar esse combustível'
     )
+    return
   }
-    
+  throw new Error()
 })
 it('update  not exists establishment', async () => {
   try {
@@ -183,7 +198,9 @@ it('update  not exists establishment', async () => {
     expect(error.message).toEqual(
       'Estabelecimento não encontrado'
     )
+    return
   }
+  throw new Error()
 })
 it('create Establishment type Unauthorized', async () => {
   try {
@@ -211,7 +228,9 @@ it('get fuels Establishment type Unauthorized', async () => {
     expect(error.message).toEqual(
       'Funcionalidade indisponível para esse tipo de estabelecimento'
     )
+    return
   }
+  throw new Error()
 })
 
 })
