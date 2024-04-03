@@ -11,6 +11,7 @@ import { UpdateEstablishmentDto } from 'src/shared/establishment/dto/request/upd
 import { UserTypeEnum } from 'src/shared/user/enums/user-type.enum'
 import { Establishment } from './entities/establishment.entity'
 import { UserRequest } from 'src/shared/auth/dto/user.request'
+import { FuelTypeEnum } from 'src/shared/fuel/enum/fuel.type.enum'
 
 
 @Controller('')
@@ -53,5 +54,22 @@ export class EstablishmentController {
     const establishments = await this.establishmentService.getEstablishments(parseInt(cityId))
     const data = establishments.map((it) => createEstablishmentResponseDTO(it))
     return {data, message: 'Lista de estabelecimentos'}
+  }
+
+  @Roles(UserTypeEnum.DRIVER)
+  @Get("/establishments/:cityId")
+  async getEstablishmentsOrderedByPrice(
+    @Param("cityId") cityId?: string,
+    @Param("fuelType") fuelType?: string
+  ): Promise<{data: EstablishmentResponseDTO[], message: string}> {
+    if (!cityId) {
+      throw new BadRequestException("Cidade não é válida")
+    }
+    if(!fuelType || !(Object.values(FuelTypeEnum).includes(fuelType as FuelTypeEnum))) {
+      throw new BadRequestException("Combustivel não é válido")
+    }
+    const establishments = await this.establishmentService.getEstablishmentsOrderedByPrice(parseInt(cityId), fuelType as FuelTypeEnum)
+    const data = establishments.map((it) => createEstablishmentResponseDTO(it))
+    return {data, message: 'Lista de estabelecimentos ordenados por preço'}
   }
 }

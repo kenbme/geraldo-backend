@@ -8,6 +8,7 @@ import { UserTypeEnum } from '../shared/user/enums/user-type.enum'
 import { UserService } from '../user/user.service'
 import { Establishment } from './entities/establishment.entity'
 import { EstablishmentTypeService } from './establishment.type.service'
+import { FuelTypeEnum } from 'src/shared/fuel/enum/fuel.type.enum'
 
 @Injectable()
 export class EstablishmentService {
@@ -79,5 +80,12 @@ export class EstablishmentService {
     return await this.establishmentRepository.find({
       where: {address: {city: {id: cityId}}}, 
       relations: ['fuels', 'address', 'user', 'establishmentType']})
+  }
+
+  async getEstablishmentsOrderedByPrice(cityId: number, fuelTypeName: FuelTypeEnum): Promise<Establishment[]> {
+    return await this.establishmentRepository.find({
+      where: {address: {city: {id: cityId}}, fuels: {fuelType: {name: fuelTypeName}}},
+      relations: ['fuels', 'address', 'user', 'establishmentType'],
+      order: {fuels: {value: 'ASC'}}})
   }
 }
