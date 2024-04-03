@@ -74,4 +74,10 @@ export class EstablishmentService {
     establishment.alwaysOpen = alwaysOpen;
     return this.establishmentRepository.save(establishment);
  }
+ 
+  async getEstablishments(cityId: number): Promise<Establishment[]> {
+    return await this.establishmentRepository.find({
+      where: {address: {city: {id: cityId}}}, 
+      relations: ['fuels', 'address', 'user', 'establishmentType']})
+  }
 }

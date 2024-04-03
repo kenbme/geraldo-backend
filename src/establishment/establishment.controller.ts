@@ -1,5 +1,5 @@
 
-import {Controller, Post, Body, Param, Put, Request, UnauthorizedException} from '@nestjs/common'
+import {Controller, Post, Body, Param, Put, Request, UnauthorizedException, BadRequestException, Get} from '@nestjs/common'
 
 import {EstablishmentService} from './establishment.service'
 import {CreateEstablishmentDto} from '../shared/establishment/dto/request/create-establishment.dto'
@@ -40,5 +40,18 @@ export class EstablishmentController {
     const establishment = await this.establishmentService.updateEstablishment(userId, updateEstablishmentDto)
     const data = createEstablishmentResponseDTO(establishment)
     return {data, message: 'Estabelecimento atualizado com sucesso'}
+  }
+  
+  @Roles(UserTypeEnum.DRIVER)
+  @Get("/establishments/:cityId")
+  async getEstablishments(
+    @Param("cityId") cityId?: string
+  ): Promise<{data: EstablishmentResponseDTO[], message: string}> {
+    if (!cityId) {
+      throw new BadRequestException("Cidade não é válida")
+    }
+    const establishments = await this.establishmentService.getEstablishments(parseInt(cityId))
+    const data = establishments.map((it) => createEstablishmentResponseDTO(it))
+    return {data, message: 'Lista de estabelecimentos'}
   }
 }

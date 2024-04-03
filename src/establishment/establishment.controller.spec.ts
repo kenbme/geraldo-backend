@@ -154,4 +154,10 @@ describe('EstablishmentController', () => {
       postalCode: '29043180'
       })
   })
+
+  it('should get all establishments from city', async() => {
+    const res = await establishmentController.getEstablishments(establishmentFromService.address.city.id + "")
+    expect(res.message).toBe('Lista de estabelecimentos')
+    expect(res.data.length).toBeGreaterThan(0)
+  })
 })
