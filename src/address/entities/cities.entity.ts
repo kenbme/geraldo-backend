@@ -6,10 +6,10 @@ import { Address } from './address.entity'
 export class City {
   @PrimaryGeneratedColumn()
   id: number
-  @Column({type: 'varchar', unique: true})
+  @Column({type: 'varchar'})
   name: string
   @ManyToOne(() => State, (state) => state.cities)
   state: State
   @OneToMany(() => Address, (address) => address.city)
-  addresses: City[]
+  addresses: Address[]
 }

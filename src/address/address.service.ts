@@ -28,6 +28,7 @@ export class AddressService {
     address.houseNumber = houseNumber
     return await this.addressRepository.save(address)
   }
+  
   async updateAddress(id: number, postalCode: string, houseNumber: string): Promise<Address> {
 
     let address = await this.addressRepository.findOneOrFail({where: {id} })

@@ -9,7 +9,7 @@ export class CityService {
   constructor(@InjectRepository(City) private readonly cityRepository: Repository<City>) {}
   
   async saveCity(name: string, state: State): Promise<City> {
-    const city = await this.cityRepository.findOneBy({name: name})
+    const city = await this.cityRepository.findOneBy({name: name, state: state})
     if (city) {
       return city
     }

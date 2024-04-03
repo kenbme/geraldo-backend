@@ -11,5 +11,5 @@ export class State {
   @OneToMany(() => City, (city) => city.state)
   cities: City[]
   @OneToMany(() => Address, (address) => address.state)
-  addresses: City[]
+  addresses: Address[]
 }
