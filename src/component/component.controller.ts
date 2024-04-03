@@ -28,8 +28,8 @@ export class ComponentController {
     @Request() request: UserRequest,
     @Body() createComponentsDTO: CreateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
-    const userId = await request.user.id
-    const vehicleId = await request.user.vehicleId
+    const userId = request.user.id
+    const vehicleId = request.user.vehicleId
     if (!userId || !vehicleId) {
       throw new UnauthorizedException()
     }
@@ -42,18 +42,18 @@ export class ComponentController {
   @Put('/vehicle_components/:componentId')
   async update(
     @Request() request: UserRequest,
-    @Param('componentId') componentId: number,
+    @Param('componentId') componentId: string,
     @Body() updateComponentDTO: UpdateComponentDto
   ): Promise<{data: ComponentResponseDTO; message: string}> {
-    const userId = await request.user.id
-    const vehicleId = await request.user.vehicleId
+    const userId = request.user.id
+    const vehicleId = request.user.vehicleId
     if (!userId || !vehicleId) {
       throw new UnauthorizedException()
     }
     const component = await this.componentsService.update(
       userId,
       vehicleId,
-      componentId,
+      parseInt(componentId),
       updateComponentDTO
     )
     const data = createComponentResponseDTO(component)
@@ -64,13 +64,13 @@ export class ComponentController {
   @Delete('/vehicle_components/:componentId')
   async delete(
     @Request() request: UserRequest,
-    @Param('componentId') componentId: number
+    @Param('componentId') componentId: string
   ): Promise<{data: Object; message: string}> {
-    const userId = await request.user.id
+    const userId = request.user.id
     if (!userId) {
       throw new UnauthorizedException()
     }
-    await this.componentsService.deleteComponent(userId, componentId)
+    await this.componentsService.deleteComponent(userId, parseInt(componentId))
     return {data: {}, message: 'Componente deletado com sucesso'}
   }
 
@@ -79,8 +79,8 @@ export class ComponentController {
   async getVehicleComponents(
     @Request() request: UserRequest
   ): Promise<{data: ComponentResponseDTO[]; message: string}> {
-    const userId = await request.user.id
-    const vehicleId = await request.user.vehicleId
+    const userId = request.user.id
+    const vehicleId = request.user.vehicleId
     if (!userId || !vehicleId) {
       throw new UnauthorizedException()
     }
