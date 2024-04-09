@@ -1,5 +1,7 @@
+import { Avaliation } from 'src/avaliation/entities/avaliation.entity'
 import { Fuel } from 'src/fuel/entities/fuel.entity'
 import { Schedule } from 'src/schedule/entities/schedule.entity'
+import { GetAvaliation } from 'src/shared/avaliation/dto/response/get_avaliations.dto'
 import { FuelResponseDTO } from 'src/shared/fuel/dto/response/fuel.response.dto'
 import { ScheduleResponseDTO } from 'src/shared/schedule/response/schedule-response.dto'
 import { Component } from '../component/entities/component.entity'
@@ -40,6 +42,16 @@ export const createScheduleDTO= (schedule: Schedule): ScheduleResponseDTO => {
   dto.shifts = schedule.shifts
   dto.working_days = schedule.working_days
   dto.establishment = schedule.establishment
+  return dto
+}
+export const createAvaliationResponseDTO= (avaliation: Avaliation): GetAvaliation => {
+  const dto = new GetAvaliation()
+  dto.id = avaliation.id
+  dto.comment = avaliation.comment
+  dto.establishment = avaliation.establishment
+  dto.grade = avaliation.grade
+  dto.date = avaliation.date
+  dto.user = avaliation.user
   return dto
 }
 
