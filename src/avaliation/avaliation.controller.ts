@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Param, Post, UnauthorizedException } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, Param, Post, Request, UnauthorizedException } from "@nestjs/common";
 import { Roles } from "src/config/decorator";
 import { UserRequest } from "src/shared/auth/dto/user.request";
 import { CreateAvaliationDto } from "src/shared/avaliation/dto/request/create_avaliation.dto";
@@ -12,7 +12,9 @@ export class AvaliationController{
     constructor(
         private readonly avaliationService: AvaliationService,
     ){}
-    @Post('/rate/{establishmentId}')
+
+
+    @Post('/rate/:establishmentId')
     @Roles(UserTypeEnum.DRIVER)
     @HttpCode(200)
     async create(
@@ -27,17 +29,22 @@ export class AvaliationController{
         const avaliation = this.avaliationService.create(establishmentId,userId,createAvaliationDto)
         return avaliation
     }
-    @Get('/rate/{establishmentId}')
+    @Get('/rate/establishment/:establishmentId')
     @HttpCode(200)
-    async getAvaliation(
+    async getAvaliationByEstablishment(
         @Request() request: UserRequest,
         @Param ('establishmentId')  establishmentId:number
     ): Promise<Avaliation>{
-        const userId = request.user.id
-        if(!userId){
-            throw new UnauthorizedException()
-        }
         const avaliations = this.avaliationService.findByEstablishmentId(establishmentId)
+        return avaliations
+    }
+    @Get('/rate/user/:userId')
+    @HttpCode(200)
+    async getAvaliationByUser(
+        @Request() request: UserRequest,
+        @Param ('userId')  userId:number
+    ): Promise<Avaliation>{
+        const avaliations = this.avaliationService.findByUserId(userId)
         return avaliations
     }
 

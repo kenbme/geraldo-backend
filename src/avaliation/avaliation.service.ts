@@ -49,4 +49,14 @@ export class AvaliationService{
         }
         return avaliation
     }
+    async findByUserId(userId: number):Promise<Avaliation>{
+        const avaliation = await this.avaliationRepository.findOne({
+            where: { user: { id: userId} },
+            relations: ['establishment', 'user']
+        })
+        if(!avaliation){
+            throw new NotFoundException('Avaliacao não encontrada')
+        }
+        return avaliation
+    }
 }
