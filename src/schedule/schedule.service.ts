@@ -12,26 +12,36 @@ export class ScheduleService{
     constructor(
         @InjectRepository(Schedule)
         private readonly scheduleRepository: Repository<Schedule>,
+        @InjectRepository(Shift)
+        private readonly shiftRepository: Repository<Shift>,
         private readonly establishmentService: EstablishmentService,
         private readonly dataSource: DataSource
     ){}
     
-    async create(schedule:CreateScheduleDto,establishmentId:number): Promise<Schedule>{
-        const establishment = await this.establishmentService.findById(establishmentId)
-        const newSchedule = new Schedule
-        if(schedule.always_open){
+    async create(scheduleDto:CreateScheduleDto,userId:number): Promise<Schedule>{
+        const establishment = await this.establishmentService.findByUserId(userId)
+        establishment.alwaysOpen = scheduleDto.always_open
+        this.establishmentService.updateAlwaysOpen(establishment.id, scheduleDto.always_open)
+      
+        const newSchedule = new Schedule()
+        newSchedule.establishment = establishment
+        const schedule = await this.scheduleRepository.save(newSchedule)
+
+        if(scheduleDto.always_open){
             const atualShift = new Shift
             atualShift.start = "0:00:00"
             atualShift.finish = "23:59:59"
-            newSchedule.shifts.push(atualShift)
+            atualShift.schedule = schedule
+            this.shiftRepository.save(atualShift)
         }else{
-            if(await this.checkShift(schedule.shifts)){
-                if(await this.checkValidTime(schedule.shifts)){
-                    for(let b = 0;b<schedule.shifts.length;b++){
+            if(await this.checkShift(scheduleDto.shifts)){
+                if(await this.checkValidTime(scheduleDto.shifts)){
+                    for(let b = 0;b<scheduleDto.shifts.length;b++){
                         const atualShift = new Shift
-                        atualShift.start = schedule.shifts[b][0]
-                        atualShift.finish = schedule.shifts[b][1]
-                        newSchedule.shifts.push(atualShift)
+                        atualShift.start = scheduleDto.shifts[b][0]
+                        atualShift.finish = scheduleDto.shifts[b][1]
+                        atualShift.schedule = schedule
+                        this.shiftRepository.save(atualShift)
                     }
                 }else{
                     throw new BadRequestException({message: 'O horario do inicio de um turno precisam ser maiores que o do final do anterior'})
@@ -39,14 +49,8 @@ export class ScheduleService{
             }else{
                 throw new BadRequestException({message: 'O horario do inicio de um turno precisam ser maiores que o do final'})
             }
-        }
-        newSchedule.working_days = schedule.working_days
-        newSchedule.establishment = establishment
-        this.scheduleRepository.save(newSchedule)
-        const createdSchedule = await this.dataSource.manager.save(Schedule, newSchedule)
-        establishment.schedule = newSchedule
-        this.dataSource.manager.save(Establishment, establishment)
-        return createdSchedule
+        }   
+        return schedule
     }
 
     async checkShift(shifts: string[][]):Promise<Boolean>{

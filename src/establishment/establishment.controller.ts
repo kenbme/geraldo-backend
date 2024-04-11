@@ -27,9 +27,8 @@ export class EstablishmentController {
     return {data, message: 'Estabelecimento cadastrado com sucesso'}
   }
 
-
   @Roles(UserTypeEnum.ESTABLISHMENT)
-  @Put('/establishment/:establishmentId')
+  @Put('/establishment')
   async updateEstablishment(
     @Request() request: UserRequest,
     @Body() updateEstablishmentDto: UpdateEstablishmentDto

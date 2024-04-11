@@ -55,7 +55,7 @@ export class EstablishmentService {
   async findByUserId(userID:number):Promise<Establishment>{
     const establishment = await this.establishmentRepository.findOne({
       where: { user: { id: userID } },
-      relations: ['fuels', 'address', 'user']
+      relations: ['fuels', 'address', 'user', 'establishmentType']
   })
     if (!establishment) {
       throw new NotFoundException('Estabelecimento não encontrado')
@@ -66,14 +66,19 @@ export class EstablishmentService {
 
   async updateEstablishment(userId: number, dto: UpdateEstablishmentDto): Promise<Establishment> {
     const establishment = await this.findByUserId(userId)
-    establishment.address = await this.addressService.createAddress(
-    dto.postalCode,
-    dto.houseNumber);
-    establishment.areaCode = dto.areaCode;
-    establishment.phone = dto.phone;
-    establishment.user.name = dto.name
-    establishment.user.email = dto.email
-    
+      establishment.address = await this.addressService.updateAddress(establishment.id,dto.postalCode,dto.houseNumber);
+
+      establishment.areaCode = dto.areaCode;
+      establishment.phone = dto.phone;
+      establishment.user.name = dto.name
+      establishment.user.email = dto.email
+      
+      return this.establishmentRepository.save(establishment);
+ }
+
+  async updateAlwaysOpen(establishmentId: number, alwaysOpen: boolean): Promise<Establishment>{
+    let establishment = await this.findById(establishmentId)
+    establishment.alwaysOpen = alwaysOpen;
     return this.establishmentRepository.save(establishment);
  }
  async updateGrade(establishmentId:number):Promise<Establishment>{

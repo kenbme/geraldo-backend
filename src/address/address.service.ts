@@ -18,7 +18,7 @@ export class AddressService {
   async createAddress(postalCode: string, houseNumber: string): Promise<Address> {
     const dto = await this.cepService.getAddressByCep(postalCode)
     const state = await this.stateService.findStateByName(dto.state)
-    const city = await this.cityService.findCityByName(dto.city)
+    const city = await this.cityService.saveCity(dto.city, state)
     const address = new Address()
     address.state = state
     address.city = city
@@ -26,6 +26,24 @@ export class AddressService {
     address.street = dto.address
     address.postalCode = postalCode
     address.houseNumber = houseNumber
+    return await this.addressRepository.save(address)
+  }
+  
+  async updateAddress(id: number, postalCode: string, houseNumber: string): Promise<Address> {
+
+    let address = await this.addressRepository.findOneOrFail({where: {id} })
+
+    const dto = await this.cepService.getAddressByCep(postalCode)
+    const state = await this.stateService.findStateByName(dto.state)
+    const city = await this.cityService.saveCity(dto.city, state)
+
+    address.state = state
+    address.city = city
+    address.block = dto.district
+    address.street = dto.address
+    address.postalCode = postalCode
+    address.houseNumber = houseNumber
+    
     return await this.addressRepository.save(address)
   }
 }

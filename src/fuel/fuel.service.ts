@@ -39,10 +39,9 @@ export class FuelService {
         return  await this.fuelRepository.save(fuel)
       }
       async update(userId: number, fuelId: number, dto: CreateFuelDTO):Promise<Fuel> {
+        console.log(userId + " "  + fuelId + " " + dto);
+        
         const establishment =  await this.establishmentService.findByUserId(userId)
-        if (!establishment) {
-            throw new NotFoundException("Estabelecimento não encontrado")
-        }
         if (establishment.establishmentType.name !== "GAS_STATION") {
             throw new UnauthorizedException("Funcionalidade indisponível para esse tipo de estabelecimento")
         }

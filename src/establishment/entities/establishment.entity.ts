@@ -18,10 +18,11 @@ export class Establishment {
   @Column({type: 'varchar'})
   phone: string
   @Column({type: 'boolean', default: false})
-  alwaysOpen: number
+  alwaysOpen: boolean
   @ManyToOne(() => EstablishmentType, (establishmentType) => establishmentType.establishments)
   establishmentType: EstablishmentType
-  @ManyToOne(() => Address)
+  @OneToOne(() => Address)
+  @JoinColumn()
   address: Address
   @OneToOne(() => Schedule, (schedule) => schedule.establishment)
   @JoinColumn()

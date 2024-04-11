@@ -22,6 +22,8 @@ import { CreateEstablishmentDto } from 'src/shared/establishment/dto/request/cre
 import { EstablishmentResponseDTO } from 'src/shared/establishment/dto/response/establishment.response.dto'
 import { Fuel } from 'src/fuel/entities/fuel.entity'
 import { FuelType } from 'src/fuel/entities/fuel.type.entity'
+import { Schedule } from 'src/schedule/entities/schedule.entity'
+import { Shift } from 'src/schedule/entities/shift.entity'
 
 describe('EstablishmentController', () => {
   let establishmentController: EstablishmentController
@@ -41,7 +43,7 @@ describe('EstablishmentController', () => {
           database: 'db/testing_establishment.sqlite3',
           synchronize: true,
           dropSchema: true,
-          entities: [User, UserType, Establishment, EstablishmentType, Address, State, City, Fuel, FuelType]
+          entities: [User, UserType, Establishment, EstablishmentType, Address, State, City, Fuel, FuelType, Schedule, Shift]
         }),
         TypeOrmModule.forFeature([Establishment, EstablishmentType, State, UserType, User]),
         UserModule,
@@ -69,7 +71,7 @@ describe('EstablishmentController', () => {
     await userTypeSeeder.seed()
 
     establishmentFromController = await establishmentController.create({
-      username: '222.222.222-22',
+      username: '96202717000195',
       email: 'teste@gmail.com',
       name: 'fulano',
       areaCode: '83',
@@ -80,7 +82,7 @@ describe('EstablishmentController', () => {
     })
 
     establishmentFromService = await establishmentService.create({
-      username: '551.079.390-23',
+      username: '52785209000101',
       email: 'teste2@gmail.com',
       name: 'ciclano',
       areaCode: '83',
@@ -138,5 +140,18 @@ describe('EstablishmentController', () => {
     request, updateDto)
     expect(updatedEstablishment).toBeDefined();
     expect(updatedEstablishment.message).toEqual('Estabelecimento atualizado com sucesso')
+  })
+
+  it('should create another establishment with already used cep', async() => {
+    await establishmentService.create({
+      username: '11564764000126',
+      email: 'teste4444@gmail.com',
+      name: 'sicranin',
+      areaCode: '83',
+      phone: '83994444444',
+      establishmentType: EstablishmentTypeEnum.GAS_STATION,
+      houseNumber: '11',
+      postalCode: '29043180'
+      })
   })
 })
