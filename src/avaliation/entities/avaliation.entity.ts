@@ -1,12 +1,12 @@
+import { Establishment } from "src/establishment/entities/establishment.entity";
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Establishment } from "../../establishment/entities/establishment.entity";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Avaliation{
     @PrimaryGeneratedColumn()
     id: number
-    @OneToMany(() => Establishment, (establishment) => establishment.avaliations)
+    @ManyToOne(() => Establishment, (establishment) => establishment.avaliations)
     establishment: Establishment
     @OneToMany(() => User, (user) => user.avaliations)
     user: User

@@ -1,8 +1,8 @@
+import { Avaliation } from 'src/avaliation/entities/avaliation.entity'
 import { Fuel } from 'src/fuel/entities/fuel.entity'
 import { Schedule } from 'src/schedule/entities/schedule.entity'
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Address } from '../../address/entities/address.entity'
-import { Avaliation } from '../../avaliation/entities/avaliation.entity'
 import { User } from '../../user/entities/user.entity'
 import { EstablishmentType } from './establishment.type.entity'
 
@@ -28,7 +28,7 @@ export class Establishment {
   schedule: Schedule
   @OneToMany (() => Fuel, (fuel) => fuel.establishment)
   fuels: Fuel[]
-  @ManyToOne(() => Avaliation, (avaliation) => avaliation.establishment)
+  @OneToMany(() => Avaliation, (avaliation) => avaliation.establishment)
   avaliations: Avaliation[]
   @Column({type: 'integer', nullable: false})
   grade: number

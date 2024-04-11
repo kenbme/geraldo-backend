@@ -47,5 +47,4 @@ export class AvaliationController{
         const avaliations = this.avaliationService.findByUserId(userId)
         return avaliations
     }
-
 }

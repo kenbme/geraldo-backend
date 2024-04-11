@@ -34,6 +34,7 @@ export class EstablishmentService {
     establishment.establishmentType = establishmentType
     establishment.user = createdUser
     establishment.address = address
+    establishment.avaliations = []
     const createdEstablishment = await this.establishmentRepository.save(establishment)
     return createdEstablishment
   }

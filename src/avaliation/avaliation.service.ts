@@ -39,6 +39,7 @@ export class AvaliationService{
         const response = createAvaliationResponseDTO(avaliation)
         return response
     }
+    
     async findByEstablishmentId(establishmentId: number):Promise<Avaliation>{
         const avaliation = await this.avaliationRepository.findOne({
             where: { establishment: { id: establishmentId} },
