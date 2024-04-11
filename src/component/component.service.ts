@@ -13,6 +13,8 @@ import {CreateComponentDto} from '../shared/component/dto/request/create-compone
 import {VehicleService} from '../vehicle/vehicle.service'
 import {DriverService} from '../driver/driver.service'
 import {UpdateComponentDto} from '../shared/component/dto/request/update-component.dto'
+import { Cron, CronExpression } from '@nestjs/schedule'
+
 
 @Injectable()
 export class ComponentService {
@@ -118,5 +120,37 @@ export class ComponentService {
       throw new UnauthorizedException('Veículo informado não pertence ao motorista')
     }
     return vehicle.components
+  }
+
+  async generateMonthlyReport() {
+    const components = await this.componentRepository.find({ relations: ['vehicle'] });
+    const report = components.map(component => this.generateComponentReport(component));
+    // TODO enviar relatório por email
+    console.log(report);
+    return report;
+  }
+
+  private generateComponentReport(component: Component) {
+    const nextMaintenanceDate = new Date(component.dateLastExchange);
+    nextMaintenanceDate.setMonth(nextMaintenanceDate.getMonth() + component.maintenanceFrequency);
+
+    const currentDate = new Date();
+    const twoDaysLater = new Date(currentDate);
+    twoDaysLater.setDate(twoDaysLater.getDate() + 2);
+
+    const isMaintenanceDue = nextMaintenanceDate >= currentDate || nextMaintenanceDate <= twoDaysLater;
+    const kilometersDriven = component.vehicle.kilometers - component.kilometersLastExchange;
+
+    return {
+      componentId: component.id,
+      vehicleId: component.vehicle.id,
+      isMaintenanceDue,
+      kilometersDriven,
+    };
+  }
+
+  @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_NOON)
+  handleCron() {
+    this.generateMonthlyReport();
   }
 }

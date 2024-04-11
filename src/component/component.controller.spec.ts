@@ -256,4 +256,79 @@ describe('ComponentController', () => {
     }
     throw new Error()
   })
+
+  it('should generate a report', async () => {
+    const currentDate = new Date();
+    currentDate.setDate(1);
+    currentDate.setHours(12, 0, 0, 0);
+
+    const currentDateISOString = currentDate.toISOString();
+  
+    const component = await componentService.create(
+      {
+        componentType: ComponentTypeEnum.MOTOR_OIL,
+        dateLastExchange: currentDateISOString,
+        maintenanceFrequency: 2, 
+        kilometersLastExchange: 50
+      },
+      user.id,
+      vehicle.id
+    );
+  
+    const generatedReport = await componentService.generateMonthlyReport();
+    expect(generatedReport).toBeDefined();
+  
+    const expectedReport = {
+      componentId: component.id,
+      vehicleId: vehicle.id,
+      isMaintenanceDue: true,
+      kilometersDriven: vehicle.kilometers - component.kilometersLastExchange
+    };
+    expect(generatedReport).toContainEqual(expectedReport);
+  });
+
+  it('should generate a report with two components, but only one needing maintenance', async () => {
+    const currentDate = new Date();
+    currentDate.setDate(1);
+    currentDate.setHours(12, 0, 0, 0);
+
+    const currentDateISOString = currentDate.toISOString();
+  
+    const airFilter = await componentService.create({
+      componentType: ComponentTypeEnum.AIR_FILTER,
+      dateLastExchange: currentDateISOString,
+      maintenanceFrequency: 1,
+      kilometersLastExchange: 200,
+    },
+    user.id,
+    vehicle.id
+  );
+    const motorOil = await componentService.create({
+      componentType: ComponentTypeEnum.MOTOR_OIL,
+      dateLastExchange: currentDateISOString,
+      maintenanceFrequency: 3,
+      kilometersLastExchange: 200,
+    },
+    user.id,
+    vehicle.id
+  );
+  
+    const generatedReport = await componentService.generateMonthlyReport();
+    expect(generatedReport).toBeDefined();
+  
+    const expectedReports = [
+      {
+        componentId: airFilter.id,
+        vehicleId: vehicle.id,
+        isMaintenanceDue: true,
+        kilometersDriven: vehicle.kilometers - airFilter.kilometersLastExchange,
+      },
+      {
+        componentId: motorOil.id,
+        vehicleId: vehicle.id,
+        isMaintenanceDue: false,
+        kilometersDriven: vehicle.kilometers - motorOil.kilometersLastExchange,
+      }
+    ];
+  });
 })
