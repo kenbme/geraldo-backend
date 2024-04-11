@@ -124,10 +124,17 @@ export class ComponentService {
 
   async generateMonthlyReport() {
     const components = await this.componentRepository.find({ relations: ['vehicle'] });
-    const report = components.map(component => this.generateComponentReport(component));
-    // TODO enviar relatório por email
-    console.log(report);
-    return report;
+
+    let reportOutput = `Olá, caro motorista! O mês virou e seu relatório chegou!
+     Aqui está a situação atual do(s) componente(s) do seu veículo:\n\n`;
+
+    for (const component of components) {
+      reportOutput += this.generateComponentReport(component);
+   }
+
+  reportOutput += "Obrigado, até o próximo!";
+  console.log(reportOutput);
+  return reportOutput;
   }
 
   private generateComponentReport(component: Component) {
@@ -141,13 +148,19 @@ export class ComponentService {
     const isMaintenanceDue = nextMaintenanceDate >= currentDate || nextMaintenanceDate <= twoDaysLater;
     const kilometersDriven = component.vehicle.kilometers - component.kilometersLastExchange;
 
-    return {
-      componentId: component.id,
-      vehicleId: component.vehicle.id,
-      isMaintenanceDue,
-      kilometersDriven,
-    };
-  }
+    let maintenanceMessage = '';
+    if (isMaintenanceDue) {
+      maintenanceMessage = 'precisa de manutenção';
+    } else {
+      maintenanceMessage = 'não precisa de manutenção';
+    }
+
+    return `Tipo do Componente: ${component.componentType.name}
+    ID do Componente: ${component.id}
+    ID do Veículo: ${component.vehicle.id}
+    Status de Manutenção: ${maintenanceMessage}
+    Quilômetros Dirigidos: ${kilometersDriven}\n\n`;
+}
 
   @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_NOON)
   handleCron() {

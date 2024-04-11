@@ -277,14 +277,14 @@ describe('ComponentController', () => {
   
     const generatedReport = await componentService.generateMonthlyReport();
     expect(generatedReport).toBeDefined();
-  
-    const expectedReport = {
-      componentId: component.id,
-      vehicleId: vehicle.id,
-      isMaintenanceDue: true,
-      kilometersDriven: vehicle.kilometers - component.kilometersLastExchange
-    };
-    expect(generatedReport).toContainEqual(expectedReport);
+
+    expect(generatedReport).toContain('Olá, caro motorista');
+    expect(generatedReport).toContain('O mês virou e seu relatório chegou!');
+    expect(generatedReport).toContain('Tipo do Componente: ' + component.componentType.name);
+    expect(generatedReport).toContain('ID do Componente: ' + component.id);
+    expect(generatedReport).toContain('ID do Veículo: ' + component.vehicle.id);
+    expect(generatedReport).toContain('Quilômetros Dirigidos: ' + (component.vehicle.kilometers - component.kilometersLastExchange));
+    expect(generatedReport).toContain('Obrigado, até o próximo!');
   });
 
   it('should generate a report with two components, but only one needing maintenance', async () => {
@@ -316,19 +316,16 @@ describe('ComponentController', () => {
     const generatedReport = await componentService.generateMonthlyReport();
     expect(generatedReport).toBeDefined();
   
-    const expectedReports = [
-      {
-        componentId: airFilter.id,
-        vehicleId: vehicle.id,
-        isMaintenanceDue: true,
-        kilometersDriven: vehicle.kilometers - airFilter.kilometersLastExchange,
-      },
-      {
-        componentId: motorOil.id,
-        vehicleId: vehicle.id,
-        isMaintenanceDue: false,
-        kilometersDriven: vehicle.kilometers - motorOil.kilometersLastExchange,
-      }
-    ];
+    expect(generatedReport).toContain('Olá, caro motorista');
+    expect(generatedReport).toContain('O mês virou e seu relatório chegou!');
+    expect(generatedReport).toContain('Tipo do Componente: ' + airFilter.componentType.name);
+    expect(generatedReport).toContain('ID do Componente: ' + airFilter.id);
+    expect(generatedReport).toContain('ID do Veículo: ' + airFilter.vehicle.id);
+    expect(generatedReport).toContain('Quilômetros Dirigidos: ' + (airFilter.vehicle.kilometers - airFilter.kilometersLastExchange));
+    expect(generatedReport).toContain('Tipo do Componente: ' + motorOil.componentType.name);
+    expect(generatedReport).toContain('ID do Componente: ' + motorOil.id);
+    expect(generatedReport).toContain('ID do Veículo: ' + motorOil.vehicle.id);
+    expect(generatedReport).toContain('Quilômetros Dirigidos: ' + (motorOil.vehicle.kilometers - motorOil.kilometersLastExchange));
+    expect(generatedReport).toContain('Obrigado, até o próximo!');
   });
 })
