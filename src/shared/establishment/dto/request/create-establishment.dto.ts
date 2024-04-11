@@ -1,6 +1,6 @@
-import {IsString, IsEnum, IsEmail, MinLength, Length, IsNotEmpty} from 'class-validator'
-import {EstablishmentTypeEnum} from '../../enums/establishment-type.enum'
-import {IsCNPJ} from '../../../../shared/user/validators/IsCNPJ'
+import { IsEmail, IsEnum, IsNotEmpty, IsString, Length, MinLength } from 'class-validator'
+import { IsCNPJ } from '../../../../shared/user/validators/IsCNPJ'
+import { EstablishmentTypeEnum } from '../../enums/establishment-type.enum'
 
 export class CreateEstablishmentDto {
   @IsNotEmpty()
@@ -21,7 +21,6 @@ export class CreateEstablishmentDto {
   @IsNotEmpty()
   @IsString()
   phone: string
-
   @IsNotEmpty()
   @Length(8)
   postalCode: string
