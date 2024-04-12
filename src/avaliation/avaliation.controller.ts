@@ -32,7 +32,6 @@ export class AvaliationController{
     @Get('/rate/establishment/:establishmentId')
     @HttpCode(200)
     async getAvaliationByEstablishment(
-        @Request() request: UserRequest,
         @Param ('establishmentId')  establishmentId:number
     ): Promise<Avaliation>{
         const avaliations = this.avaliationService.findByEstablishmentId(establishmentId)
@@ -41,7 +40,6 @@ export class AvaliationController{
     @Get('/rate/user/:userId')
     @HttpCode(200)
     async getAvaliationByUser(
-        @Request() request: UserRequest,
         @Param ('userId')  userId:number
     ): Promise<Avaliation>{
         const avaliations = this.avaliationService.findByUserId(userId)
