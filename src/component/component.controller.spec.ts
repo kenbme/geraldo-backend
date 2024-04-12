@@ -262,27 +262,29 @@ describe('ComponentController', () => {
     currentDate.setDate(1);
     currentDate.setHours(12, 0, 0, 0);
 
-    const currentDateISOString = currentDate.toISOString();
+    const lastExchange = new Date(currentDate);
+    lastExchange.setMonth(currentDate.getMonth() - 1)
+    lastExchange.setDate(currentDate.getDate() + 3)
   
     const component = await componentService.create(
       {
         componentType: ComponentTypeEnum.MOTOR_OIL,
-        dateLastExchange: currentDateISOString,
-        maintenanceFrequency: 2, 
+        dateLastExchange: lastExchange.toISOString(),
+        maintenanceFrequency: 1, 
         kilometersLastExchange: 50
       },
       user.id,
       vehicle.id
     );
-  
     const generatedReport = await componentService.generateMonthlyReport();
-    expect(generatedReport).toBeDefined();
 
+    expect(generatedReport).toBeDefined();
     expect(generatedReport).toContain('Olá, caro motorista');
     expect(generatedReport).toContain('O mês virou e seu relatório chegou!');
     expect(generatedReport).toContain('Tipo do Componente: ' + component.componentType.name);
     expect(generatedReport).toContain('ID do Componente: ' + component.id);
     expect(generatedReport).toContain('ID do Veículo: ' + component.vehicle.id);
+    expect(generatedReport).toContain('Status de Manutenção: ' + 'Precisa de manutenção');
     expect(generatedReport).toContain('Quilômetros Dirigidos: ' + (component.vehicle.kilometers - component.kilometersLastExchange));
     expect(generatedReport).toContain('Obrigado, até o próximo!');
   });
@@ -292,12 +294,14 @@ describe('ComponentController', () => {
     currentDate.setDate(1);
     currentDate.setHours(12, 0, 0, 0);
 
-    const currentDateISOString = currentDate.toISOString();
+    const lastExchange = new Date(currentDate);
+    lastExchange.setMonth(currentDate.getMonth() - 2)
+    lastExchange.setDate(currentDate.getDate() + 5)
   
     const airFilter = await componentService.create({
       componentType: ComponentTypeEnum.AIR_FILTER,
-      dateLastExchange: currentDateISOString,
-      maintenanceFrequency: 1,
+      dateLastExchange: lastExchange.toISOString(),
+      maintenanceFrequency: 2,
       kilometersLastExchange: 200,
     },
     user.id,
@@ -305,7 +309,7 @@ describe('ComponentController', () => {
   );
     const motorOil = await componentService.create({
       componentType: ComponentTypeEnum.MOTOR_OIL,
-      dateLastExchange: currentDateISOString,
+      dateLastExchange: lastExchange.toISOString(),
       maintenanceFrequency: 3,
       kilometersLastExchange: 200,
     },
@@ -321,11 +325,28 @@ describe('ComponentController', () => {
     expect(generatedReport).toContain('Tipo do Componente: ' + airFilter.componentType.name);
     expect(generatedReport).toContain('ID do Componente: ' + airFilter.id);
     expect(generatedReport).toContain('ID do Veículo: ' + airFilter.vehicle.id);
+    expect(generatedReport).toContain('Status de Manutenção: ' + 'Precisa de manutenção');
     expect(generatedReport).toContain('Quilômetros Dirigidos: ' + (airFilter.vehicle.kilometers - airFilter.kilometersLastExchange));
     expect(generatedReport).toContain('Tipo do Componente: ' + motorOil.componentType.name);
     expect(generatedReport).toContain('ID do Componente: ' + motorOil.id);
     expect(generatedReport).toContain('ID do Veículo: ' + motorOil.vehicle.id);
+    expect(generatedReport).toContain('Status de Manutenção: ' + 'Não precisa de manutenção');
     expect(generatedReport).toContain('Quilômetros Dirigidos: ' + (motorOil.vehicle.kilometers - motorOil.kilometersLastExchange));
     expect(generatedReport).toContain('Obrigado, até o próximo!');
+  });
+
+  it('should generate a default message when no components are registered', async () => {
+    const currentDate = new Date();
+    currentDate.setDate(1);
+    currentDate.setHours(12, 0, 0, 0);
+
+    const currentDateISOString = currentDate.toISOString();
+
+    const generatedReport = await componentService.generateMonthlyReport();
+    expect(generatedReport).toBeDefined();
+  
+    expect(generatedReport).toContain('Olá, caro motorista! Notamos que você ainda não cadastrou os componentes do seu veículo.');
+    expect(generatedReport).toContain('Cadastre-os e receba um relatório mensal detalhado sobre eles diretamente no seu e-mail.');
+    expect(generatedReport).toContain('Isso ajudará você a manter seu veículo em ótimas condições. Obrigado!');
   });
 })

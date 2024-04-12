@@ -125,14 +125,26 @@ export class ComponentService {
   async generateMonthlyReport() {
     const components = await this.componentRepository.find({ relations: ['vehicle'] });
 
-    let reportOutput = `Olá, caro motorista! O mês virou e seu relatório chegou!
-     Aqui está a situação atual do(s) componente(s) do seu veículo:\n\n`;
+    if (!components || components.length === 0) {
+      const message = 'Olá, caro motorista! Notamos que você ainda não cadastrou os componentes do seu veículo.' +
+          ' Cadastre-os e receba um relatório mensal detalhado sobre eles diretamente no seu e-mail.' +
+          ' Isso ajudará você a manter seu veículo em ótimas condições. Obrigado!';
+
+      // TODO enviar por email    
+      console.log(message);
+      return message;
+  }
+
+    let reportOutput = `Olá, caro motorista! O mês virou e seu relatório chegou!` +
+    ` Aqui está a situação atual do(s) componente(s) do seu veículo:\n\n`;
 
     for (const component of components) {
       reportOutput += this.generateComponentReport(component);
    }
 
   reportOutput += "Obrigado, até o próximo!";
+
+  // TODO enviar por email
   console.log(reportOutput);
   return reportOutput;
   }
@@ -141,18 +153,17 @@ export class ComponentService {
     const nextMaintenanceDate = new Date(component.dateLastExchange);
     nextMaintenanceDate.setMonth(nextMaintenanceDate.getMonth() + component.maintenanceFrequency);
 
-    const currentDate = new Date();
-    const twoDaysLater = new Date(currentDate);
-    twoDaysLater.setDate(twoDaysLater.getDate() + 2);
+    const fiveDaysClose = new Date();
+    fiveDaysClose.setDate(fiveDaysClose.getDate() + 5);
 
-    const isMaintenanceDue = nextMaintenanceDate >= currentDate || nextMaintenanceDate <= twoDaysLater;
+    const isMaintenanceDue = (nextMaintenanceDate <= fiveDaysClose)
     const kilometersDriven = component.vehicle.kilometers - component.kilometersLastExchange;
 
     let maintenanceMessage = '';
     if (isMaintenanceDue) {
-      maintenanceMessage = 'precisa de manutenção';
+      maintenanceMessage = 'Precisa de manutenção';
     } else {
-      maintenanceMessage = 'não precisa de manutenção';
+      maintenanceMessage = 'Não precisa de manutenção';
     }
 
     return `Tipo do Componente: ${component.componentType.name}
