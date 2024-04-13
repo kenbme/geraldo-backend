@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer'
 import { Avaliation } from 'src/avaliation/entities/avaliation.entity'
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { UserType } from './user.type.entity'
 
 @Entity()
@@ -22,6 +22,6 @@ export class User {
   birthday: Date
   @ManyToOne(() => UserType, (userType) => userType.users, {eager: true})
   userType: UserType
-  @ManyToOne(() => Avaliation, (avaliation) => avaliation.establishment)
-  avaliations: Avaliation
+  @OneToMany(() => Avaliation, (avaliation) => avaliation.establishment)
+  avaliations: Avaliation[]
 }

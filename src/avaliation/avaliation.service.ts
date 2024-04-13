@@ -27,37 +27,52 @@ export class AvaliationService{
         }
         let establishment = await this.establishmentService.findById(establishmentId)
         const avaliation = new Avaliation
+        avaliation.establishment = establishment
         avaliation.comment = createAvaliationDto.comment
         avaliation.grade = createAvaliationDto.grade
         avaliation.date = createAvaliationDto.date
-        avaliation.establishment = establishment
         avaliation.user = user
-        this.avaliationRepository.save(avaliation)
         this.dataSource.manager.save(Avaliation, avaliation)
-        establishment = await this.establishmentService.updateGrade(establishmentId)
+        establishment = await this.updateGrade(establishmentId)
         this.dataSource.manager.save(Establishment, establishment)
         const response = createAvaliationResponseDTO(avaliation)
         return response
     }
     
-    async findByEstablishmentId(establishmentId: number):Promise<Avaliation>{
-        const avaliation = await this.avaliationRepository.findOne({
-            where: { establishment: { id: establishmentId} },
-            relations: ['establishment', 'user']
-        })
+    async findByEstablishmentId(establishmentId: number):Promise<Avaliation[]>{
+        const avaliation = await this.avaliationRepository.findBy({
+            establishment: { id: establishmentId}}
+        )
         if(!avaliation){
-            throw new NotFoundException('Avaliacao não encontrada')
+            throw new NotFoundException('Avaliações não encontradas')
         }
         return avaliation
     }
-    async findByUserId(userId: number):Promise<Avaliation>{
-        const avaliation = await this.avaliationRepository.findOne({
-            where: { user: { id: userId} },
-            relations: ['establishment', 'user']
-        })
-        if(!avaliation){
-            throw new NotFoundException('Avaliacao não encontrada')
+    async findByUserId(userId: number):Promise<Avaliation[]>{
+        const avaliation = await this.avaliationRepository.findBy(
+            { user: { id: userId} }
+        )
+        if(avaliation.length == 0){
+            throw new NotFoundException('Avaliaçôes não encontradas')
         }
         return avaliation
+    }
+    async updateGrade(establishmentId:number):Promise<Establishment>{
+        const establishment = await this.establishmentService.findById(establishmentId)
+        let parcialGrade = 0
+        const avaliations = await this.findByEstablishmentId(establishmentId)
+        if(avaliations.length == 0){
+          establishment.grade = 5
+          
+        }else{
+            for(let i=0; i< avaliations.length;i++){
+                parcialGrade += avaliations[i].grade
+            }
+            let newGrade = parcialGrade/avaliations.length
+            console.log(newGrade)
+            establishment.grade = newGrade
+        }
+        
+        return establishment
     }
 }

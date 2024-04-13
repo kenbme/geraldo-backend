@@ -1,6 +1,6 @@
 import { Establishment } from "src/establishment/entities/establishment.entity";
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Avaliation{
@@ -8,7 +8,7 @@ export class Avaliation{
     id: number
     @ManyToOne(() => Establishment, (establishment) => establishment.avaliations)
     establishment: Establishment
-    @OneToMany(() => User, (user) => user.avaliations)
+    @ManyToOne(() => User, (user) => user.avaliations)
     user: User
     @Column({type:'varchar'})
     comment: string

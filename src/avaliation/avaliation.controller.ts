@@ -2,7 +2,9 @@ import { Body, Controller, Get, HttpCode, Param, Post, Request, UnauthorizedExce
 import { Roles } from "src/config/decorator";
 import { UserRequest } from "src/shared/auth/dto/user.request";
 import { CreateAvaliationDto } from "src/shared/avaliation/dto/request/create_avaliation.dto";
+import { GetAvaliation } from "src/shared/avaliation/dto/response/get_avaliations.dto";
 import { UserTypeEnum } from "src/shared/user/enums/user-type.enum";
+import { createAvaliationResponseDTO } from "src/util/mapper";
 import { AvaliationService } from "./avaliation.service";
 import { Avaliation } from "./entities/avaliation.entity";
 
@@ -21,28 +23,30 @@ export class AvaliationController{
         @Request() request: UserRequest,
         @Param ('establishmentId')  establishmentId:number,
         @Body() createAvaliationDto: CreateAvaliationDto
-    ): Promise<Avaliation>{
+    ): Promise<{data: GetAvaliation; message: string}> {
         const userId = request.user.id
         if(!userId){
             throw new UnauthorizedException()
         }
-        const avaliation = this.avaliationService.create(establishmentId,userId,createAvaliationDto)
-        return avaliation
+        const avaliation = await this.avaliationService.create(establishmentId,userId,createAvaliationDto)
+        const data = createAvaliationResponseDTO(avaliation)
+        return {data, message: 'Avaliação criada com sucesso'}
     }
     @Get('/rate/establishment/:establishmentId')
     @HttpCode(200)
     async getAvaliationByEstablishment(
         @Param ('establishmentId')  establishmentId:number
-    ): Promise<Avaliation>{
-        const avaliations = this.avaliationService.findByEstablishmentId(establishmentId)
-        return avaliations
+    ): Promise<{data: Avaliation[]; message: string}>{
+        const data = await this.avaliationService.findByEstablishmentId(establishmentId)
+        console.log(data)
+        return {data, message: 'Avaliações encontradas com sucesso'}
     }
     @Get('/rate/user/:userId')
     @HttpCode(200)
     async getAvaliationByUser(
         @Param ('userId')  userId:number
-    ): Promise<Avaliation>{
-        const avaliations = this.avaliationService.findByUserId(userId)
-        return avaliations
+    ): Promise<{data:Avaliation[]; message: string}>{
+        const data = await this.avaliationService.findByUserId(userId)
+        return {data, message: 'Avaliações encontradas com sucesso'}
     }
 }

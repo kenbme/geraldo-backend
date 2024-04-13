@@ -81,14 +81,5 @@ export class EstablishmentService {
     establishment.alwaysOpen = alwaysOpen;
     return this.establishmentRepository.save(establishment);
  }
- async updateGrade(establishmentId:number):Promise<Establishment>{
-    const establishment = await this.findById(establishmentId)
-    let parcialGrade = 0
-    for(let i=0; i<  establishment.avaliations.length;i++){
-      parcialGrade += establishment.avaliations[i].grade
-    }
-    const newGrade = parcialGrade/establishment.avaliations.length
-    establishment.grade = newGrade
-    return this.establishmentRepository.save(establishment)
-  }
+
 }
