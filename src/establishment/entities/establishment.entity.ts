@@ -31,6 +31,6 @@ export class Establishment {
   fuels: Fuel[]
   @OneToMany(() => Avaliation, (avaliation) => avaliation.establishment)
   avaliations: Avaliation[]
-  @Column({type: 'integer'})
+  @Column({type: 'integer', default : 5})
   grade: number
 }
