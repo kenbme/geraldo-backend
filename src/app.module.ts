@@ -7,6 +7,8 @@ import { City } from './address/entities/cities.entity'
 import { State } from './address/entities/state.entity'
 import { StateSeeder } from './address/seeders/state.seeder'
 import { AuthModule } from './auth/auth.module'
+import { AvaliationModule } from './avaliation/avaliation.module'
+import { Avaliation } from './avaliation/entities/avaliation.entity'
 import { CepModule } from './cep/cep.module'
 import { ComponentModule } from './component/component.module'
 import { Component } from './component/entities/component.entity'
@@ -57,6 +59,7 @@ import { VehicleModule } from './vehicle/vehicle.module'
         City,
         Component,
         ComponentType,
+        Avaliation,
         Fuel,
         Shift,
         Schedule,
@@ -72,6 +75,7 @@ import { VehicleModule } from './vehicle/vehicle.module'
     VehicleModule,
     ComponentModule,
     AddressModule,
+    AvaliationModule,
     FuelModule,
     ScheduleModule
   ],

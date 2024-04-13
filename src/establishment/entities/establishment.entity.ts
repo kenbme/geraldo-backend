@@ -1,3 +1,4 @@
+import { Avaliation } from 'src/avaliation/entities/avaliation.entity'
 import { Fuel } from 'src/fuel/entities/fuel.entity'
 import { Schedule } from 'src/schedule/entities/schedule.entity'
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
@@ -28,4 +29,8 @@ export class Establishment {
   schedule: Schedule
   @OneToMany (() => Fuel, (fuel) => fuel.establishment)
   fuels: Fuel[]
+  @OneToMany(() => Avaliation, (avaliation) => avaliation.establishment)
+  avaliations: Avaliation[]
+  @Column({type: 'integer'})
+  grade: number
 }

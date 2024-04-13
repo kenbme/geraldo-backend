@@ -20,6 +20,7 @@ export class EstablishmentService {
   ) {}
 
   async create(dto: CreateEstablishmentDto): Promise<Establishment> {
+    try{
     const establishmentType = await this.establishmentTypeService.findByName(dto.establishmentType)
     const address = await this.addressService.createAddress(dto.postalCode, dto.houseNumber)
     const {createdUser} = await this.userService.create({
@@ -34,8 +35,14 @@ export class EstablishmentService {
     establishment.establishmentType = establishmentType
     establishment.user = createdUser
     establishment.address = address
+    establishment.avaliations = []
     const createdEstablishment = await this.establishmentRepository.save(establishment)
     return createdEstablishment
+    }
+    catch(err) {
+      console.error('Erro ao criar estabelecimento:', err);
+      throw new Error('Falha ao criar estabelecimento. Por favor, tente novamente.');
+    }    
   }
 
   async findById(id: number): Promise<Establishment> {
@@ -74,4 +81,5 @@ export class EstablishmentService {
     establishment.alwaysOpen = alwaysOpen;
     return this.establishmentRepository.save(establishment);
  }
+
 }
