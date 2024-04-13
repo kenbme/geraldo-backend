@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {Component} from './entities/component.entity'
-import {Repository} from 'typeorm'
+import {LessThanOrEqual, Raw, Repository} from 'typeorm'
 import {ComponentType} from './entities/component.type.entity'
 import {CreateComponentDto} from '../shared/component/dto/request/create-component.dto'
 import {VehicleService} from '../vehicle/vehicle.service'
@@ -75,7 +75,7 @@ export class ComponentService {
       throw new UnauthorizedException({message: 'Veículo informado não pertence ao motorista'})
     }
 
-    const component = vehicle.components.find((it) => it.id === parseInt(componentId))
+    const component = vehicle.components.find((it) => it.id === (componentId))
     if (!component) {
       throw new NotFoundException('Componente veicular não existe')
     }
@@ -111,6 +111,9 @@ export class ComponentService {
     await this.componentRepository.remove(component)
   }
 
+
+
+
   async getVehicleComponents(userId: number, vehicleId: number): Promise<Component[]> {
     const vehicle = await this.vehicleService.findById(vehicleId)
     const isDriver = vehicle.drivers.some((it) => it.user.id === userId)
@@ -119,4 +122,63 @@ export class ComponentService {
     }
     return vehicle.components
   }
+  
+
+
+  //Notificacao por kilometragem
+  async notifyByKilometers(): Promise<void> {
+    const maxKmBeforeMaintenance = 10000;
+    let reasonToNotify = `\nPorque seu veiculo já rodou mais de ${maxKmBeforeMaintenance} km desde a ultima manutenção!`
+    const components = await this.componentRepository.find({
+      relations: ['vehicle']
+    });
+
+    for (const component of components) {
+      const kilometersDifference = component.vehicle.kilometers - component.kilometersLastExchange;
+      if (kilometersDifference >= maxKmBeforeMaintenance) {
+        await this.notifyMaintenance(component, reasonToNotify);
+      }
+    }
+  }
+
+  //Notificaco por tempo limite
+  async notifyByMaxTime(): Promise<void> {
+    let reasonToNotify = "\nPorque ja se passou algum tempo desde a ultima troca do componente"
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+    const components = await this.componentRepository.find({
+      where: {
+        dateLastExchange: LessThanOrEqual(sixMonthsAgo),
+      },
+    });
+
+    for (const component of components) {
+      await this.notifyMaintenance(component, reasonToNotify);
+    }
+  }
+
+  //Notificacao por configuracao do usuario
+  async notifyByTime(): Promise<void> {
+    let reasonToNotify = "\nPorque voce configurou um tempo para realizar as manutencoes "
+    const components = await this.componentRepository.find({
+      where: {
+        dateLastExchange: LessThanOrEqual(Raw(alias => `${alias} + INTERVAL maintenanceFrequency MONTH <= CURRENT_DATE()`)),
+      },
+    });
+    
+    for (const component of components) {
+      await this.notifyMaintenance(component, reasonToNotify);
+    }
+  }
+
+  private async notifyMaintenance(component: Component, reasonToNotify : String) {
+    let maintenanceMessage = `É hora de fazer a manutenção do seu componente ${component.componentType.name} (${component.id}) `;
+    maintenanceMessage += reasonToNotify;
+    console.log(maintenanceMessage);
+    return maintenanceMessage;
+  }
+
+
+
 }
