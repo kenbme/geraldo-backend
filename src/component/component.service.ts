@@ -112,8 +112,6 @@ export class ComponentService {
   }
 
 
-
-
   async getVehicleComponents(userId: number, vehicleId: number): Promise<Component[]> {
     const vehicle = await this.vehicleService.findById(vehicleId)
     const isDriver = vehicle.drivers.some((it) => it.user.id === userId)
@@ -123,6 +121,7 @@ export class ComponentService {
     return vehicle.components
   }
   
+  //RF15
 
 
   //Notificacao por kilometragem
