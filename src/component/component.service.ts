@@ -13,6 +13,8 @@ import {CreateComponentDto} from '../shared/component/dto/request/create-compone
 import {VehicleService} from '../vehicle/vehicle.service'
 import {DriverService} from '../driver/driver.service'
 import {UpdateComponentDto} from '../shared/component/dto/request/update-component.dto'
+import { ComponentTypeLimits } from 'src/shared/component/enums/component-type.enum'
+import { differenceInMonths } from 'date-fns'
 
 @Injectable()
 export class ComponentService {
@@ -123,39 +125,41 @@ export class ComponentService {
   
   //RF15
 
+  //Notificação por quilometragem
+async notifyByKilometers(): Promise<void> {
+  const components = await this.componentRepository.find({
+    relations: ['vehicle']
+  });
 
-  //Notificacao por kilometragem
-  async notifyByKilometers(): Promise<void> {
-    const maxKmBeforeMaintenance = 10000;
-    let reasonToNotify = `\nPorque seu veiculo já rodou mais de ${maxKmBeforeMaintenance} km desde a ultima manutenção!`
-    const components = await this.componentRepository.find({
-      relations: ['vehicle']
-    });
+  for (const component of components) {
+    const limits = ComponentTypeLimits[component.componentType.name];
+    if (!limits) continue; // Verifica se os limites estão definidos para o tipo de componente
 
-    for (const component of components) {
-      const kilometersDifference = component.vehicle.kilometers - component.kilometersLastExchange;
-      if (kilometersDifference >= maxKmBeforeMaintenance) {
-        await this.notifyMaintenance(component, reasonToNotify);
-      }
+    const kilometersDifference = component.vehicle.kilometers - component.kilometersLastExchange;
+    if (kilometersDifference >= limits.maxKmBeforeMaintenance) {
+      await this.notifyMaintenance(component, `Porque seu veiculo já rodou mais de ${limits.maxKmBeforeMaintenance} km desde a ultima manutenção!`);
     }
   }
+}
 
-  //Notificaco por tempo limite
-  async notifyByMaxTime(): Promise<void> {
-    let reasonToNotify = "\nPorque ja se passou algum tempo desde a ultima troca do componente"
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+//Notificação por tempo limite
+async notifyByMaxTime(): Promise<void> {
+  const currentDate = new Date();
 
-    const components = await this.componentRepository.find({
-      where: {
-        dateLastExchange: LessThanOrEqual(sixMonthsAgo),
-      },
-    });
+  const components = await this.componentRepository.find({
+    relations: ['vehicle']
+  });
 
-    for (const component of components) {
-      await this.notifyMaintenance(component, reasonToNotify);
+  for (const component of components) {
+    const limits = ComponentTypeLimits[component.componentType.name];
+    if (!limits) continue; // Verifica se os limites estão definidos para o tipo de componente
+
+    const timeSinceLastMaintenance = differenceInMonths(currentDate, component.dateLastExchange);
+    if (timeSinceLastMaintenance >= limits.maxTimeBeforeMaintenance) {
+      await this.notifyMaintenance(component, `Porque ja se passou mais de ${limits.maxTimeBeforeMaintenance} meses desde a ultima troca do componente`);
     }
   }
+}
 
   //Notificacao por configuracao do usuario
   async notifyByTime(): Promise<void> {
@@ -171,7 +175,7 @@ export class ComponentService {
     }
   }
 
-  private async notifyMaintenance(component: Component, reasonToNotify : String) {
+  public async notifyMaintenance(component: Component, reasonToNotify : String) {
     let maintenanceMessage = `É hora de fazer a manutenção do seu componente ${component.componentType.name} (${component.id}) `;
     maintenanceMessage += reasonToNotify;
     console.log(maintenanceMessage);
