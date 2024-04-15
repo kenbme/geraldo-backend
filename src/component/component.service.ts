@@ -5,14 +5,14 @@ import {
   UnauthorizedException,
   UnprocessableEntityException
 } from '@nestjs/common'
-import {InjectRepository} from '@nestjs/typeorm'
-import {Component} from './entities/component.entity'
-import {LessThanOrEqual, Raw, Repository} from 'typeorm'
-import {ComponentType} from './entities/component.type.entity'
-import {CreateComponentDto} from '../shared/component/dto/request/create-component.dto'
-import {VehicleService} from '../vehicle/vehicle.service'
-import {DriverService} from '../driver/driver.service'
-import {UpdateComponentDto} from '../shared/component/dto/request/update-component.dto'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Component } from './entities/component.entity'
+import { LessThanOrEqual, Raw, Repository } from 'typeorm'
+import { ComponentType } from './entities/component.type.entity'
+import { CreateComponentDto } from '../shared/component/dto/request/create-component.dto'
+import { VehicleService } from '../vehicle/vehicle.service'
+import { DriverService } from '../driver/driver.service'
+import { UpdateComponentDto } from '../shared/component/dto/request/update-component.dto'
 import { ComponentTypeLimits } from 'src/shared/component/enums/component-type.enum'
 import { differenceInMonths } from 'date-fns'
 
@@ -25,14 +25,14 @@ export class ComponentService {
     @InjectRepository(ComponentType)
     private readonly componentTypeRepository: Repository<ComponentType>,
     private readonly vehicleService: VehicleService
-  ) {}
+  ) { }
 
   async create(dto: CreateComponentDto, userId: number, vehicleId: number): Promise<Component> {
     const vehicle = await this.vehicleService.findById(vehicleId)
 
     const isOwner = vehicle.drivers.some((it) => it.user.id === userId && it.isOwner)
     if (!isOwner) {
-      throw new UnauthorizedException({message: 'Veículo informado não pertence ao motorista'})
+      throw new UnauthorizedException({ message: 'Veículo informado não pertence ao motorista' })
     }
 
     if (dto.kilometersLastExchange > vehicle.kilometers) {
@@ -42,17 +42,17 @@ export class ComponentService {
     }
 
     const componentType = await this.componentTypeRepository.findOne({
-      where: {name: dto.componentType}
+      where: { name: dto.componentType }
     })
     if (!componentType) {
-      throw new BadRequestException({message: 'Componente veicular não encontrado'})
+      throw new BadRequestException({ message: 'Componente veicular não encontrado' })
     }
 
     const componentExistsInVehicle = vehicle.components.some(
       (it) => it.componentType.name === componentType.name
     )
     if (componentExistsInVehicle) {
-      throw new BadRequestException({message: 'Já existe esse componente cadastrado no veículo'})
+      throw new BadRequestException({ message: 'Já existe esse componente cadastrado no veículo' })
     }
 
     const component = new Component()
@@ -74,7 +74,7 @@ export class ComponentService {
     const vehicle = await this.vehicleService.findById(vehicleId)
     const isDriver = vehicle.drivers.some((it) => it.user.id === userId)
     if (!isDriver) {
-      throw new UnauthorizedException({message: 'Veículo informado não pertence ao motorista'})
+      throw new UnauthorizedException({ message: 'Veículo informado não pertence ao motorista' })
     }
 
     const component = vehicle.components.find((it) => it.id === (componentId))
@@ -100,7 +100,7 @@ export class ComponentService {
 
   async deleteComponent(userId: number, componentId: number): Promise<void> {
     const component = await this.componentRepository.findOne({
-      where: {id: componentId},
+      where: { id: componentId },
       relations: ['vehicle', 'vehicle.drivers']
     })
     if (!component) {
@@ -122,66 +122,74 @@ export class ComponentService {
     }
     return vehicle.components
   }
-  
+
   //RF15
+  async verifyAllMaintenances(): Promise<{ componentName: string, reason: string } | null> {
+    const kilometersVerification = await this.verifyByKilometers();
+    if (kilometersVerification != null) {
+      return kilometersVerification;
+    }
+    const maxTimeNotification = await this.verifyByMaxTime();
+    if (maxTimeNotification !== null) {
+      return maxTimeNotification;
+    }
+    const userSetNotification = await this.verifyByUserSet();
+    if (userSetNotification !== null) {
+      return userSetNotification;
+    }
+    return null;
+  }
+
 
   //Notificação por quilometragem
-async notifyByKilometers(): Promise<void> {
-  const components = await this.componentRepository.find({
-    relations: ['vehicle']
-  });
+  private async  verifyByKilometers(): Promise<{ componentName: string, reason: string } | null> {
+    const components = await this.componentRepository.find({
+      relations: ['vehicle']
+    });
 
-  for (const component of components) {
-    const limits = ComponentTypeLimits[component.componentType.name];
-    if (!limits) continue; // Verifica se os limites estão definidos para o tipo de componente
+    for (const component of components) {
+      const limits = ComponentTypeLimits[component.componentType.name];
+      if (!limits) continue;
 
-    const kilometersDifference = component.vehicle.kilometers - component.kilometersLastExchange;
-    if (kilometersDifference >= limits.maxKmBeforeMaintenance) {
-      await this.notifyMaintenance(component, `Porque seu veiculo já rodou mais de ${limits.maxKmBeforeMaintenance} km desde a ultima manutenção!`);
+      const kilometersDifference = component.vehicle.kilometers - component.kilometersLastExchange;
+      if (kilometersDifference >= limits.maxKmBeforeMaintenance) {
+        return { componentName: component.componentType.name, reason: "maxKmBeforeMaintenance" };
+      }
     }
+    return null;
   }
-}
 
-//Notificação por tempo limite
-async notifyByMaxTime(): Promise<void> {
-  const currentDate = new Date();
+  //Notificação por tempo limite
+  private async verifyByMaxTime(): Promise<{ componentName: string, reason: string } | null> {
+    const currentDate = new Date();
 
-  const components = await this.componentRepository.find({
-    relations: ['vehicle']
-  });
+    const components = await this.componentRepository.find({
+      relations: ['vehicle']
+    });
 
-  for (const component of components) {
-    const limits = ComponentTypeLimits[component.componentType.name];
-    if (!limits) continue; // Verifica se os limites estão definidos para o tipo de componente
+    for (const component of components) {
+      const limits = ComponentTypeLimits[component.componentType.name];
+      if (!limits) continue;
 
-    const timeSinceLastMaintenance = differenceInMonths(currentDate, component.dateLastExchange);
-    if (timeSinceLastMaintenance >= limits.maxTimeBeforeMaintenance) {
-      await this.notifyMaintenance(component, `Porque ja se passou mais de ${limits.maxTimeBeforeMaintenance} meses desde a ultima troca do componente`);
+      const timeSinceLastMaintenance = differenceInMonths(currentDate, component.dateLastExchange);
+      if (timeSinceLastMaintenance >= limits.maxTimeBeforeMaintenance) {
+        return { componentName: component.componentType.name, reason: "maxTimeBeforeMaintenance" };
+      }
     }
+    return null;
   }
-}
 
   //Notificacao por configuracao do usuario
-  async notifyByTime(): Promise<void> {
-    let reasonToNotify = "\nPorque voce configurou um tempo para realizar as manutencoes "
+  private async verifyByUserSet(): Promise<{ componentName: string, reason: string } | null> {
     const components = await this.componentRepository.find({
       where: {
         dateLastExchange: LessThanOrEqual(Raw(alias => `${alias} + INTERVAL maintenanceFrequency MONTH <= CURRENT_DATE()`)),
       },
     });
-    
+
     for (const component of components) {
-      await this.notifyMaintenance(component, reasonToNotify);
+      return { componentName: component.componentType.name, reason: "userSetMaintenance" };
     }
+    return null;
   }
-
-  public async notifyMaintenance(component: Component, reasonToNotify : String) {
-    let maintenanceMessage = `É hora de fazer a manutenção do seu componente ${component.componentType.name} (${component.id}) `;
-    maintenanceMessage += reasonToNotify;
-    console.log(maintenanceMessage);
-    return maintenanceMessage;
-  }
-
-
-
 }

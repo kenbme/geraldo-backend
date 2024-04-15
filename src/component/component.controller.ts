@@ -88,4 +88,11 @@ export class ComponentController {
     const data = components.map((component) => createComponentResponseDTO(component))
     return {data, message: 'Componentes encontrados'}
   }
+  
+  
+  @Get('/check_maintenances')
+  async checkMaintenances(): Promise<{ componentName: string, reason: string } | null> {
+    return this.componentsService.verifyAllMaintenances();
+  }
+
 }
