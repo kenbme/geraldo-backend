@@ -34,8 +34,9 @@ export class EstablishmentService {
     establishment.establishmentType = establishmentType
     establishment.user = createdUser
     establishment.address = address
+    establishment.avaliations = []
     const createdEstablishment = await this.establishmentRepository.save(establishment)
-    return createdEstablishment
+    return createdEstablishment 
   }
 
   async findById(id: number): Promise<Establishment> {
@@ -74,4 +75,5 @@ export class EstablishmentService {
     establishment.alwaysOpen = alwaysOpen;
     return this.establishmentRepository.save(establishment);
  }
+
 }

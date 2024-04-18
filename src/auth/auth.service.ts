@@ -1,11 +1,11 @@
-import {Injectable, UnauthorizedException} from '@nestjs/common'
-import {JwtService} from '@nestjs/jwt'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 import * as bcrypt from 'bcrypt'
-import {UserService} from '../user/user.service'
-import {LoginResponseDTO} from '../shared/auth/dto/response/login.response.dto'
-import {createLoginPayload} from '../util/mapper'
-import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
-import {VehicleService} from '../vehicle/vehicle.service'
+import { LoginResponseDTO } from '../shared/auth/dto/response/login.response.dto'
+import { UserTypeEnum } from '../shared/user/enums/user-type.enum'
+import { UserService } from '../user/user.service'
+import { createLoginPayload } from '../util/mapper'
+import { VehicleService } from '../vehicle/vehicle.service'
 
 @Injectable()
 export class AuthService {
