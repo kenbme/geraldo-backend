@@ -1,7 +1,9 @@
 import { Avaliation } from 'src/avaliation/entities/avaliation.entity'
+import { Call } from 'src/call/entites/call.entity'
 import { Fuel } from 'src/fuel/entities/fuel.entity'
 import { Schedule } from 'src/schedule/entities/schedule.entity'
 import { GetAvaliation } from 'src/shared/avaliation/dto/response/get_avaliations.dto'
+import { CallResponseDTO } from 'src/shared/call/dto/response/call.response.dto'
 import { FuelResponseDTO } from 'src/shared/fuel/dto/response/fuel.response.dto'
 import { ScheduleResponseDTO } from 'src/shared/schedule/response/schedule-response.dto'
 import { Component } from '../component/entities/component.entity'
@@ -51,6 +53,16 @@ export const createAvaliationResponseDTO= (avaliation: Avaliation): GetAvaliatio
   dto.grade = avaliation.grade
   dto.date = avaliation.date
   dto.user = avaliation.user
+  return dto
+}
+
+export const createCallResponseDTO= (call: Call): CallResponseDTO=> {
+  const dto = new CallResponseDTO()
+  dto.id = call.id
+  dto.coment = call.comment
+  dto.latitude = call.latitude
+  dto.longitude = call.longitude
+  dto.user = call.user
   return dto
 }
 

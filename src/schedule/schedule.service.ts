@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Establishment } from "src/establishment/entities/establishment.entity";
 import { EstablishmentService } from "src/establishment/establishment.service";
 import { CreateScheduleDto } from "src/shared/schedule/request/create-schedule.dto";
 import { DataSource, Repository } from "typeorm";
@@ -26,8 +25,11 @@ export class ScheduleService{
         const newSchedule = new Schedule()
         newSchedule.establishment = establishment
         const schedule = await this.scheduleRepository.save(newSchedule)
-
+        
         if(scheduleDto.always_open){
+            establishment.alwaysOpen = true
+            newSchedule.establishment = establishment
+            const schedule = await this.scheduleRepository.save(newSchedule)
             const atualShift = new Shift
             atualShift.start = "0:00:00"
             atualShift.finish = "23:59:59"
@@ -36,6 +38,8 @@ export class ScheduleService{
         }else{
             if(await this.checkShift(scheduleDto.shifts)){
                 if(await this.checkValidTime(scheduleDto.shifts)){
+                    newSchedule.establishment = establishment
+                    const schedule = await this.scheduleRepository.save(newSchedule)
                     for(let b = 0;b<scheduleDto.shifts.length;b++){
                         const atualShift = new Shift
                         atualShift.start = scheduleDto.shifts[b][0]
@@ -49,7 +53,7 @@ export class ScheduleService{
             }else{
                 throw new BadRequestException({message: 'O horario do inicio de um turno precisam ser maiores que o do final'})
             }
-        }   
+        }
         return schedule
     }
 
