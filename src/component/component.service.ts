@@ -75,7 +75,7 @@ export class ComponentService {
       throw new UnauthorizedException({message: 'Veículo informado não pertence ao motorista'})
     }
 
-    const component = vehicle.components.find((it) => it.id === parseInt(componentId))
+    const component = vehicle.components.find((it) => it.id === (componentId))
     if (!component) {
       throw new NotFoundException('Componente veicular não existe')
     }
