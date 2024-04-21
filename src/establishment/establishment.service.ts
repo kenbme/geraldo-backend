@@ -91,16 +91,18 @@ export class EstablishmentService {
   async getClosestEstablishments(latitude: number,longitude:number):Promise<Establishment[]>{
     const establishments = await this.establishmentRepository.find({
       relations: ['fuels', 'address', 'user', 'establishmentType']
-    });
-        let response = []
-    console.log(establishments[0].address)
+    })
+    let response = []
     for(let i =0;i<establishments.length;i++){
       let distance = await this.calculateDistanceInKilometers(latitude,longitude,establishments[i].address.latitude,establishments[i].address.longitude)
-      if( distance< 5){
+      if(distance< 5){
         response.push(establishments[i])
       }
     }
-    return establishments
+    if(establishments.length === 0){
+      throw new NotFoundException('Não existem estabelecimentos proximos a você')
+    }
+    return response
   }
   async degreesToRadians(degrees: number): Promise<number> {
     return degrees * (Math.PI / 180)

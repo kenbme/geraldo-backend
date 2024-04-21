@@ -25,6 +25,6 @@ export class User {
   userType: UserType
   @OneToMany(() => Avaliation, (avaliation) => avaliation.establishment)
   avaliations: Avaliation[]
-  @ManyToOne(() => Call, (call) => call.user)
+  @OneToMany(() => Call, (call) => call.user)
   calls: Call[]
 }

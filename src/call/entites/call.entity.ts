@@ -1,6 +1,6 @@
 import { Establishment } from "src/establishment/entities/establishment.entity";
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Call{
@@ -16,11 +16,11 @@ export class Call{
     @Column({type: 'varchar'})
     comment: string
 
-    @OneToMany(() => Establishment, (establishment) => establishment.acceptedCalls)
+    @ManyToOne(() => Establishment, (establishment) => establishment.acceptedCalls)
     @JoinColumn()
     establishmentAccepted: Establishment
 
-    @OneToMany(() => User, (user) => user.calls)
+    @ManyToOne(() => User, (user) => user.calls)
     @JoinColumn()
     user: User
 

@@ -37,7 +37,7 @@ export class Establishment {
   @ManyToMany(() => Call, (call) => call.establishments)
   @JoinColumn()
   calls: Call[]
-  @ManyToOne(() => Call, (call) => call.establishmentAccepted)
+  @OneToMany(() => Call, (call) => call.establishmentAccepted)
   @JoinColumn()
   acceptedCalls: Call[]
   

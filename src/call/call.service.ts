@@ -4,7 +4,6 @@ import { EstablishmentService } from "src/establishment/establishment.service";
 import { CreateCallDTO } from "src/shared/call/dto/request/create-call.dto";
 import { UserTypeEnum } from "src/shared/user/enums/user-type.enum";
 import { UserService } from "src/user/user.service";
-import { createCallResponseDTO } from "src/util/mapper";
 import { DataSource, Repository } from "typeorm";
 import { Call } from "./entites/call.entity";
 
@@ -30,8 +29,7 @@ export class CallService{
         newCall.user = user
         const establishments = await this.establishmentService.getClosestEstablishments(callDTO.latitude,callDTO.longitude)
         newCall.establishments = establishments
-        this.dataSource.manager.save(Call,newCall)
-        const response = createCallResponseDTO(newCall)
+        const response = this.dataSource.manager.save(Call,newCall)
         return response
     }
 }
