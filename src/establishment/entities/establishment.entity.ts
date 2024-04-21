@@ -1,7 +1,8 @@
 import { Avaliation } from 'src/avaliation/entities/avaliation.entity'
+import { Call } from 'src/call/entites/call.entity'
 import { Fuel } from 'src/fuel/entities/fuel.entity'
 import { Schedule } from 'src/schedule/entities/schedule.entity'
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Address } from '../../address/entities/address.entity'
 import { User } from '../../user/entities/user.entity'
 import { EstablishmentType } from './establishment.type.entity'
@@ -33,4 +34,11 @@ export class Establishment {
   avaliations: Avaliation[]
   @Column({type: 'integer', default : 5})
   grade: number
+  @ManyToMany(() => Call, (call) => call.establishments)
+  @JoinColumn()
+  calls: Call[]
+  @OneToMany(() => Call, (call) => call.establishmentAccepted)
+  @JoinColumn()
+  acceptedCalls: Call[]
+  
 }

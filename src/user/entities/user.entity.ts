@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer'
 import { Avaliation } from 'src/avaliation/entities/avaliation.entity'
+import { Call } from 'src/call/entites/call.entity'
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { UserType } from './user.type.entity'
 
@@ -24,4 +25,6 @@ export class User {
   userType: UserType
   @OneToMany(() => Avaliation, (avaliation) => avaliation.establishment)
   avaliations: Avaliation[]
+  @OneToMany(() => Call, (call) => call.user)
+  calls: Call[]
 }

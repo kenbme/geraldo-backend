@@ -9,6 +9,8 @@ import { StateSeeder } from './address/seeders/state.seeder'
 import { AuthModule } from './auth/auth.module'
 import { AvaliationModule } from './avaliation/avaliation.module'
 import { Avaliation } from './avaliation/entities/avaliation.entity'
+import { CallModule } from './call/call.module'
+import { Call } from './call/entites/call.entity'
 import { CepModule } from './cep/cep.module'
 import { ComponentModule } from './component/component.module'
 import { Component } from './component/entities/component.entity'
@@ -63,7 +65,8 @@ import { VehicleModule } from './vehicle/vehicle.module'
         Fuel,
         Shift,
         Schedule,
-        FuelType
+        FuelType,
+        Call
       ]
     }),
     TypeOrmModule.forFeature([EstablishmentType, UserType, State, ComponentType,FuelType]),
@@ -77,7 +80,8 @@ import { VehicleModule } from './vehicle/vehicle.module'
     AddressModule,
     AvaliationModule,
     FuelModule,
-    ScheduleModule
+    ScheduleModule,
+    CallModule
   ],
   providers: [
     {
