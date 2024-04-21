@@ -49,7 +49,7 @@ export class EstablishmentService {
   async findByUserId(userID:number):Promise<Establishment>{
     const establishment = await this.establishmentRepository.findOne({
       where: { user: { id: userID } },
-      relations: ['fuels', 'address', 'user', 'establishmentType']
+      relations: ['fuels', 'address', 'user', 'establishmentType', 'calls', 'acceptedCalls']
   })
     if (!establishment) {
       throw new NotFoundException('Estabelecimento não encontrado')

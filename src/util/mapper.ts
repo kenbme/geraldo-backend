@@ -18,6 +18,7 @@ import { UserTypeEnum } from '../shared/user/enums/user-type.enum'
 import { VehicleResponseDTO } from '../shared/vehicle/dto/response/vahicle.response.dto'
 import { User } from '../user/entities/user.entity'
 import { Vehicle } from '../vehicle/entities/vehicle.entity'
+import { ResposeToCallResponseDTO } from 'src/shared/call/dto/response/response.to.call.reponse.dto'
 
 export const createUserResponseDTO = (user: User): UserResponseDTO => {
   const dto = new UserResponseDTO()
@@ -63,6 +64,17 @@ export const createCallResponseDTO= (call: Call): CallResponseDTO=> {
   dto.latitude = call.latitude
   dto.longitude = call.longitude
   dto.user = call.user
+  return dto
+}
+
+export const createResponseToCallResponseDTO= (call: Call): ResposeToCallResponseDTO=> {
+  const dto = new ResposeToCallResponseDTO
+  dto.id = call.id
+  dto.coment = call.comment
+  dto.latitude = call.latitude
+  dto.longitude = call.longitude
+  dto.user = call.user
+  dto.establishmentAccepted = call.establishmentAccepted
   return dto
 }
 

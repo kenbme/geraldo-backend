@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { EstablishmentService } from "src/establishment/establishment.service";
 import { CreateCallDTO } from "src/shared/call/dto/request/create-call.dto";
@@ -6,6 +6,7 @@ import { UserTypeEnum } from "src/shared/user/enums/user-type.enum";
 import { UserService } from "src/user/user.service";
 import { DataSource, Repository } from "typeorm";
 import { Call } from "./entites/call.entity";
+import { RespondToCallDTO } from "src/shared/call/dto/request/create-response-to-call.dto";
 
 @Injectable()
 export class CallService{
@@ -32,4 +33,39 @@ export class CallService{
         const response = this.dataSource.manager.save(Call,newCall)
         return response
     }
+
+    async respondCall(userId: number, dto: RespondToCallDTO) {
+        const establishment = await this.establishmentService.findByUserId(userId);
+
+        const call = await this.callRepository.findOne({
+            where: { id: dto.callId },
+            relations: ['establishmentAccepted', 'establishments']
+          });
+
+        if (!call) {
+            throw new NotFoundException('Chamada não encontrado')
+        }
+        if (dto.accepted === false) {
+            const index = call.establishments.findIndex(
+              (est) => est.id === establishment.id,
+            );
+            if (index !== -1) {
+              call.establishments.splice(index, 1);
+            }
+            await this.callRepository.save(call);
+            return call;
+          } 
+        const establishmentIds = call.establishments.map(establishment => establishment.user.id);
+        if (!establishmentIds.includes(userId)) {
+          throw new BadRequestException('Chamada não realizada para seu estabelecimento');
+        }
+        if (call.establishmentAccepted) {
+          throw new BadRequestException('Esta chamada já foi aceita por outro estabelecimento.');
+        }
+    
+        call.establishmentAccepted = establishment;
+
+        await this.callRepository.save(call);
+        return call;
+      }
 }
