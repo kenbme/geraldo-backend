@@ -1,12 +1,12 @@
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Establishment } from "src/establishment/entities/establishment.entity";
-import { EstablishmentService } from "src/establishment/establishment.service";
-import { CreateAvaliationDto } from "src/shared/avaliation/dto/request/create_avaliation.dto";
-import { GetAvaliation } from "src/shared/avaliation/dto/response/get_avaliations.dto";
-import { UserTypeEnum } from "src/shared/user/enums/user-type.enum";
-import { UserService } from "src/user/user.service";
-import { createAvaliationResponseDTO } from "src/util/mapper";
+import { Establishment } from "../establishment/entities/establishment.entity";
+import { EstablishmentService } from "../establishment/establishment.service";
+import { CreateAvaliationDto } from "../shared/avaliation/dto/request/create_avaliation.dto";
+import { GetAvaliation } from "../shared/avaliation/dto/response/get_avaliations.dto";
+import { UserTypeEnum } from "../shared/user/enums/user-type.enum";
+import { UserService } from "../user/user.service";
+import { createAvaliationResponseDTO } from "../util/mapper";
 import { DataSource, Repository } from "typeorm";
 import { Avaliation } from "./entities/avaliation.entity";
 

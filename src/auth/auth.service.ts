@@ -6,7 +6,7 @@ import { LoginResponseDTO } from '../shared/auth/dto/response/login.response.dto
 import { createLoginPayload } from '../util/mapper'
 import { UserTypeEnum } from '../shared/user/enums/user-type.enum'
 import { VehicleService } from '../vehicle/vehicle.service'
-import { EstablishmentService } from 'src/establishment/establishment.service'
+import { EstablishmentService } from '../establishment/establishment.service'
 
 @Injectable()
 export class AuthService {

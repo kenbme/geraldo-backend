@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EstablishmentModule } from 'src/establishment/establishment.module';
-import { UserModule } from 'src/user/user.module';
+import { EstablishmentModule } from '../establishment/establishment.module';
+import { UserModule } from '../user/user.module';
 import { AvaliationController } from './avaliation.controller';
 import { AvaliationService } from './avaliation.service';
 import { Avaliation } from './entities/avaliation.entity';

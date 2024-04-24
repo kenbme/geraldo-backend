@@ -2,9 +2,9 @@ import {Controller, Post, Body, HttpCode, Get,Request, UnauthorizedException} fr
 import {RecoverPasswordDto} from '../shared/user/dto/request/recover-password.dto'
 import {UserService} from './user.service'
 import {Public} from '../config/decorator'
-import { UserRequest } from 'src/shared/auth/dto/user.request';
-import { UserResponseDTO } from 'src/shared/user/dto/response/user.response.dto';
-import { createUserResponseDTO } from 'src/util/mapper';
+import { UserRequest } from '../shared/auth/dto/user.request';
+import { UserResponseDTO } from '../shared/user/dto/response/user.response.dto';
+import { createUserResponseDTO } from '../util/mapper';
 
 @Controller('')
 export class UserController {

@@ -17,7 +17,7 @@ import {UpdateComponentDto} from '../shared/component/dto/request/update-compone
 import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
 import {Roles} from '../config/decorator'
 import {UserRequest} from '../shared/auth/dto/user.request'
-import { ComponentHistoryResponseDTO } from 'src/shared/component/dto/response/componentHistory.response.dto'
+import { ComponentHistoryResponseDTO } from '../shared/component/dto/response/componentHistory.response.dto'
 
 @Controller('')
 export class ComponentController {

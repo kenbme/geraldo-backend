@@ -4,7 +4,7 @@ import {UserModule} from '../user/user.module'
 import {AuthController} from './auth.controller'
 import {AuthService} from './auth.service'
 import {VehicleModule} from '../vehicle/vehicle.module'
-import { EstablishmentModule } from 'src/establishment/establishment.module'
+import { EstablishmentModule } from '../establishment/establishment.module'
 
 @Module({
   imports: [

@@ -15,7 +15,7 @@ import { CreateComponentDto } from '../shared/component/dto/request/create-compo
 import { VehicleService } from '../vehicle/vehicle.service'
 import { DriverService } from '../driver/driver.service'
 import { UpdateComponentDto } from '../shared/component/dto/request/update-component.dto'
-import { ComponentTypeLimits } from 'src/shared/component/enums/component-type.enum'
+import { ComponentTypeLimits } from '../shared/component/enums/component-type.enum'
 import { differenceInMonths } from 'date-fns'
 
 @Injectable()

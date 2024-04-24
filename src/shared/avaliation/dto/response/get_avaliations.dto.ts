@@ -1,5 +1,5 @@
-import { Establishment } from "src/establishment/entities/establishment.entity"
-import { User } from "src/user/entities/user.entity"
+import { Establishment } from "../../../../establishment/entities/establishment.entity"
+import { User } from "../../../../user/entities/user.entity"
 
 export class GetAvaliation{
     id: number

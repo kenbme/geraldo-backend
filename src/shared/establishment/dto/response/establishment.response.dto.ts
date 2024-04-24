@@ -1,5 +1,5 @@
-import { Address } from "src/address/entities/address.entity"
-import { Fuel } from "src/fuel/entities/fuel.entity"
+import { Address } from "../../../../address/entities/address.entity"
+import { Fuel } from "../../../../fuel/entities/fuel.entity"
 
 export class EstablishmentResponseDTO {
   id: number

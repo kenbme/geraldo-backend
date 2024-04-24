@@ -1,5 +1,5 @@
 import {IsNotEmpty, IsNumber, Min, Max, IsEnum} from 'class-validator'
-import { FuelTypeEnum } from 'src/shared/fuel/enum/fuel.type.enum';
+import { FuelTypeEnum } from '../../../../shared/fuel/enum/fuel.type.enum';
 
 export class GetEstablishmentsOrderedByPriceQuery{
   @IsNotEmpty({message: 'Campo obrigatório'})

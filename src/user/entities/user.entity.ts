@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer'
-import { Avaliation } from 'src/avaliation/entities/avaliation.entity'
+import { Avaliation } from '../../avaliation/entities/avaliation.entity'
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { UserType } from './user.type.entity'
 

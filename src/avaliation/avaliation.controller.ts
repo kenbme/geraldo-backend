@@ -1,10 +1,10 @@
 import { Body, Controller, Get, HttpCode, Param, Post, Request, UnauthorizedException } from "@nestjs/common";
-import { Roles } from "src/config/decorator";
-import { UserRequest } from "src/shared/auth/dto/user.request";
-import { CreateAvaliationDto } from "src/shared/avaliation/dto/request/create_avaliation.dto";
-import { GetAvaliation } from "src/shared/avaliation/dto/response/get_avaliations.dto";
-import { UserTypeEnum } from "src/shared/user/enums/user-type.enum";
-import { createAvaliationResponseDTO } from "src/util/mapper";
+import { Roles } from "../config/decorator";
+import { UserRequest } from "../shared/auth/dto/user.request";
+import { CreateAvaliationDto } from "../shared/avaliation/dto/request/create_avaliation.dto";
+import { GetAvaliation } from "../shared/avaliation/dto/response/get_avaliations.dto";
+import { UserTypeEnum } from "../shared/user/enums/user-type.enum";
+import { createAvaliationResponseDTO } from "../util/mapper";
 import { AvaliationService } from "./avaliation.service";
 import { Avaliation } from "./entities/avaliation.entity";
 
