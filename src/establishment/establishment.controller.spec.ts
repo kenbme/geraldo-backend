@@ -1,22 +1,22 @@
-import {Test, TestingModule} from '@nestjs/testing'
-import {EstablishmentController} from './establishment.controller'
-import {EstablishmentService} from './establishment.service'
-import {TypeOrmModule, getRepositoryToken} from '@nestjs/typeorm'
-import {User} from 'src/user/entities/user.entity'
-import {UserType} from 'src/user/entities/user.type.entity'
-import {Establishment} from './entities/establishment.entity'
-import {UserModule} from 'src/user/user.module'
-import {EstablishmentType} from './entities/establishment.type.entity'
-import {EstablishmentTypeService} from './establishment.type.service'
-import {Repository} from 'typeorm'
-import {AddressModule} from 'src/address/address.module'
-import {Address} from 'src/address/entities/address.entity'
-import {State} from 'src/address/entities/state.entity'
-import {City} from 'src/address/entities/cities.entity'
-import {EstablishmentTypeSeeder} from './seeders/establishment.type.seeder'
-import {StateSeeder} from 'src/address/seeders/state.seeder'
-import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
-import {EstablishmentTypeEnum} from 'src/shared/establishment/enums/establishment-type.enum'
+import { Test, TestingModule } from '@nestjs/testing'
+import { EstablishmentController } from './establishment.controller'
+import { EstablishmentService } from './establishment.service'
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm'
+import { User } from 'src/user/entities/user.entity'
+import { UserType } from 'src/user/entities/user.type.entity'
+import { Establishment } from './entities/establishment.entity'
+import { UserModule } from 'src/user/user.module'
+import { EstablishmentType } from './entities/establishment.type.entity'
+import { EstablishmentTypeService } from './establishment.type.service'
+import { Repository } from 'typeorm'
+import { AddressModule } from 'src/address/address.module'
+import { Address } from 'src/address/entities/address.entity'
+import { State } from 'src/address/entities/state.entity'
+import { City } from 'src/address/entities/cities.entity'
+import { EstablishmentTypeSeeder } from './seeders/establishment.type.seeder'
+import { StateSeeder } from 'src/address/seeders/state.seeder'
+import { UserTypeSeeder } from 'src/user/seeders/user.type.seeder'
+import { EstablishmentTypeEnum } from 'src/shared/establishment/enums/establishment-type.enum'
 import { UpdateEstablishmentDto } from 'src/shared/establishment/dto/request/update-establishment.dto'
 import { CreateEstablishmentDto } from 'src/shared/establishment/dto/request/create-establishment.dto'
 import { EstablishmentResponseDTO } from 'src/shared/establishment/dto/response/establishment.response.dto'
@@ -53,7 +53,7 @@ describe('EstablishmentController', () => {
       providers: [
         EstablishmentService,
         EstablishmentTypeService,
-        {provide: getRepositoryToken(User), useClass: Repository},
+        { provide: getRepositoryToken(User), useClass: Repository },
         EstablishmentTypeSeeder,
         StateSeeder,
         UserTypeSeeder
@@ -77,7 +77,7 @@ describe('EstablishmentController', () => {
       areaCode: '83',
       phone: '83993333333',
       establishmentType: EstablishmentTypeEnum.GAS_STATION,
-      houseNumber: '15',
+      houseNumber: '882',
       postalCode: '58429900'
     })
 
@@ -88,9 +88,9 @@ describe('EstablishmentController', () => {
       areaCode: '83',
       phone: '83993333331',
       establishmentType: EstablishmentTypeEnum.GAS_STATION,
-      houseNumber: '10',
-      postalCode: '29043180'
-      })
+      houseNumber: '671',
+      postalCode: '58432300'
+    })
   })
 
   it('should be defined', () => {
@@ -108,14 +108,14 @@ describe('EstablishmentController', () => {
       email: 'beltrano@gmail.com',
       areaCode: '81',
       phone: '81995554444',
-      postalCode: '73381092',
-      houseNumber: '20'
+      postalCode: '58429500',
+      houseNumber: '351'
     };
     const updatedEstablishment = await establishmentService.updateEstablishment(
-    establishmentFromService.user.id,
-    updateDto)
-    
-    expect(updatedEstablishment).toBeDefined();  
+      establishmentFromService.user.id,
+      updateDto)
+
+    expect(updatedEstablishment).toBeDefined();
     expect(updatedEstablishment.user).toBeDefined();
     expect(updatedEstablishment.address).toBeDefined();
     expect(updatedEstablishment.areaCode).toBe(updateDto.areaCode)
@@ -132,17 +132,17 @@ describe('EstablishmentController', () => {
       email: 'beltrano@gmail.com',
       areaCode: '83',
       phone: '83995554444',
-      postalCode: '73381092',
-      houseNumber: '20'
+      postalCode: '58429500',
+      houseNumber: '351'
     };
-    const request: any = {user: {id: establishmentFromService.user.id}}
+    const request: any = { user: { id: establishmentFromService.user.id } }
     const updatedEstablishment = await establishmentController.updateEstablishment(
-    request, updateDto)
+      request, updateDto)
     expect(updatedEstablishment).toBeDefined();
     expect(updatedEstablishment.message).toEqual('Estabelecimento atualizado com sucesso')
   })
 
-  it('should create another establishment with already used cep', async() => {
+  it('should create another establishment with already used cep', async () => {
     await establishmentService.create({
       username: '11564764000126',
       email: 'teste4444@gmail.com',
@@ -150,14 +150,14 @@ describe('EstablishmentController', () => {
       areaCode: '83',
       phone: '83994444444',
       establishmentType: EstablishmentTypeEnum.GAS_STATION,
-      houseNumber: '11',
-      postalCode: '29043180'
-      })
+      houseNumber: '351',
+      postalCode: '58429500'
+    })
   })
 
-  it('should get all establishments from city', async() => {
-    const res = await establishmentController.getEstablishments(establishmentFromService.address.city.id + "")
+  it('should get all establishments from localization', async () => {
+    const res = await establishmentController.getEstablishments({ latitude: 7.2171368, longitude: -35.9097543 })
     expect(res.message).toBe('Lista de estabelecimentos')
-    expect(res.data.length).toBeGreaterThan(0)
+    expect(res.data.length).toEqual(0)
   })
 })
