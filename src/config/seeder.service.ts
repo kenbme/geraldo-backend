@@ -3,7 +3,7 @@ import {StateSeeder} from '../address/seeders/state.seeder'
 import {EstablishmentTypeSeeder} from '../establishment/seeders/establishment.type.seeder'
 import {UserTypeSeeder} from '../user/seeders/user.type.seeder'
 import {ComponentTypeSeeder} from '../component/seeders/component.type.seeder'
-import { FuelTypeSeeder } from 'src/fuel/seeders/fuel.type.seeder'
+import { FuelTypeSeeder } from '../fuel/seeders/fuel.type.seeder'
 
 @Injectable()
 export class SeederService {

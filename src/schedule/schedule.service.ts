@@ -1,8 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Establishment } from "src/establishment/entities/establishment.entity";
-import { EstablishmentService } from "src/establishment/establishment.service";
-import { CreateScheduleDto } from "src/shared/schedule/request/create-schedule.dto";
+import { EstablishmentService } from "../establishment/establishment.service";
+import { CreateScheduleDto } from "../shared/schedule/request/create-schedule.dto";
 import { DataSource, Repository } from "typeorm";
 import { Schedule } from "./entities/schedule.entity";
 import { Shift } from "./entities/shift.entity";

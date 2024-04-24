@@ -40,7 +40,7 @@ export class UserService {
     newUser.username = createUserDto.username
     // TODO randomPassword deve ser enviada para email
     const randomPassword = Math.random().toString().split('0.')[1]
-    newUser.password = await this.encryptPassword(randomPassword)
+    newUser.password = await this.encryptPassword("senha")
     console.log(randomPassword)
     newUser.name = createUserDto.name
     newUser.email = createUserDto.email

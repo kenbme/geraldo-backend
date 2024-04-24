@@ -45,8 +45,13 @@ import { ComponentHistory } from './component/entities/ComponentHistory.entity'
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'db/development.sqlite3',
+      type: 'postgres',
+      database: 'verceldb',
+      username: 'default',
+      password: 'T3Q8EeWnqJYg',
+      host: 'ep-silent-resonance-a4dk8ug8-pooler.us-east-1.aws.neon.tech',
+      ssl: true,
+      port: 5432,
       synchronize: true,
       entities: [
         User,
