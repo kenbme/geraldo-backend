@@ -65,11 +65,8 @@ import { ComponentHistory } from './component/entities/ComponentHistory.entity'
         City,
         Component,
         ComponentType,
-<<<<<<< HEAD
         Avaliation,
-=======
         ComponentHistory,
->>>>>>> origin/sprint4/feat/RF14
         Fuel,
         Shift,
         Schedule,

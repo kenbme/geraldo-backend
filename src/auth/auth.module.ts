@@ -4,6 +4,7 @@ import {UserModule} from '../user/user.module'
 import {AuthController} from './auth.controller'
 import {AuthService} from './auth.service'
 import {VehicleModule} from '../vehicle/vehicle.module'
+import { EstablishmentModule } from 'src/establishment/establishment.module'
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import {VehicleModule} from '../vehicle/vehicle.module'
       secret: process.env.JWT_SECRET_KEY,
       signOptions: {expiresIn: '100000000s'}
     }),
-    VehicleModule
+    VehicleModule,
+    EstablishmentModule
   ],
   controllers: [AuthController],
   providers: [AuthService]
