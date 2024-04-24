@@ -13,6 +13,8 @@ import {CreateComponentDto} from '../shared/component/dto/request/create-compone
 import {VehicleService} from '../vehicle/vehicle.service'
 import {DriverService} from '../driver/driver.service'
 import {UpdateComponentDto} from '../shared/component/dto/request/update-component.dto'
+import { Cron, CronExpression } from '@nestjs/schedule'
+
 
 @Injectable()
 export class ComponentService {
@@ -118,5 +120,61 @@ export class ComponentService {
       throw new UnauthorizedException('Veículo informado não pertence ao motorista')
     }
     return vehicle.components
+  }
+
+  async generateMonthlyReport() {
+    const components = await this.componentRepository.find({ relations: ['vehicle'] });
+
+    if (!components || components.length === 0) {
+      const message = 'Olá, caro motorista! Notamos que você ainda não cadastrou os componentes do seu veículo.' +
+          ' Cadastre-os e receba um relatório mensal detalhado sobre eles diretamente no seu e-mail.' +
+          ' Isso ajudará você a manter seu veículo em ótimas condições. Obrigado!';
+
+      // TODO enviar por email    
+      console.log(message);
+      return message;
+  }
+
+    let reportOutput = `Olá, caro motorista! O mês virou e seu relatório chegou!` +
+    ` Aqui está a situação atual do(s) componente(s) do seu veículo:\n\n`;
+
+    for (const component of components) {
+      reportOutput += this.generateComponentReport(component);
+   }
+
+  reportOutput += "Obrigado, até o próximo!";
+
+  // TODO enviar por email
+  console.log(reportOutput);
+  return reportOutput;
+  }
+
+  private generateComponentReport(component: Component) {
+    const nextMaintenanceDate = new Date(component.dateLastExchange);
+    nextMaintenanceDate.setMonth(nextMaintenanceDate.getMonth() + component.maintenanceFrequency);
+
+    const fiveDaysClose = new Date();
+    fiveDaysClose.setDate(fiveDaysClose.getDate() + 5);
+
+    const isMaintenanceDue = (nextMaintenanceDate <= fiveDaysClose)
+    const kilometersDriven = component.vehicle.kilometers - component.kilometersLastExchange;
+
+    let maintenanceMessage = '';
+    if (isMaintenanceDue) {
+      maintenanceMessage = 'Precisa de manutenção';
+    } else {
+      maintenanceMessage = 'Não precisa de manutenção';
+    }
+
+    return `Tipo do Componente: ${component.componentType.name}
+    ID do Componente: ${component.id}
+    ID do Veículo: ${component.vehicle.id}
+    Status de Manutenção: ${maintenanceMessage}
+    Quilômetros Dirigidos: ${kilometersDriven}\n\n`;
+}
+
+  @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_NOON)
+  handleCron() {
+    this.generateMonthlyReport();
   }
 }
