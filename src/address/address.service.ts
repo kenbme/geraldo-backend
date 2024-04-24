@@ -17,7 +17,7 @@ export class AddressService {
 
   async createAddress(postalCode: string, houseNumber: string): Promise<Address> {
     const dto = await this.cepService.getAddressByCep(postalCode)
-    const { latitude, longitude } = await this.cepService.getLatitudeAndLongitude(dto.address, houseNumber)
+    const { latitude, longitude } = await this.cepService.getLatitudeAndLongitude(dto.address, houseNumber, dto.city)
     const state = await this.stateService.findStateByName(dto.state)
     const city = await this.cityService.saveCity(dto.city, state)
     const address = new Address()
@@ -37,7 +37,7 @@ export class AddressService {
     let address = await this.addressRepository.findOneOrFail({ where: { id } })
 
     const dto = await this.cepService.getAddressByCep(postalCode)
-    const { latitude, longitude } = await this.cepService.getLatitudeAndLongitude(dto.address, houseNumber)
+    const { latitude, longitude } = await this.cepService.getLatitudeAndLongitude(dto.address, houseNumber, dto.city)
     const state = await this.stateService.findStateByName(dto.state)
     const city = await this.cityService.saveCity(dto.city, state)
 

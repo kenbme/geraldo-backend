@@ -32,9 +32,9 @@ export class CepService {
     return addressDto
   }
 
-  async getLatitudeAndLongitude(street: string, houseNumber: string): Promise<{ latitude: number; longitude: number }> {
+  async getLatitudeAndLongitude(street: string, houseNumber: string, city: string): Promise<{ latitude: number; longitude: number }> {
     const apiKey = 'AIzaSyCBNSMSaW344jow4JOFMKsbUO8f4FqO7tk'
-    const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(street + ", " + houseNumber)}&key=${apiKey}`
+    const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(street + ", " + houseNumber + ", " + city)}&key=${apiKey}`
     try {
       const response = await axios.get(apiUrl, { timeout: 5000 })
       const { data } = response
