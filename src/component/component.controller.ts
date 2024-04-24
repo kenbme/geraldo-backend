@@ -104,4 +104,11 @@ export class ComponentController {
     const data = updateHistory.map((componentHistory) => createComponentHistoryResponseDTO(componentHistory))
     return { data, message: 'Histórico de atualização encontrado' }
 }
+  
+  
+  @Get('/check_maintenances')
+  async checkMaintenances(): Promise<{ componentName: string, reason: string } | null> {
+    return this.componentsService.verifyAllMaintenances();
+  }
+
 }
