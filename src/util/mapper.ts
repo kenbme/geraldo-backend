@@ -16,6 +16,7 @@ import { UserTypeEnum } from '../shared/user/enums/user-type.enum'
 import { VehicleResponseDTO } from '../shared/vehicle/dto/response/vahicle.response.dto'
 import { User } from '../user/entities/user.entity'
 import { Vehicle } from '../vehicle/entities/vehicle.entity'
+import { ComponentHistoryResponseDTO } from 'src/shared/component/dto/response/componentHistory.response.dto'
 
 export const createUserResponseDTO = (user: User): UserResponseDTO => {
   const dto = new UserResponseDTO()
@@ -94,6 +95,13 @@ export const createComponentResponseDTO = (component: Component): ComponentRespo
   dto.dateLastExchange = component.dateLastExchange
   dto.maintenanceFrequency = component.maintenanceFrequency
   dto.kilometersLastExnchange = component.kilometersLastExchange
+  return dto
+}
+export const createComponentHistoryResponseDTO = (componentHistory: ComponentHistoryResponseDTO): ComponentHistoryResponseDTO => {
+  const dto = new ComponentHistoryResponseDTO()
+  dto.dateLastExchange = componentHistory.dateLastExchange
+  dto.maintenanceFrequency = componentHistory.maintenanceFrequency
+  dto.kilometersLastExchange = componentHistory.kilometersLastExchange
   return dto
 }
 export const createFuelResponseDTO = (fuel: Fuel): FuelResponseDTO => {

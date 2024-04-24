@@ -40,6 +40,7 @@ import { UserTypeSeeder } from './user/seeders/user.type.seeder'
 import { UserModule } from './user/user.module'
 import { Vehicle } from './vehicle/entities/vehicle.entity'
 import { VehicleModule } from './vehicle/vehicle.module'
+import { ComponentHistory } from './component/entities/ComponentHistory.entity'
 
 @Module({
   imports: [
@@ -59,7 +60,11 @@ import { VehicleModule } from './vehicle/vehicle.module'
         City,
         Component,
         ComponentType,
+<<<<<<< HEAD
         Avaliation,
+=======
+        ComponentHistory,
+>>>>>>> origin/sprint4/feat/RF14
         Fuel,
         Shift,
         Schedule,

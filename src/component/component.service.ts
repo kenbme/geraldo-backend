@@ -14,7 +14,7 @@ import {VehicleService} from '../vehicle/vehicle.service'
 import {DriverService} from '../driver/driver.service'
 import {UpdateComponentDto} from '../shared/component/dto/request/update-component.dto'
 import { Cron, CronExpression } from '@nestjs/schedule'
-
+import { ComponentHistory } from './entities/ComponentHistory.entity'
 
 @Injectable()
 export class ComponentService {
@@ -22,6 +22,8 @@ export class ComponentService {
   constructor(
     @InjectRepository(Component)
     private readonly componentRepository: Repository<Component>,
+    @InjectRepository(ComponentHistory)
+    private readonly componentHistoryRepository: Repository<ComponentHistory>,
     @InjectRepository(ComponentType)
     private readonly componentTypeRepository: Repository<ComponentType>,
     private readonly vehicleService: VehicleService
@@ -61,7 +63,6 @@ export class ComponentService {
     component.dateLastExchange = new Date(dto.dateLastExchange)
     component.maintenanceFrequency = dto.maintenanceFrequency
     component.vehicle = vehicle
-
     return await this.componentRepository.save(component)
   }
 
@@ -81,6 +82,15 @@ export class ComponentService {
     if (!component) {
       throw new NotFoundException('Componente veicular não existe')
     }
+    const newDate = new Date(component.dateLastExchange)
+    newDate.setDate(newDate.getDate() + 2)
+    const componentHistory = new ComponentHistory()
+    componentHistory.component = component
+    componentHistory.dateLastExchange = newDate
+    componentHistory.kilometersLastExchange = component.kilometersLastExchange
+    componentHistory.maintenanceFrequency = component.maintenanceFrequency
+    await this.componentHistoryRepository.save(componentHistory)
+
     if (dto.kilometersLastExchange > component.kilometersLastExchange) {
       throw new UnprocessableEntityException({
         message: 'Quilometragem da última troca não pode ser maior do que a atual'
@@ -177,4 +187,37 @@ export class ComponentService {
   handleCron() {
     this.generateMonthlyReport();
   }
+  async updateHistory(
+    userId: number,
+    vehicleId: number,
+    componentId: number,
+  ): Promise<ComponentHistory[]> {
+    const vehicle = await this.vehicleService.findById(vehicleId)
+    const isDriver = vehicle.drivers.some((it) => it.user.id === userId)
+    if (!isDriver) {
+      throw new UnauthorizedException({message: 'Veículo informado não pertence ao motorista'})
+    }
+    const component = vehicle.components.find((it) => it.id === componentId)
+    if (!component) {
+      const isComponent = await this.componentRepository.findOne({where: {id: componentId}})
+      if (!isComponent) {
+        throw new NotFoundException('Componente veicular não existe')
+      }
+      if (isComponent.vehicle.id !== vehicleId) {
+        throw new UnauthorizedException({message: ' Não autorizado'})
+      }
+      throw new NotFoundException('Componente veicular não existe')
+    }
+    const history = await this.getUpdateHistoryByIdComponent(component)
+    return history;
+  }
+  async getUpdateHistoryByIdComponent(component: Component): Promise<ComponentHistory[]> {
+    const componentHistory = await this.componentHistoryRepository.find({
+        where: {component: component},
+    });
+    if (!componentHistory) {
+        throw new NotFoundException('Componente veicular não encontrado');
+    }
+    return componentHistory.reverse()
+}
 }

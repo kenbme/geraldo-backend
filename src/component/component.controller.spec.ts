@@ -19,6 +19,8 @@ import {ComponentTypeEnum} from 'src/shared/component/enums/component-type.enum'
 import {ValidationError, validateOrReject} from 'class-validator'
 import {CreateComponentDto} from 'src/shared/component/dto/request/create-component.dto'
 import {UpdateComponentDto} from 'src/shared/component/dto/request/update-component.dto'
+import { ComponentHistory } from './entities/ComponentHistory.entity'
+
 
 describe('ComponentController', () => {
   let componentController: ComponentController
@@ -35,12 +37,12 @@ describe('ComponentController', () => {
           database: 'db/testing_component.sqlite3',
           synchronize: true,
           dropSchema: true,
-          entities: [User, UserType, Driver, Vehicle, Component, ComponentType]
+          entities: [User, UserType, Driver, Vehicle, Component, ComponentType,ComponentHistory]
         }),
         UserModule,
         DriverModule,
         VehicleModule,
-        TypeOrmModule.forFeature([User, UserType, Driver, Vehicle, Component, ComponentType])
+        TypeOrmModule.forFeature([User, UserType, Driver, Vehicle, Component, ComponentType,ComponentHistory])
       ],
       controllers: [ComponentController],
       providers: [ComponentService, ComponentTypeSeeder, UserTypeSeeder]
@@ -177,6 +179,46 @@ describe('ComponentController', () => {
       return
     }
     throw new Error()
+  })
+  it('should update a component', async () => {
+    const component = componentService.create(
+      {
+        componentType: ComponentTypeEnum.BALANCE,
+        dateLastExchange: '2023-10-10',
+        maintenanceFrequency: 2,
+        kilometersLastExchange: 50
+      },
+      user.id,
+      vehicle.id
+    )
+    await componentService.update(user.id, vehicle.id, (await component).id, {
+      dateLastExchange: '2024-01-01',
+      maintenanceFrequency: 3,
+      kilometersLastExchange: 50
+    })
+  })
+  it('should updateHistory a component', async () => {
+    const component = componentService.create(
+      {
+        componentType: ComponentTypeEnum.BALANCE,
+        dateLastExchange: '2023-10-10',
+        maintenanceFrequency: 2,
+        kilometersLastExchange: 50
+      },
+      user.id,
+      vehicle.id
+    )
+    await componentService.update(user.id, vehicle.id, (await component).id, {
+      dateLastExchange: '2024-01-01',
+      maintenanceFrequency: 3,
+      kilometersLastExchange: 50
+    })
+    await componentService.update(user.id, vehicle.id, (await component).id, {
+      dateLastExchange: '2024-04-02',
+      maintenanceFrequency: 1,
+      kilometersLastExchange: 50
+    })
+    console.log(await componentService.updateHistory(user.id, vehicle.id,((await component).id)))
   })
   it('Driver not is owner for update', async () => {
     try {
