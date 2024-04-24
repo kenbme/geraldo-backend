@@ -28,7 +28,8 @@ export class AuthService {
         {
           secret: process.env.JWT_SECRET_KEY
         }
-      )
+      ),
+      isDriver: user.userType.name === UserTypeEnum.DRIVER
     }
   }
 
@@ -47,9 +48,10 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(
         {id, userType, resetPassword, vehicleId},
         {
-          secret: process.env.JWT_SECRET_KEY
+          secret: process.env.JWT_SECRET_KEY,
         }
-      )
+      ), 
+      isDriver: user.userType.name === UserTypeEnum.DRIVER
     }
   }
 }

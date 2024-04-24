@@ -73,6 +73,8 @@ export const createEstablishmentResponseDTO = (
   dto.birthday = establishment.user.birthday
   dto.name = establishment.user.name
   dto.username = establishment.user.username
+  dto.fuels = establishment.fuels
+  dto.address = establishment.address
   return dto
 }
 

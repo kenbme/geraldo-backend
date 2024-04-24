@@ -1,4 +1,4 @@
-import {Column, Entity, JoinColumn, OneToOne, ManyToOne, PrimaryGeneratedColumn} from 'typeorm'
+import {Column, Entity, OneToOne, ManyToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {State} from './state.entity'
 import {City} from './cities.entity'
 import {Establishment} from '../../establishment/entities/establishment.entity'
@@ -29,9 +29,9 @@ export class Address {
   @Column({type: 'varchar'})
   houseNumber: string
 
-  @Column({type: 'decimal', nullable: true})
+  @Column({type: 'decimal'})
   longitude: number
 
-  @Column({type: 'decimal', nullable: true})
+  @Column({type: 'decimal'})
   latitude: number
 }
