@@ -1,13 +1,13 @@
-import { Establishment } from '../../establishment/entities/establishment.entity'
+import {Establishment} from '../../establishment/entities/establishment.entity'
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm'
-import { FuelType } from './fuel.type.entity'
+import {FuelType} from './fuel.type.entity'
 
 @Entity()
 export class Fuel {
   @PrimaryGeneratedColumn()
   id: number
 
-  @ManyToOne(() => FuelType,{eager:true} )
+  @ManyToOne(() => FuelType, {eager: true})
   fuelType: FuelType
 
   @Column({type: 'varchar'})
@@ -19,7 +19,6 @@ export class Fuel {
   @Column({type: 'boolean'})
   productStatus: boolean
 
-  @ManyToOne (() => Establishment, (establishment) => establishment.fuels)
+  @ManyToOne(() => Establishment, (establishment) => establishment.fuels)
   establishment: Establishment
-
 }

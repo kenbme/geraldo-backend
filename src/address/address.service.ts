@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common'
-import { Address } from './entities/address.entity'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
-import { CepService } from '../cep/cep.service'
-import { StateService } from './state.service'
-import { CityService } from './city.service'
+import {Injectable} from '@nestjs/common'
+import {Address} from './entities/address.entity'
+import {InjectRepository} from '@nestjs/typeorm'
+import {Repository} from 'typeorm'
+import {CepService} from '../cep/cep.service'
+import {StateService} from './state.service'
+import {CityService} from './city.service'
 
 @Injectable()
 export class AddressService {
@@ -13,11 +13,15 @@ export class AddressService {
     private readonly cepService: CepService,
     private readonly stateService: StateService,
     private readonly cityService: CityService
-  ) { }
+  ) {}
 
   async createAddress(postalCode: string, houseNumber: string): Promise<Address> {
     const dto = await this.cepService.getAddressByCep(postalCode)
-    const { latitude, longitude } = await this.cepService.getLatitudeAndLongitude(dto.address, houseNumber, dto.city)
+    const {latitude, longitude} = await this.cepService.getLatitudeAndLongitude(
+      dto.address,
+      houseNumber,
+      dto.city
+    )
     const state = await this.stateService.findStateByName(dto.state)
     const city = await this.cityService.saveCity(dto.city, state)
     const address = new Address()
@@ -33,11 +37,14 @@ export class AddressService {
   }
 
   async updateAddress(id: number, postalCode: string, houseNumber: string): Promise<Address> {
-
-    let address = await this.addressRepository.findOneOrFail({ where: { id } })
+    const address = await this.addressRepository.findOneOrFail({where: {id}})
 
     const dto = await this.cepService.getAddressByCep(postalCode)
-    const { latitude, longitude } = await this.cepService.getLatitudeAndLongitude(dto.address, houseNumber, dto.city)
+    const {latitude, longitude} = await this.cepService.getLatitudeAndLongitude(
+      dto.address,
+      houseNumber,
+      dto.city
+    )
     const state = await this.stateService.findStateByName(dto.state)
     const city = await this.cityService.saveCity(dto.city, state)
 

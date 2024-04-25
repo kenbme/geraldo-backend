@@ -1,9 +1,8 @@
-import { ArrayMaxSize, IsNotEmpty } from "class-validator";
+import {ArrayMaxSize} from 'class-validator'
 
 export class CreateScheduleDto {
+  @ArrayMaxSize(3, {message: 'O número máximo de turnos é 3'})
+  shifts: string[][]
 
-    @ArrayMaxSize(3, { message: 'O número máximo de turnos é 3' })
-    shifts: string[][]
-
-    always_open: boolean
+  always_open: boolean
 }

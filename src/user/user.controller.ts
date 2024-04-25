@@ -1,10 +1,10 @@
-import {Controller, Post, Body, HttpCode, Get,Request, UnauthorizedException} from '@nestjs/common'
+import {Controller, Post, Body, HttpCode, Get, Request, UnauthorizedException} from '@nestjs/common'
 import {RecoverPasswordDto} from '../shared/user/dto/request/recover-password.dto'
 import {UserService} from './user.service'
 import {Public} from '../config/decorator'
-import { UserRequest } from '../shared/auth/dto/user.request';
-import { UserResponseDTO } from '../shared/user/dto/response/user.response.dto';
-import { createUserResponseDTO } from '../util/mapper';
+import {UserRequest} from '../shared/auth/dto/user.request'
+import {UserResponseDTO} from '../shared/user/dto/response/user.response.dto'
+import {createUserResponseDTO} from '../util/mapper'
 
 @Controller('')
 export class UserController {
@@ -21,7 +21,9 @@ export class UserController {
   }
   @Get('/user_perfil')
   @HttpCode(200)
-  async getPerfil( @Request() request: UserRequest): Promise<{data: UserResponseDTO; message: string}>{
+  async getPerfil(
+    @Request() request: UserRequest
+  ): Promise<{data: UserResponseDTO; message: string}> {
     const userId = request.user.id
     if (!userId) {
       throw new UnauthorizedException()
@@ -30,5 +32,4 @@ export class UserController {
     const data = createUserResponseDTO(user)
     return {message: 'Perfil encontrado com sucesso', data}
   }
-  
 }

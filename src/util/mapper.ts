@@ -1,22 +1,22 @@
-import { Avaliation } from '../avaliation/entities/avaliation.entity'
-import { Fuel } from '../fuel/entities/fuel.entity'
-import { Schedule } from '../schedule/entities/schedule.entity'
-import { GetAvaliation } from '../shared/avaliation/dto/response/get_avaliations.dto'
-import { FuelResponseDTO } from '../shared/fuel/dto/response/fuel.response.dto'
-import { ScheduleResponseDTO } from '../shared/schedule/response/schedule-response.dto'
-import { Component } from '../component/entities/component.entity'
-import { Driver } from '../driver/entities/driver.entity'
-import { Establishment } from '../establishment/entities/establishment.entity'
-import { LoginPayload } from '../shared/auth/dto/login.payload.dto'
-import { ComponentResponseDTO } from '../shared/component/dto/response/component.response.dto'
-import { DriverResponseDTO } from '../shared/driver/dto/response/driver.response.dto'
-import { EstablishmentResponseDTO } from '../shared/establishment/dto/response/establishment.response.dto'
-import { UserResponseDTO } from '../shared/user/dto/response/user.response.dto'
-import { UserTypeEnum } from '../shared/user/enums/user-type.enum'
-import { VehicleResponseDTO } from '../shared/vehicle/dto/response/vahicle.response.dto'
-import { User } from '../user/entities/user.entity'
-import { Vehicle } from '../vehicle/entities/vehicle.entity'
-import { ComponentHistoryResponseDTO } from '../shared/component/dto/response/componentHistory.response.dto'
+import {Avaliation} from '../avaliation/entities/avaliation.entity'
+import {Fuel} from '../fuel/entities/fuel.entity'
+import {Schedule} from '../schedule/entities/schedule.entity'
+import {GetAvaliation} from '../shared/avaliation/dto/response/get_avaliations.dto'
+import {FuelResponseDTO} from '../shared/fuel/dto/response/fuel.response.dto'
+import {ScheduleResponseDTO} from '../shared/schedule/response/schedule-response.dto'
+import {Component} from '../component/entities/component.entity'
+import {Driver} from '../driver/entities/driver.entity'
+import {Establishment} from '../establishment/entities/establishment.entity'
+import {LoginPayload} from '../shared/auth/dto/login.payload.dto'
+import {ComponentResponseDTO} from '../shared/component/dto/response/component.response.dto'
+import {DriverResponseDTO} from '../shared/driver/dto/response/driver.response.dto'
+import {EstablishmentResponseDTO} from '../shared/establishment/dto/response/establishment.response.dto'
+import {UserResponseDTO} from '../shared/user/dto/response/user.response.dto'
+import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
+import {VehicleResponseDTO} from '../shared/vehicle/dto/response/vahicle.response.dto'
+import {User} from '../user/entities/user.entity'
+import {Vehicle} from '../vehicle/entities/vehicle.entity'
+import {ComponentHistoryResponseDTO} from '../shared/component/dto/response/componentHistory.response.dto'
 
 export const createUserResponseDTO = (user: User): UserResponseDTO => {
   const dto = new UserResponseDTO()
@@ -37,14 +37,14 @@ export const createDriverResponseDTO = (driver: Driver): DriverResponseDTO => {
   return dto
 }
 
-export const createScheduleDTO= (schedule: Schedule): ScheduleResponseDTO => {
+export const createScheduleDTO = (schedule: Schedule): ScheduleResponseDTO => {
   const dto = new ScheduleResponseDTO()
   dto.id = schedule.id
   dto.shifts = schedule.shifts
   dto.establishment = schedule.establishment
   return dto
 }
-export const createAvaliationResponseDTO= (avaliation: Avaliation): GetAvaliation => {
+export const createAvaliationResponseDTO = (avaliation: Avaliation): GetAvaliation => {
   const dto = new GetAvaliation()
   dto.id = avaliation.id
   dto.comment = avaliation.comment
@@ -97,7 +97,9 @@ export const createComponentResponseDTO = (component: Component): ComponentRespo
   dto.kilometersLastExnchange = component.kilometersLastExchange
   return dto
 }
-export const createComponentHistoryResponseDTO = (componentHistory: ComponentHistoryResponseDTO): ComponentHistoryResponseDTO => {
+export const createComponentHistoryResponseDTO = (
+  componentHistory: ComponentHistoryResponseDTO
+): ComponentHistoryResponseDTO => {
   const dto = new ComponentHistoryResponseDTO()
   dto.dateLastExchange = componentHistory.dateLastExchange
   dto.maintenanceFrequency = componentHistory.maintenanceFrequency
@@ -110,6 +112,6 @@ export const createFuelResponseDTO = (fuel: Fuel): FuelResponseDTO => {
   dto.fuelType = fuel.fuelType.name
   dto.fuelTitle = fuel.fuelTitle
   dto.value = fuel.value
-  dto.productStatus= fuel.productStatus
+  dto.productStatus = fuel.productStatus
   return dto
 }
