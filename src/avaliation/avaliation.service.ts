@@ -1,5 +1,6 @@
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { DataSource, Repository } from "typeorm";
 import { Establishment } from "../establishment/entities/establishment.entity";
 import { EstablishmentService } from "../establishment/establishment.service";
 import { CreateAvaliationDto } from "../shared/avaliation/dto/request/create_avaliation.dto";
@@ -7,7 +8,6 @@ import { GetAvaliation } from "../shared/avaliation/dto/response/get_avaliations
 import { UserTypeEnum } from "../shared/user/enums/user-type.enum";
 import { UserService } from "../user/user.service";
 import { createAvaliationResponseDTO } from "../util/mapper";
-import { DataSource, Repository } from "typeorm";
 import { Avaliation } from "./entities/avaliation.entity";
 
 
@@ -63,16 +63,13 @@ export class AvaliationService{
         const avaliations = await this.findByEstablishmentId(establishmentId)
         if(avaliations.length == 0){
           establishment.grade = 5
-          
         }else{
             for(let i=0; i< avaliations.length;i++){
                 parcialGrade += avaliations[i].grade
             }
             let newGrade = parcialGrade/avaliations.length
-            console.log(newGrade)
             establishment.grade = newGrade
         }
-        
         return establishment
     }
 }
