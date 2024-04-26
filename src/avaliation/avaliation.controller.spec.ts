@@ -151,24 +151,24 @@ describe('ScheduleController', () => {
     expect(establishment2).toBeDefined()
   })
 
-  it('should create an avaliation', () => {
+  it('should create an avaliation', async() => {
     const dto = new CreateAvaliationDto
     dto.comment= "Otimo atendimento"
     dto.grade = 5
     dto.date = new Date('2004-01-23');
-    avaliationService.create(establishment.id,user.id,dto)
+    await avaliationService.create(establishment.id,user.id,dto)
     const dto2 = new CreateAvaliationDto
     dto2.comment= "Otimo atendimento"
     dto2.grade = 0
     dto2.date = new Date('2004-01-25')
-    avaliationService.create(establishment.id,user.id,dto2)
+    await avaliationService.create(establishment.id,user.id,dto2)
   })
 
-  it('the establishment doesnt exist', () => {
+  it('the establishment doesnt exist', async() => {
     const dto = new CreateAvaliationDto
     dto.comment= "Otimo atendimento"
     dto.grade = 4
     dto.date = new Date('2004-01-25')
-    avaliationService.create(establishment.id,user1.id,dto)
+    await avaliationService.create(establishment.id,user1.id,dto)
   })
 })
