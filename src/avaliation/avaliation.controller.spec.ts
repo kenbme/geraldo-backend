@@ -171,4 +171,15 @@ describe('ScheduleController', () => {
     dto.date = new Date('2004-01-25')
     await avaliationService.create(establishment.id,user1.id,dto)
   })
+  it('the establishment doesnt exist', async() => {
+    try{
+      const dto = new CreateAvaliationDto
+      dto.comment= "Ok atendimento"
+      dto.grade = -1
+      dto.date = new Date('2004-01-25')
+      await avaliationService.create(establishment.id,user1.id,dto)
+    }catch(err){ 
+      expect(err.message).toEqual('Estabelecimento não encontrado')
+    }
+  })
 })

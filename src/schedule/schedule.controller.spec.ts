@@ -139,7 +139,7 @@ describe('ScheduleController', () => {
     expect(establishment2).toBeDefined()
   })
 
-  it('should create a establishment', async () => {
+  it('should create a schedule', async () => {
     const dto = new CreateScheduleDto
     dto.always_open = true
     dto.shifts = []
@@ -147,7 +147,7 @@ describe('ScheduleController', () => {
     expect(response).toBeDefined()
   })
 
-  it('should create a establishment', async () => {
+  it('should create a schedule', async () => {
     const dto = new CreateScheduleDto
     dto.always_open = false
     dto.shifts = [["13:45:30","13:46:30"]]
@@ -155,15 +155,26 @@ describe('ScheduleController', () => {
     expect(response).toBeDefined()
   })
 
-  it('should create a establishment', async () => {
+  it('should create a schedule', async () => {
     const dto = new CreateScheduleDto
     dto.always_open = false
     dto.shifts = [["13:45:30","13:46:30"],["14:45:30","14:46:30"],["15:45:30","15:46:30"]]
     const response = await scheduleService.create(dto,establishment.id)
     expect(response).toBeDefined()
   })
+  
+  it('should not create the schedule, because has more than 3 shifts', async () => {
+    try{
+      const dto = new CreateScheduleDto
+      dto.always_open = false
+      dto.shifts = [["13:45:30","13:46:30"],["14:45:30","14:46:30"],["15:45:30","15:46:30"],["16:00:00","17:00:00"]]
+      await scheduleService.create(dto,establishment.id)
+    }catch(err){ 
+      expect(err.message).toEqual('O número máximo de turnos é 3')
+    }
+  })
 
-  it('should create a establishment', async () => {
+  it('should not create the schedule', async () => {
     try{
       const dto = new CreateScheduleDto
       dto.always_open = false
@@ -174,4 +185,25 @@ describe('ScheduleController', () => {
     }
   })
 
+  it('should not create the schedule', async () => {
+    try{
+      const dto = new CreateScheduleDto
+      dto.always_open = false
+      dto.shifts = [["13:45:30","14:46:30"],["14:45:30","14:46:30"],["15:45:30","15:45:40"]]
+      await scheduleService.create(dto,establishment.id)
+    }catch(err){ 
+      expect(err.message).toEqual('O horario do inicio de um turno precisam ser maiores que o do final do anterior')
+    }
+  })
+
+  it('should not create the schedule', async () => {
+    try{
+      const dto = new CreateScheduleDto
+      dto.always_open = false
+      dto.shifts = [["13:45:30","13:46:30"],["14:45:30","14:46:30"]]
+      await scheduleService.create(dto,4)
+    }catch(err){ 
+      expect(err.message).toEqual('Estabelecimento não encontrado')
+    }
+  })
 })
