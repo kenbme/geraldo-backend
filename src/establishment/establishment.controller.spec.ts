@@ -1,37 +1,37 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import { EstablishmentController } from './establishment.controller'
-import { EstablishmentService } from './establishment.service'
-import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm'
-import { User } from 'src/user/entities/user.entity'
-import { UserType } from 'src/user/entities/user.type.entity'
-import { Establishment } from './entities/establishment.entity'
-import { UserModule } from 'src/user/user.module'
-import { EstablishmentType } from './entities/establishment.type.entity'
-import { EstablishmentTypeService } from './establishment.type.service'
-import { Repository } from 'typeorm'
-import { AddressModule } from 'src/address/address.module'
-import { Address } from 'src/address/entities/address.entity'
-import { State } from 'src/address/entities/state.entity'
-import { City } from 'src/address/entities/cities.entity'
-import { EstablishmentTypeSeeder } from './seeders/establishment.type.seeder'
-import { StateSeeder } from 'src/address/seeders/state.seeder'
-import { UserTypeSeeder } from 'src/user/seeders/user.type.seeder'
-import { EstablishmentTypeEnum } from 'src/shared/establishment/enums/establishment-type.enum'
-import { UpdateEstablishmentDto } from 'src/shared/establishment/dto/request/update-establishment.dto'
-import { CreateEstablishmentDto } from 'src/shared/establishment/dto/request/create-establishment.dto'
-import { EstablishmentResponseDTO } from 'src/shared/establishment/dto/response/establishment.response.dto'
-import { Fuel } from 'src/fuel/entities/fuel.entity'
-import { FuelType } from 'src/fuel/entities/fuel.type.entity'
-import { Schedule } from 'src/schedule/entities/schedule.entity'
-import { Shift } from 'src/schedule/entities/shift.entity'
+import {Test, TestingModule} from '@nestjs/testing'
+import {EstablishmentController} from './establishment.controller'
+import {EstablishmentService} from './establishment.service'
+import {TypeOrmModule, getRepositoryToken} from '@nestjs/typeorm'
+import {User} from 'src/user/entities/user.entity'
+import {UserType} from 'src/user/entities/user.type.entity'
+import {Establishment} from './entities/establishment.entity'
+import {UserModule} from 'src/user/user.module'
+import {EstablishmentType} from './entities/establishment.type.entity'
+import {EstablishmentTypeService} from './establishment.type.service'
+import {Repository} from 'typeorm'
+import {AddressModule} from 'src/address/address.module'
+import {Address} from 'src/address/entities/address.entity'
+import {State} from 'src/address/entities/state.entity'
+import {City} from 'src/address/entities/cities.entity'
+import {EstablishmentTypeSeeder} from './seeders/establishment.type.seeder'
+import {StateSeeder} from 'src/address/seeders/state.seeder'
+import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
+import {EstablishmentTypeEnum} from 'src/shared/establishment/enums/establishment-type.enum'
+import {UpdateEstablishmentDto} from 'src/shared/establishment/dto/request/update-establishment.dto'
+import {CreateEstablishmentDto} from 'src/shared/establishment/dto/request/create-establishment.dto'
+import {EstablishmentResponseDTO} from 'src/shared/establishment/dto/response/establishment.response.dto'
+import {Fuel} from 'src/fuel/entities/fuel.entity'
+import {FuelType} from 'src/fuel/entities/fuel.type.entity'
+import {Schedule} from 'src/schedule/entities/schedule.entity'
+import {Shift} from 'src/schedule/entities/shift.entity'
 
 describe('EstablishmentController', () => {
   let establishmentController: EstablishmentController
   let establishmentService: EstablishmentService
   let userRepository: Repository<User>
   let establishmentFromController: {
-    data: EstablishmentResponseDTO;
-    message: string;
+    data: EstablishmentResponseDTO
+    message: string
   }
   let establishmentFromService: Establishment
 
@@ -43,7 +43,19 @@ describe('EstablishmentController', () => {
           database: 'db/testing_establishment.sqlite3',
           synchronize: true,
           dropSchema: true,
-          entities: [User, UserType, Establishment, EstablishmentType, Address, State, City, Fuel, FuelType, Schedule, Shift]
+          entities: [
+            User,
+            UserType,
+            Establishment,
+            EstablishmentType,
+            Address,
+            State,
+            City,
+            Fuel,
+            FuelType,
+            Schedule,
+            Shift
+          ]
         }),
         TypeOrmModule.forFeature([Establishment, EstablishmentType, State, UserType, User]),
         UserModule,
@@ -53,7 +65,7 @@ describe('EstablishmentController', () => {
       providers: [
         EstablishmentService,
         EstablishmentTypeService,
-        { provide: getRepositoryToken(User), useClass: Repository },
+        {provide: getRepositoryToken(User), useClass: Repository},
         EstablishmentTypeSeeder,
         StateSeeder,
         UserTypeSeeder
@@ -110,21 +122,22 @@ describe('EstablishmentController', () => {
       phone: '81995554444',
       postalCode: '58429500',
       houseNumber: '351'
-    };
+    }
     const updatedEstablishment = await establishmentService.updateEstablishment(
       establishmentFromService.user.id,
-      updateDto)
+      updateDto
+    )
 
-    expect(updatedEstablishment).toBeDefined();
-    expect(updatedEstablishment.user).toBeDefined();
-    expect(updatedEstablishment.address).toBeDefined();
+    expect(updatedEstablishment).toBeDefined()
+    expect(updatedEstablishment.user).toBeDefined()
+    expect(updatedEstablishment.address).toBeDefined()
     expect(updatedEstablishment.areaCode).toBe(updateDto.areaCode)
-    expect(updatedEstablishment.phone).toBe(updateDto.phone);
-    expect(updatedEstablishment.address.houseNumber).toBe(updateDto.houseNumber);
-    expect(updatedEstablishment.address.postalCode).toBe(updateDto.postalCode);
-    expect(updatedEstablishment.user.email).toBe(updateDto.email);
-    expect(updatedEstablishment.user.name).toBe(updateDto.name);
-  });
+    expect(updatedEstablishment.phone).toBe(updateDto.phone)
+    expect(updatedEstablishment.address.houseNumber).toBe(updateDto.houseNumber)
+    expect(updatedEstablishment.address.postalCode).toBe(updateDto.postalCode)
+    expect(updatedEstablishment.user.email).toBe(updateDto.email)
+    expect(updatedEstablishment.user.name).toBe(updateDto.name)
+  })
 
   it('should update a establishment by Controller', async () => {
     const updateDto: UpdateEstablishmentDto = {
@@ -134,11 +147,13 @@ describe('EstablishmentController', () => {
       phone: '83995554444',
       postalCode: '58429500',
       houseNumber: '351'
-    };
-    const request: any = { user: { id: establishmentFromService.user.id } }
+    }
+    const request: any = {user: {id: establishmentFromService.user.id}}
     const updatedEstablishment = await establishmentController.updateEstablishment(
-      request, updateDto)
-    expect(updatedEstablishment).toBeDefined();
+      request,
+      updateDto
+    )
+    expect(updatedEstablishment).toBeDefined()
     expect(updatedEstablishment.message).toEqual('Estabelecimento atualizado com sucesso')
   })
 
@@ -156,7 +171,10 @@ describe('EstablishmentController', () => {
   })
 
   it('should get all establishments from localization', async () => {
-    const res = await establishmentController.getEstablishments({ latitude: 7.2171368, longitude: -35.9097543 })
+    const res = await establishmentController.getEstablishments({
+      latitude: 7.2171368,
+      longitude: -35.9097543
+    })
     expect(res.message).toBe('Lista de estabelecimentos')
     expect(res.data.length).toEqual(0)
   })

@@ -164,7 +164,7 @@ describe('ScheduleController', () => {
     await avaliationService.create(establishment.id,user.id,dto2)
   })
 
-  it('the establishment doesnt exist', async() => {
+  it('should create an avaliation', async() => {
     const dto = new CreateAvaliationDto
     dto.comment= "Ok atendimento"
     dto.grade = 4
@@ -182,4 +182,5 @@ describe('ScheduleController', () => {
       expect(err.message).toEqual('Estabelecimento não encontrado')
     }
   })
+
 })

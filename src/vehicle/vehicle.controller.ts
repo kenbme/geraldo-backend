@@ -64,7 +64,11 @@ export class VehicleController {
     if (!userId) {
       throw new UnauthorizedException()
     }
-    const vehicle = await this.vehicleService.shareVehicle(parseInt(vehicleId), userId, shareVehicleDto)
+    const vehicle = await this.vehicleService.shareVehicle(
+      parseInt(vehicleId),
+      userId,
+      shareVehicleDto
+    )
     const data = createVehicleResponseDTO(vehicle)
     return {data, message: 'Veiculo compartilhado com sucesso'}
   }

@@ -1,15 +1,11 @@
-import {IsNotEmpty, IsNumber, Min, Max} from 'class-validator'
+import {IsNotEmpty, IsDecimal} from 'class-validator'
 
-export class GetEstablishmentsQuery{
+export class GetEstablishmentsQuery {
   @IsNotEmpty({message: 'Campo obrigatório'})
-  @IsNumber()
-  @Min(-90)
-  @Max(90)
-  latitude: number;
+  @IsDecimal()
+  latitude: number
 
   @IsNotEmpty({message: 'Campo obrigatório'})
-  @IsNumber()
-  @Min(-180)
-  @Max(180)
-  longitude: number;
+  @IsDecimal()
+  longitude: number
 }

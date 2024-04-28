@@ -7,7 +7,7 @@ export class ComponentHistory {
   id: number
   @ManyToOne(() => Component, (components) => components.ComponentHistory)
   component: Component
-  
+
   @Column({type: 'date'})
   dateLastExchange: Date
 

@@ -1,8 +1,8 @@
 import {Injectable} from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm'
 import {Repository} from 'typeorm'
-import { FuelType } from '../entities/fuel.type.entity'
-import { FuelTypeEnum } from '../../shared/fuel/enum/fuel.type.enum'
+import {FuelType} from '../entities/fuel.type.entity'
+import {FuelTypeEnum} from '../../shared/fuel/enum/fuel.type.enum'
 
 @Injectable()
 export class FuelTypeSeeder {

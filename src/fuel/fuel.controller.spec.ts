@@ -1,5 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { FuelController } from './fuel.controller';
+import {Test, TestingModule} from '@nestjs/testing'
+import {FuelController} from './fuel.controller'
 import {TypeOrmModule} from '@nestjs/typeorm'
 import {User} from 'src/user/entities/user.entity'
 import {UserType} from 'src/user/entities/user.type.entity'
@@ -12,17 +12,17 @@ import {UserModule} from 'src/user/user.module'
 import {UserTypeSeeder} from 'src/user/seeders/user.type.seeder'
 import {FuelTypeEnum} from 'src/shared/fuel/enum/fuel.type.enum'
 import {ValidationError, validateOrReject} from 'class-validator'
-import { FuelTypeSeeder } from './seeders/fuel.type.seeder';
-import { EstablishmentService } from 'src/establishment/establishment.service';
-import { EstablishmentTypeEnum } from 'src/shared/establishment/enums/establishment-type.enum';
-import { EstablishmentType } from 'src/establishment/entities/establishment.type.entity';
-import { Address } from 'src/address/entities/address.entity';
-import { City } from 'src/address/entities/cities.entity';
-import { State } from 'src/address/entities/state.entity';
-import { EstablishmentTypeSeeder } from 'src/establishment/seeders/establishment.type.seeder';
-import { StateSeeder } from 'src/address/seeders/state.seeder';
-import { Schedule } from 'src/schedule/entities/schedule.entity';
-import { Shift } from 'src/schedule/entities/shift.entity';
+import {FuelTypeSeeder} from './seeders/fuel.type.seeder'
+import {EstablishmentService} from 'src/establishment/establishment.service'
+import {EstablishmentTypeEnum} from 'src/shared/establishment/enums/establishment-type.enum'
+import {EstablishmentType} from 'src/establishment/entities/establishment.type.entity'
+import {Address} from 'src/address/entities/address.entity'
+import {City} from 'src/address/entities/cities.entity'
+import {State} from 'src/address/entities/state.entity'
+import {EstablishmentTypeSeeder} from 'src/establishment/seeders/establishment.type.seeder'
+import {StateSeeder} from 'src/address/seeders/state.seeder'
+import {Schedule} from 'src/schedule/entities/schedule.entity'
+import {Shift} from 'src/schedule/entities/shift.entity'
 
 describe('FuelController', () => {
   let fuelController: FuelController
@@ -39,14 +39,36 @@ describe('FuelController', () => {
           database: 'db/testing_fuel.sqlite3',
           synchronize: true,
           dropSchema: true,
-          entities: [User, UserType, Establishment,EstablishmentType,Address,City,State, Fuel, FuelType, Schedule, Shift]
+          entities: [
+            User,
+            UserType,
+            Establishment,
+            EstablishmentType,
+            Address,
+            City,
+            State,
+            Fuel,
+            FuelType,
+            Schedule,
+            Shift
+          ]
         }),
         UserModule,
         EstablishmentModule,
-        TypeOrmModule.forFeature([User, UserType, Establishment, Fuel, FuelType,EstablishmentType,Address,City,State])
+        TypeOrmModule.forFeature([
+          User,
+          UserType,
+          Establishment,
+          Fuel,
+          FuelType,
+          EstablishmentType,
+          Address,
+          City,
+          State
+        ])
       ],
       controllers: [FuelController],
-      providers: [FuelService, FuelTypeSeeder, UserTypeSeeder,EstablishmentTypeSeeder,StateSeeder]
+      providers: [FuelService, FuelTypeSeeder, UserTypeSeeder, EstablishmentTypeSeeder, StateSeeder]
     }).compile()
 
     fuelController = module.get(FuelController)
@@ -62,63 +84,65 @@ describe('FuelController', () => {
     await userTypeSeeder.seed()
     const establishmentService = module.get(EstablishmentService)
     estabelecimento = await establishmentService.create({
-        username: "12345678000123",
-        name: "Posto de Combustível XYZ",
-        email: "postoxyz@example.com",
-        establishmentType: EstablishmentTypeEnum.GAS_STATION,
-        areaCode: "11",
-        phone: "987654321",
-        postalCode: "01153000",
-        houseNumber: "123"
-      })
-      estabelecimento2 = await establishmentService.create({
-        username: "12345678220123",
-        name: "Oficina do ze",
-        email: "oficinaz@example.com",
-        establishmentType: EstablishmentTypeEnum.WORKSHOP,
-        areaCode: "11",
-        phone: "987444321",
-        postalCode: "58429170",
-        houseNumber: "124"
-      })
-      estabelecimento3 = await establishmentService.create({
-        username: "21688336000169",
-        name: "Posto de Combustível 3",
-        email: "posto3@example.com",
-        establishmentType: EstablishmentTypeEnum.GAS_STATION,
-        areaCode: "11",
-        phone: "987654321",
-        postalCode: "01153000",
-        houseNumber: "123"
-      })
+      username: '12345678000123',
+      name: 'Posto de Combustível XYZ',
+      email: 'postoxyz@example.com',
+      establishmentType: EstablishmentTypeEnum.GAS_STATION,
+      areaCode: '11',
+      phone: '987654321',
+      postalCode: '01153000',
+      houseNumber: '123'
     })
-    it('should be defined', () => {
-      expect(fuelController).toBeDefined()
-      expect(fuelService).toBeDefined()
+    estabelecimento2 = await establishmentService.create({
+      username: '12345678220123',
+      name: 'Oficina do ze',
+      email: 'oficinaz@example.com',
+      establishmentType: EstablishmentTypeEnum.WORKSHOP,
+      areaCode: '11',
+      phone: '987444321',
+      postalCode: '58429170',
+      houseNumber: '124'
     })
-  
-    it('should create a fuel', async () => {
-     const dto = await fuelService.create(
-        {
-          fuelType: FuelTypeEnum.GASOLINE,
-          fuelTitle: "Gasolina Comum",
-          value: 5.99,
-          productStatus: true
-        },estabelecimento.user.id)
+    estabelecimento3 = await establishmentService.create({
+      username: '21688336000169',
+      name: 'Posto de Combustível 3',
+      email: 'posto3@example.com',
+      establishmentType: EstablishmentTypeEnum.GAS_STATION,
+      areaCode: '11',
+      phone: '987654321',
+      postalCode: '01153000',
+      houseNumber: '123'
+    })
+  })
+  it('should be defined', () => {
+    expect(fuelController).toBeDefined()
+    expect(fuelService).toBeDefined()
+  })
+
+  it('should create a fuel', async () => {
+    const dto = await fuelService.create(
+      {
+        fuelType: FuelTypeEnum.GASOLINE,
+        fuelTitle: 'Gasolina Comum',
+        value: 5.99,
+        productStatus: true
+      },
+      estabelecimento.user.id
+    )
   })
   it('Estabelecimento not found', async () => {
     try {
-     const dto = await fuelService.create(
+      const dto = await fuelService.create(
         {
           fuelType: FuelTypeEnum.GASOLINE,
-          fuelTitle: "Gasolina Comum",
+          fuelTitle: 'Gasolina Comum',
           value: 5.99,
           productStatus: true
-        },111)
-    } catch (error) {
-      expect(error.message).toEqual(
-        'Estabelecimento não encontrado'
+        },
+        111
       )
+    } catch (error) {
+      expect(error.message).toEqual('Estabelecimento não encontrado')
       return
     }
     throw new Error()
@@ -127,110 +151,87 @@ describe('FuelController', () => {
     const createdFuel = await fuelService.create(
       {
         fuelType: FuelTypeEnum.GASOLINE,
-        fuelTitle: "Gasolina Comum",
+        fuelTitle: 'Gasolina Comum',
         value: 5.99,
         productStatus: true
       },
       estabelecimento.user.id
-   );
+    )
 
-   const updatedFuel = await fuelService.update(
-       estabelecimento.user.id, 
-       createdFuel.id,
-       {
-           fuelType: FuelTypeEnum.GASOLINE,
-           fuelTitle: "Gasolina Comum",
-           value: 7.11,
-           productStatus: true
-       }
-   );
+    const updatedFuel = await fuelService.update(estabelecimento.user.id, createdFuel.id, {
+      fuelType: FuelTypeEnum.GASOLINE,
+      fuelTitle: 'Gasolina Comum',
+      value: 7.11,
+      productStatus: true
+    })
 
-   // Verificar se os dados do combustível foram atualizados corretamente
-   expect(updatedFuel.value).toBe(7.11)
-      
- })
- it('update fuel not exists in establishment', async () => {
-  try {
-    const createdFuel = await fuelService.create(
-      {
+    // Verificar se os dados do combustível foram atualizados corretamente
+    expect(updatedFuel.value).toBe(7.11)
+  })
+  it('update fuel not exists in establishment', async () => {
+    try {
+      const createdFuel = await fuelService.create(
+        {
+          fuelType: FuelTypeEnum.GASOLINE,
+          fuelTitle: 'Gasolina Comum',
+          value: 5.99,
+          productStatus: true
+        },
+        estabelecimento.user.id
+      )
+
+      const updatedFuel = await fuelService.update(estabelecimento3.user.id, createdFuel.id, {
         fuelType: FuelTypeEnum.GASOLINE,
-        fuelTitle: "Gasolina Comum",
-        value: 5.99,
+        fuelTitle: 'Gasolina Comum',
+        value: 7.11,
         productStatus: true
-      },
-      estabelecimento.user.id
-   );
-  
-   const updatedFuel = await fuelService.update(
-       estabelecimento3.user.id, 
-       createdFuel.id,
-       {
-           fuelType: FuelTypeEnum.GASOLINE,
-           fuelTitle: "Gasolina Comum",
-           value: 7.11,
-           productStatus: true
-       }
-   );
-  
-  } catch (error) {
-    expect(error.message).toEqual(
-      'O estabelecimento não possui permissão para alterar esse combustível'
-    )
-    return
-  }
-  throw new Error()
-})
-it('update  not exists establishment', async () => {
-  try {
-    
-   const updatedFuel = await fuelService.update(
-       55, 
-       1,
-       {
-           fuelType: FuelTypeEnum.GASOLINE,
-           fuelTitle: "Gasolina Comum",
-           value: 7.11,
-           productStatus: true
-       }
-   );
-  
-  } catch (error) {
-    expect(error.message).toEqual(
-      'Estabelecimento não encontrado'
-    )
-    return
-  }
-  throw new Error()
-})
-it('create Establishment type Unauthorized', async () => {
-  try {
-   const dto = await fuelService.create(
-      {
+      })
+    } catch (error) {
+      expect(error.message).toEqual(
+        'O estabelecimento não possui permissão para alterar esse combustível'
+      )
+      return
+    }
+    throw new Error()
+  })
+  it('update  not exists establishment', async () => {
+    try {
+      const updatedFuel = await fuelService.update(55, 1, {
         fuelType: FuelTypeEnum.GASOLINE,
-        fuelTitle: "Gasolina Comum",
-        value: 5.99,
+        fuelTitle: 'Gasolina Comum',
+        value: 7.11,
         productStatus: true
-      },estabelecimento2.user.id)
-  } catch (error) {
-    expect(error.message).toEqual(
-      'Funcionalidade indisponível para esse tipo de estabelecimento'
-    )
-    return
-  }
-  throw new Error()
-})
-it('get fuels Establishment type Unauthorized', async () => {
-  try {
-    
-   const updatedFuel = await fuelService.getFuels(estabelecimento2.user.id)
-  
-  } catch (error) {
-    expect(error.message).toEqual(
-      'Funcionalidade indisponível para esse tipo de estabelecimento'
-    )
-    return
-  }
-  throw new Error()
-})
-
+      })
+    } catch (error) {
+      expect(error.message).toEqual('Estabelecimento não encontrado')
+      return
+    }
+    throw new Error()
+  })
+  it('create Establishment type Unauthorized', async () => {
+    try {
+      const dto = await fuelService.create(
+        {
+          fuelType: FuelTypeEnum.GASOLINE,
+          fuelTitle: 'Gasolina Comum',
+          value: 5.99,
+          productStatus: true
+        },
+        estabelecimento2.user.id
+      )
+    } catch (error) {
+      expect(error.message).toEqual('Funcionalidade indisponível para esse tipo de estabelecimento')
+      return
+    }
+    throw new Error()
+  })
+  it('get fuels Establishment type Unauthorized', async () => {
+    try {
+      const updatedFuel = await fuelService.getFuels(estabelecimento2.user.id)
+    } catch (error) {
+      expect(error.message).toEqual('Funcionalidade indisponível para esse tipo de estabelecimento')
+      return
+    }
+    throw new Error()
+  })
 })
