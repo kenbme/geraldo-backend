@@ -1,10 +1,10 @@
-import {BadRequestException, Injectable} from '@nestjs/common'
-import {InjectRepository} from '@nestjs/typeorm'
-import {EstablishmentService} from '../establishment/establishment.service'
-import {CreateScheduleDto} from '../shared/schedule/request/create-schedule.dto'
-import {Repository} from 'typeorm'
-import {Schedule} from './entities/schedule.entity'
-import {Shift} from './entities/shift.entity'
+import { BadRequestException, Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { EstablishmentService } from '../establishment/establishment.service'
+import { CreateScheduleDto } from '../shared/schedule/request/create-schedule.dto'
+import { Schedule } from './entities/schedule.entity'
+import { Shift } from './entities/shift.entity'
 
 @Injectable()
 export class ScheduleService {
@@ -17,6 +17,9 @@ export class ScheduleService {
   ) {}
 
   async create(scheduleDto: CreateScheduleDto, userId: number): Promise<Schedule> {
+    if(scheduleDto.shifts.length >3){
+      throw new BadRequestException({message: 'O número máximo de turnos é 3'})
+    }
     const establishment = await this.establishmentService.findByUserId(userId)
     establishment.alwaysOpen = scheduleDto.always_open
     this.establishmentService.updateAlwaysOpen(establishment.id, scheduleDto.always_open)

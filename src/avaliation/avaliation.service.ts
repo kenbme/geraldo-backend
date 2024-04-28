@@ -1,14 +1,14 @@
-import {ForbiddenException, Injectable, NotFoundException} from '@nestjs/common'
-import {InjectRepository} from '@nestjs/typeorm'
-import {Establishment} from '../establishment/entities/establishment.entity'
-import {EstablishmentService} from '../establishment/establishment.service'
-import {CreateAvaliationDto} from '../shared/avaliation/dto/request/create_avaliation.dto'
-import {GetAvaliation} from '../shared/avaliation/dto/response/get_avaliations.dto'
-import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
-import {UserService} from '../user/user.service'
-import {createAvaliationResponseDTO} from '../util/mapper'
-import {DataSource, Repository} from 'typeorm'
-import {Avaliation} from './entities/avaliation.entity'
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { DataSource, Repository } from 'typeorm'
+import { Establishment } from '../establishment/entities/establishment.entity'
+import { EstablishmentService } from '../establishment/establishment.service'
+import { CreateAvaliationDto } from '../shared/avaliation/dto/request/create_avaliation.dto'
+import { GetAvaliation } from '../shared/avaliation/dto/response/get_avaliations.dto'
+import { UserTypeEnum } from '../shared/user/enums/user-type.enum'
+import { UserService } from '../user/user.service'
+import { createAvaliationResponseDTO } from '../util/mapper'
+import { Avaliation } from './entities/avaliation.entity'
 
 @Injectable()
 export class AvaliationService {
@@ -70,7 +70,6 @@ export class AvaliationService {
         parcialGrade += avaliations[i].grade
       }
       const newGrade = parcialGrade / avaliations.length
-      console.log(newGrade)
       establishment.grade = newGrade
     }
 
