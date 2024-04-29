@@ -1,6 +1,6 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsString, Length, MinLength } from 'class-validator'
-import { IsCNPJ } from '../../../../shared/user/validators/IsCNPJ'
-import { EstablishmentTypeEnum } from '../../enums/establishment-type.enum'
+import {IsEmail, IsEnum, IsNotEmpty, IsString, Length, MinLength} from 'class-validator'
+import {IsCNPJ} from '../../../../shared/user/validators/IsCNPJ'
+import {EstablishmentTypeEnum} from '../../enums/establishment-type.enum'
 
 export class CreateEstablishmentDto {
   @IsNotEmpty()

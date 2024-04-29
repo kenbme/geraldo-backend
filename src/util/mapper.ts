@@ -17,7 +17,6 @@ import { UserTypeEnum } from '../shared/user/enums/user-type.enum'
 import { VehicleResponseDTO } from '../shared/vehicle/dto/response/vahicle.response.dto'
 import { User } from '../user/entities/user.entity'
 import { Vehicle } from '../vehicle/entities/vehicle.entity'
-
 export const createUserResponseDTO = (user: User): UserResponseDTO => {
   const dto = new UserResponseDTO()
   dto.id = user.id
@@ -37,14 +36,14 @@ export const createDriverResponseDTO = (driver: Driver): DriverResponseDTO => {
   return dto
 }
 
-export const createScheduleDTO= (schedule: Schedule): ScheduleResponseDTO => {
+export const createScheduleDTO = (schedule: Schedule): ScheduleResponseDTO => {
   const dto = new ScheduleResponseDTO()
   dto.id = schedule.id
   dto.shifts = schedule.shifts
   dto.establishment = schedule.establishment
   return dto
 }
-export const createAvaliationResponseDTO= (avaliation: Avaliation): GetAvaliation => {
+export const createAvaliationResponseDTO = (avaliation: Avaliation): GetAvaliation => {
   const dto = new GetAvaliation()
   dto.id = avaliation.id
   dto.comment = avaliation.comment
@@ -98,7 +97,9 @@ export const createComponentResponseDTO = (component: Component): ComponentRespo
   dto.kilometersLastExnchange = component.kilometersLastExchange
   return dto
 }
-export const createComponentHistoryResponseDTO = (componentHistory: ComponentHistoryResponseDTO): ComponentHistoryResponseDTO => {
+export const createComponentHistoryResponseDTO = (
+  componentHistory: ComponentHistoryResponseDTO
+): ComponentHistoryResponseDTO => {
   const dto = new ComponentHistoryResponseDTO()
   dto.dateLastExchange = componentHistory.dateLastExchange
   dto.maintenanceFrequency = componentHistory.maintenanceFrequency
@@ -111,6 +112,6 @@ export const createFuelResponseDTO = (fuel: Fuel): FuelResponseDTO => {
   dto.fuelType = fuel.fuelType.name
   dto.fuelTitle = fuel.fuelTitle
   dto.value = fuel.value
-  dto.productStatus= fuel.productStatus
+  dto.productStatus = fuel.productStatus
   return dto
 }

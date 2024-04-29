@@ -17,7 +17,7 @@ import {UpdateComponentDto} from '../shared/component/dto/request/update-compone
 import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
 import {Roles} from '../config/decorator'
 import {UserRequest} from '../shared/auth/dto/user.request'
-import { ComponentHistoryResponseDTO } from '../shared/component/dto/response/componentHistory.response.dto'
+import {ComponentHistoryResponseDTO} from '../shared/component/dto/response/componentHistory.response.dto'
 
 @Controller('')
 export class ComponentController {
@@ -94,21 +94,25 @@ export class ComponentController {
   async getUpdateHistory(
     @Request() request: UserRequest,
     @Param('componentId') componentId: string
-  ): Promise<{ data: ComponentHistoryResponseDTO[]; message: string }> {
+  ): Promise<{data: ComponentHistoryResponseDTO[]; message: string}> {
     const userId = request.user.id
     const vehicleId = request.user.vehicleId
     if (!userId || !vehicleId) {
       throw new UnauthorizedException()
     }
-    const updateHistory = await this.componentsService.updateHistory(userId, vehicleId, parseInt(componentId))
-    const data = updateHistory.map((componentHistory) => createComponentHistoryResponseDTO(componentHistory))
-    return { data, message: 'Histórico de atualização encontrado' }
-}
-  
-  
-  @Get('/check_maintenances')
-  async checkMaintenances(): Promise<{ componentName: string, reason: string } | null> {
-    return this.componentsService.verifyAllMaintenances();
+    const updateHistory = await this.componentsService.updateHistory(
+      userId,
+      vehicleId,
+      parseInt(componentId)
+    )
+    const data = updateHistory.map((componentHistory) =>
+      createComponentHistoryResponseDTO(componentHistory)
+    )
+    return {data, message: 'Histórico de atualização encontrado'}
   }
 
+  @Get('/check_maintenances')
+  async checkMaintenances(): Promise<{componentName: string; reason: string} | null> {
+    return this.componentsService.verifyAllMaintenances()
+  }
 }

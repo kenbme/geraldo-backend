@@ -1,7 +1,7 @@
 import {Vehicle} from '../../vehicle/entities/vehicle.entity'
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
 import {ComponentType} from './component.type.entity'
-import { ComponentHistory } from './ComponentHistory.entity'
+import {ComponentHistory} from './ComponentHistory.entity'
 
 @Entity()
 export class Component {

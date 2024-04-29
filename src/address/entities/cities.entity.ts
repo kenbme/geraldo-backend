@@ -1,6 +1,6 @@
 import {Column, Entity, OneToMany, ManyToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {State} from './state.entity'
-import { Address } from './address.entity'
+import {Address} from './address.entity'
 
 @Entity()
 export class City {

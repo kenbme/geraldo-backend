@@ -1,6 +1,6 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
-import { Fuel } from './fuel.entity'
-import { FuelTypeEnum } from '../../shared/fuel/enum/fuel.type.enum'
+import {Fuel} from './fuel.entity'
+import {FuelTypeEnum} from '../../shared/fuel/enum/fuel.type.enum'
 
 @Entity()
 export class FuelType {
@@ -10,4 +10,4 @@ export class FuelType {
   name: FuelTypeEnum
   @OneToMany(() => Fuel, (fuel) => fuel.fuelType)
   fuels: Fuel
-} 
+}
