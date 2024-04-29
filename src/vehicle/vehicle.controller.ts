@@ -9,15 +9,15 @@ import {
   Request,
   UnauthorizedException
 } from '@nestjs/common'
-import {CreateVehicleDto} from '../shared/vehicle/dto/request/create-vehicle.dto'
-import {VehicleService} from './vehicle.service'
-import {createVehicleResponseDTO} from '../util/mapper'
-import {VehicleResponseDTO} from '../shared/vehicle/dto/response/vahicle.response.dto'
-import {UserTypeEnum} from '../shared/user/enums/user-type.enum'
-import {Roles} from '../config/decorator'
-import {ShareVehicleDto} from '../shared/vehicle/dto/request/share-vehicle.dto'
-import {UpdateKilometersDto} from '../shared/vehicle/dto/request/update-kilometers.dto'
-import {UserRequest} from '../shared/auth/dto/user.request'
+import { Roles } from '../config/decorator'
+import { UserRequest } from '../shared/auth/dto/user.request'
+import { UserTypeEnum } from '../shared/user/enums/user-type.enum'
+import { CreateVehicleDto } from '../shared/vehicle/dto/request/create-vehicle.dto'
+import { ShareVehicleDto } from '../shared/vehicle/dto/request/share-vehicle.dto'
+import { UpdateKilometersDto } from '../shared/vehicle/dto/request/update-kilometers.dto'
+import { VehicleResponseDTO } from '../shared/vehicle/dto/response/vahicle.response.dto'
+import { createVehicleResponseDTO } from '../util/mapper'
+import { VehicleService } from './vehicle.service'
 
 @Controller('')
 export class VehicleController {
@@ -69,6 +69,8 @@ export class VehicleController {
     return {data, message: 'Veiculo compartilhado com sucesso'}
   }
 
+  
+
   @Roles(UserTypeEnum.DRIVER)
   @Patch('/kilometers/:vehicleId')
   async updateKilometers(
@@ -87,5 +89,19 @@ export class VehicleController {
     )
     const data = createVehicleResponseDTO(vehicle)
     return {data, message: 'Quilometragem do veículo atualizada com sucesso'}
+  }
+
+  @Get('/vehicles/:vehicleId')
+  async getVehicle(
+    @Request() request: UserRequest,
+    @Param('vehicleId') vehicleId: string
+  ): Promise<{data: VehicleResponseDTO; message: string}> {
+    const userId = request.user.id
+    if (!userId) {
+      throw new UnauthorizedException()
+    }
+    const vehicle = await this.vehicleService.findById(userId)
+    const vehiclesResponseDTO = createVehicleResponseDTO(vehicle)
+    return {data: vehiclesResponseDTO, message: 'Veículo encontrado'}
   }
 }

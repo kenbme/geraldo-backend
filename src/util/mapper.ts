@@ -1,22 +1,22 @@
 import { Avaliation } from '../avaliation/entities/avaliation.entity'
-import { Fuel } from '../fuel/entities/fuel.entity'
-import { Schedule } from '../schedule/entities/schedule.entity'
-import { GetAvaliation } from '../shared/avaliation/dto/response/get_avaliations.dto'
-import { FuelResponseDTO } from '../shared/fuel/dto/response/fuel.response.dto'
-import { ScheduleResponseDTO } from '../shared/schedule/response/schedule-response.dto'
 import { Component } from '../component/entities/component.entity'
 import { Driver } from '../driver/entities/driver.entity'
 import { Establishment } from '../establishment/entities/establishment.entity'
+import { Fuel } from '../fuel/entities/fuel.entity'
+import { Schedule } from '../schedule/entities/schedule.entity'
 import { LoginPayload } from '../shared/auth/dto/login.payload.dto'
+import { GetAvaliation } from '../shared/avaliation/dto/response/get_avaliations.dto'
 import { ComponentResponseDTO } from '../shared/component/dto/response/component.response.dto'
+import { ComponentHistoryResponseDTO } from '../shared/component/dto/response/componentHistory.response.dto'
 import { DriverResponseDTO } from '../shared/driver/dto/response/driver.response.dto'
 import { EstablishmentResponseDTO } from '../shared/establishment/dto/response/establishment.response.dto'
+import { FuelResponseDTO } from '../shared/fuel/dto/response/fuel.response.dto'
+import { ScheduleResponseDTO } from '../shared/schedule/response/schedule-response.dto'
 import { UserResponseDTO } from '../shared/user/dto/response/user.response.dto'
 import { UserTypeEnum } from '../shared/user/enums/user-type.enum'
 import { VehicleResponseDTO } from '../shared/vehicle/dto/response/vahicle.response.dto'
 import { User } from '../user/entities/user.entity'
 import { Vehicle } from '../vehicle/entities/vehicle.entity'
-import { ComponentHistoryResponseDTO } from '../shared/component/dto/response/componentHistory.response.dto'
 
 export const createUserResponseDTO = (user: User): UserResponseDTO => {
   const dto = new UserResponseDTO()
@@ -62,6 +62,7 @@ export const createVehicleResponseDTO = (vehicle: Vehicle): VehicleResponseDTO =
   dto.plate = vehicle.plate
   dto.year = vehicle.year
   dto.kilometers = vehicle.kilometers
+  dto.components = vehicle.components
   return dto
 }
 
