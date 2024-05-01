@@ -13,7 +13,7 @@ export class ChatController {
   async chatMessage(
     @Query() query: ChatMessageDTO
   ): Promise<{data: {response: string}; message: string}> {
-    const response = this.chatService.chatMessage(query.question)
+    const response = await this.chatService.chatMessage(query.question)
     const data = {response}
     return {data, message: 'Respondido'}
   }
